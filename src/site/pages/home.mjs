@@ -170,30 +170,57 @@ ${header}
       <div class="hero-gradient-overlay absolute inset-0" aria-hidden="true"></div>
     </div>
 
-    <div class="zizo-container relative z-10 pt-32 pb-[var(--space-lg)]">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-[var(--space-md)] items-end text-[#FAF9F6]">
-        <div class="lg:col-span-7 space-y-4">
-          <p class="hero-enter hero-delay-1 text-[length:var(--fs-small)] uppercase tracking-[0.14em] text-[#FAF9F6]/85">
-            Donor and Surrogacy · Lagos, Nigeria
-          </p>
-          <h1 class="hero-enter hero-delay-2 display text-[#FAF9F6] max-w-3xl">
-            Every family deserves a path to parenthood.
-          </h1>
-        </div>
+    <div class="zizo-container relative z-10 pt-36 sm:pt-40 lg:pt-44 pb-[var(--space-lg)] lg:pb-20">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end text-[#FAF9F6]">
+        <div class="lg:col-span-8 xl:col-span-7 space-y-6">
+          <div class="hero-enter hero-delay-1 inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[#FAF9F6] text-[length:var(--fs-small)] font-medium">
+            <span class="w-2 h-2 rounded-full bg-[#8BB2AF] animate-pulse"></span>
+            <span>Donor and Surrogacy · Lagos, Nigeria &amp; International</span>
+          </div>
 
-        <div class="lg:col-span-5 space-y-5">
-          <p class="hero-enter hero-delay-3 text-[length:var(--fs-body)] text-[#FAF9F6]/90 max-w-sm">
+          <h1 class="hero-enter hero-delay-2 display text-[#FAF9F6] text-[length:var(--fs-h1)] font-medium leading-[1.08] tracking-[-0.02em] max-w-2xl">
+            Every family deserves<br class="hidden sm:inline" /> a path to parenthood.
+          </h1>
+
+          <p class="hero-enter hero-delay-3 text-[length:var(--fs-body)] text-[#FAF9F6]/90 leading-relaxed max-w-xl font-normal">
             A safe fertility brand that creates families across borders, with expert legal and medical coordination and compassionate, personal care at every step.
           </p>
-          <div class="hero-enter hero-delay-4 space-y-3">
-            <div class="flex items-center gap-3 flex-wrap sm:flex-nowrap">
-              <a href="/book/" class="btn-primary">Book Consultation</a>
-              <a href="/surrogates-donors/become-a-surrogate/" class="btn-secondary-light">Become Surrogate</a>
-            </div>
-            <p class="inline-flex items-center gap-2 text-[length:var(--fs-small)] text-[#FAF9F6]/80">
+
+          <div class="hero-enter hero-delay-4 flex flex-wrap sm:flex-nowrap items-center gap-3.5 pt-1">
+            <a href="/book/" class="btn-primary group inline-flex items-center gap-2">
+              <span>Book Consultation</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"></i>
+            </a>
+            <a href="/surrogates-donors/become-a-surrogate/" class="btn-secondary-light">
+              Become Surrogate
+            </a>
+          </div>
+
+          <div class="hero-enter hero-delay-4 pt-5 border-t border-white/15 flex flex-wrap items-center gap-y-2.5 gap-x-6 text-[length:var(--fs-small)] text-[#FAF9F6]/85 max-w-xl">
+            <span class="inline-flex items-center gap-2">
               <i data-lucide="shield-check" class="w-4 h-4 text-[#8BB2AF] shrink-0"></i>
-              <span>Confidential. Ethical. Anonymous matching.</span>
-            </p>
+              <span>100% Confidential</span>
+            </span>
+            <span class="inline-flex items-center gap-2">
+              <i data-lucide="scale" class="w-4 h-4 text-[#8BB2AF] shrink-0"></i>
+              <span>Cross-Border Legal Care</span>
+            </span>
+            <span class="inline-flex items-center gap-2">
+              <i data-lucide="users" class="w-4 h-4 text-[#8BB2AF] shrink-0"></i>
+              <span>Anonymous Matching</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 xl:col-span-5 hidden lg:flex justify-end pb-2">
+          <div class="hero-enter hero-delay-4 inline-flex items-center gap-3.5 px-4 py-3 rounded-2xl bg-[#17191A]/55 backdrop-blur-md border border-white/15 shadow-xl text-left">
+            <div class="w-10 h-10 rounded-xl bg-[#17645F]/40 border border-[#8BB2AF]/30 flex items-center justify-center text-[#8BB2AF] shrink-0">
+              <i data-lucide="award" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="text-xs font-semibold text-[#FAF9F6] tracking-wide">12+ Years Experience</div>
+              <div class="text-[11px] text-[#FAF9F6]/75">Cross-Border Care · 5 Global Regions</div>
+            </div>
           </div>
         </div>
       </div>
