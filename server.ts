@@ -12,7 +12,6 @@ import {
 import { generateIcsContent } from './lib/ics';
 import {
   createSignedToken,
-  generateTotpCode,
   generateTotpSecret,
   randomToken,
   sha256Hex,
@@ -754,7 +753,6 @@ app.post('/api/admin/auth/login', (req, res) => {
     ...(requiresTotpSetup
       ? {
           secret,
-          currentCodePreview: generateTotpCode(secret),
         }
       : {}),
   });

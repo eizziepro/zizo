@@ -6,3 +6,15 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Local SQLite databases & lock files
+data/
+*.db
+*.db-*
+*.sqlite*
+
+# Sensitive documents, keys & certificates
+private-docs/
+*.pem
+*.key
+*.cert

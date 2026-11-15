@@ -295,8 +295,7 @@ export function renderAdminPage({ settings = {}, siteUrl = '' }) {
         <div id="totp-setup-box" class="hidden border border-[#E1E0DD] rounded-[var(--radius)] p-4 bg-[#E1E0DD]/30 space-y-2 text-xs">
           <p class="font-semibold text-[#17191A]">First-time 2FA enrollment required</p>
           <p class="text-[#2E3031]">Add this key to Google Authenticator, 1Password, or Authy, then enter the 6-digit code below:</p>
-          <p class="font-mono bg-[#FAF9F6] border border-[#E1E0DD] p-2 rounded break-all select-all" id="totp-secret-display"></p>
-          <p class="text-[#5D5E5F]">Current setup code preview (for verification testing): <strong class="font-mono text-[#17645F]" id="totp-preview-code"></strong></p>
+          <p class="font-mono bg-[#FAF9F6] border border-[#E1E0DD] p-2 rounded break-all select-all" id="totp-secret-display"></p>
         </div>
 
         <div>

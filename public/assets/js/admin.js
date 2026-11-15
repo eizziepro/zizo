@@ -146,8 +146,7 @@ loginForm?.addEventListener('submit', async (e) => {
       setupBox?.classList.remove('hidden');
       if (heading) heading.textContent = 'Set up 2FA authenticator';
       if (subtitle) subtitle.textContent = 'Enroll your two-factor authenticator to continue.';
-      document.getElementById('totp-secret-display').textContent = data.secret || '';
-      document.getElementById('totp-preview-code').textContent = data.currentCodePreview || '';
+      document.getElementById('totp-secret-display').textContent = data.secret || '';
     } else {
       setupBox?.classList.add('hidden');
       if (heading) heading.textContent = 'Two-factor authentication';

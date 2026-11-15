@@ -316,11 +316,25 @@ function seedIfEmpty(db: Database.Database): void {
       `INSERT INTO staff (id, user_id, email, password_hash, role, full_name, totp_secret, totp_enabled, active, created_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     );
+
+    // Read passwords from environment variables; fallback to generated secure credentials in local development
+    const ownerPass = process.env.LOCAL_OWNER_PASSWORD || crypto.randomBytes(16).toString('hex');
+    const coordPass = process.env.LOCAL_COORD_PASSWORD || crypto.randomBytes(16).toString('hex');
+    const editorPass = process.env.LOCAL_EDITOR_PASSWORD || crypto.randomBytes(16).toString('hex');
+
+    if (process.env.NODE_ENV !== 'production' && !process.env.LOCAL_OWNER_PASSWORD) {
+      console.info('[database] Seeded local staff with generated credentials:');
+      console.info(`  Owner: owner@zizodonorandsurrogacy.com / ${ownerPass}`);
+      console.info(`  Coordinator: coordinator@zizodonorandsurrogacy.com / ${coordPass}`);
+      console.info(`  Editor: editor@zizodonorandsurrogacy.com / ${editorPass}`);
+      console.info('Set LOCAL_OWNER_PASSWORD, LOCAL_COORD_PASSWORD, LOCAL_EDITOR_PASSWORD in .env for custom passwords.');
+    }
+
     insertStaff.run(
       'staff-owner',
       'staff-owner',
       'owner@zizodonorandsurrogacy.com',
-      hashPassword('ZizoOwner2026!'),
+      hashPassword(ownerPass),
       'owner',
       'Chizaram Ata',
       null,
@@ -332,7 +346,7 @@ function seedIfEmpty(db: Database.Database): void {
       'staff-coord',
       'staff-coord',
       'coordinator@zizodonorandsurrogacy.com',
-      hashPassword('ZizoCoord2026!'),
+      hashPassword(coordPass),
       'coordinator',
       'Adaeze Nwosu',
       null,
@@ -344,7 +358,7 @@ function seedIfEmpty(db: Database.Database): void {
       'staff-editor',
       'staff-editor',
       'editor@zizodonorandsurrogacy.com',
-      hashPassword('ZizoEditor2026!'),
+      hashPassword(editorPass),
       'editor',
       'Tunde Balogun',
       null,
