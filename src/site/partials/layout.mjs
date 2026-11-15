@@ -295,15 +295,12 @@ export function renderClosingCta({ settings = {}, whatsappHref = '' }) {
   <div class="cta-grid-overlay absolute inset-0 pointer-events-none" aria-hidden="true"></div>
   <div class="zizo-container relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
     <div class="max-w-2xl reveal">
-      <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#FAF9F6]/80 mb-3">Private &amp; Compassionate Care</p>
+      <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#FAF9F6]/80 mb-3">Join our community</p>
       <h2 class="display text-[#FAF9F6]">Your journey to parenthood starts here.</h2>
     </div>
     <div class="flex flex-wrap items-center gap-4 reveal">
-      <a href="/book/" class="btn-on-teal">Book Consultation</a>
-      <a href="${escapeHtml(resolvedHref)}"${resolvedHref.startsWith('http') ? ' target="_blank" rel="noopener noreferrer"' : ''} class="btn-secondary-light">
-        ${whatsappSvg('w-4 h-4')}
-        <span>Message us on WhatsApp</span>
-      </a>
+      <a href="/surrogates-donors/become-a-surrogate/" class="btn-on-teal">Become Surrogate</a>
+      <a href="/surrogates-donors/become-an-egg-donor/" class="btn-secondary-light">Become Egg Donor</a>
     </div>
   </div>
 </section>`;
