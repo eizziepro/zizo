@@ -51,3 +51,14 @@ CREATE POLICY "Editor/Owner posts" ON posts FOR ALL USING (current_staff_role() 
 CREATE POLICY "Editor/Owner post_revisions" ON post_revisions FOR ALL USING (current_staff_role() IN ('owner', 'editor'));
 CREATE POLICY "Editor/Owner faqs" ON faqs FOR ALL USING (current_staff_role() IN ('owner', 'editor'));
 CREATE POLICY "Editor/Owner media" ON media FOR ALL USING (current_staff_role() IN ('owner', 'editor'));
+
+
+-- Storage Object Policies
+CREATE POLICY "Public read site-media" ON storage.objects FOR SELECT
+  USING (bucket_id = 'site-media');
+
+CREATE POLICY "Editor/Owner upload site-media" ON storage.objects FOR INSERT
+  WITH CHECK (bucket_id = 'site-media' AND current_staff_role() IN ('owner', 'editor'));
+
+CREATE POLICY "Coordinator/Owner access private-docs" ON storage.objects FOR ALL
+  USING (bucket_id = 'private-docs' AND current_staff_role() IN ('owner', 'coordinator'));
