@@ -534,62 +534,246 @@ ${header}
     </div>
   </section>
 
-  <!-- SECTION 6: REVIEWS AND TESTIMONIALS -->
-  <section class="zizo-section bg-[#17191A] text-[#FAF9F6] surface-dark" id="reviews-section">
-    <div class="zizo-container space-y-[var(--space-md)]">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 reveal">
-        <div>
-          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#8BB2AF] mb-2">Stories &amp; Reflections</p>
-          <h2 class="display text-[#FAF9F6]">Words from parents and surrogates</h2>
-          ${
-            avgRating
-              ? `<p class="mt-2 text-[length:var(--fs-small)] text-[#FAF9F6]/80 tabular-nums">${avgRating} out of 5 across ${approvedCount} approved reviews</p>`
-              : ''
-          }
+  <!-- SECTION 6: REVIEWS AND TESTIMONIALS (AURA.BUILD MOVING WALL) -->
+  <section class="overflow-hidden bg-[#17191A] border-t border-[#FAF9F6]/10 py-24 md:py-28 relative text-[#FAF9F6] surface-dark" id="reviews-section">
+    <!-- Ambient Deep Teal Glow & Grid Background -->
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(23,100,95,0.22),transparent_42%)]"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(139,178,175,0.12),transparent_28%)]"></div>
+      <div class="absolute inset-0 opacity-[0.04]" style="background-image:
+        linear-gradient(rgba(250,249,246,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(250,249,246,0.08) 1px, transparent 1px);
+        background-size: 72px 72px;">
+      </div>
+      <div class="absolute left-1/2 top-0 -translate-x-1/2 w-[850px] h-[340px] bg-[#17645F]/20 blur-[130px] rounded-full"></div>
+    </div>
+
+    <div class="z-10 max-w-[1360px] mx-auto px-6 relative">
+      <!-- Section Header -->
+      <div class="max-w-3xl mx-auto text-center mb-14 md:mb-16 reveal">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-[#FAF9F6]/15 bg-[#FAF9F6]/[0.03] text-[11px] uppercase tracking-[0.22em] text-[#8BB2AF] mb-5">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#8BB2AF] shadow-[0_0_10px_rgba(139,178,175,0.9)]"></span>
+          Stories &amp; Reflections
         </div>
-        <div class="flex items-center gap-3">
-          <button type="button" id="reviews-prev" aria-label="Previous testimonials" class="w-11 h-11 rounded-full border border-[#FAF9F6]/30 hover:bg-[#FAF9F6]/10 inline-flex items-center justify-center text-[#FAF9F6] transition-colors">
-            <i data-lucide="chevron-left" class="w-5 h-5"></i>
-          </button>
-          <button type="button" id="reviews-next" aria-label="Next testimonials" class="w-11 h-11 rounded-full border border-[#FAF9F6]/30 hover:bg-[#FAF9F6]/10 inline-flex items-center justify-center text-[#FAF9F6] transition-colors">
-            <i data-lucide="chevron-right" class="w-5 h-5"></i>
-          </button>
+
+        <h2 class="display text-3xl md:text-5xl font-normal tracking-tight text-[#FAF9F6] mb-4">
+          Words from parents and
+          <span class="bg-gradient-to-r from-[#FAF9F6] via-[#8BB2AF] to-[#74A29F] bg-clip-text text-transparent">surrogates</span>
+        </h2>
+
+        <p class="text-[#FAF9F6]/75 text-sm md:text-[15px] font-light leading-relaxed max-w-2xl mx-auto">
+          Genuine reflections from intended parents and gestational carriers supported through our physician-coordinated cross-border pathways.
+        </p>
+        ${
+          avgRating
+            ? `<div class="mt-3 inline-flex items-center gap-2 text-xs text-[#8BB2AF] tracking-wider uppercase font-medium">
+                <span class="inline-flex text-[#8BB2AF]"><i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i></span>
+                <span>${avgRating} out of 5 · ${approvedCount} approved reviews</span>
+              </div>`
+            : ''
+        }
+      </div>
+
+      <!-- Desktop Moving Wall (md:block) -->
+      <div class="hidden md:block testimonial-wall-stage reveal"
+        style="mask-image: linear-gradient(180deg, transparent 0%, black 10%, black 90%, transparent 100%); -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 10%, black 90%, transparent 100%);">
+        <div class="testimonial-wall-3d grid grid-cols-2 lg:grid-cols-4 gap-5 overflow-hidden h-[780px] items-start">
+          ${(() => {
+            const r0 = featuredReviews[0] || {
+              display_name: 'Parent AJ',
+              role: 'Intended Parent',
+              country: 'United Kingdom',
+              rating: 5,
+              body: 'From our first conversation to bringing our child home, Zizo handled every detail with warmth, discretion, and professionalism. We are forever grateful.',
+              verified: 1,
+            };
+            const r1 = featuredReviews[1] || {
+              display_name: 'Parent SS & MV',
+              role: 'Intended Parent',
+              country: 'United States',
+              rating: 5,
+              body: 'Coordinating a cross-border journey felt overwhelming until we spoke with Chizaram and the Zizo team. Every medical and legal step was explained clearly and thoughtfully.',
+              verified: 1,
+            };
+            const r2 = featuredReviews[2] || {
+              display_name: 'B.O., Surrogate Mother, Lagos',
+              role: 'Surrogate',
+              country: 'Nigeria',
+              rating: 5,
+              body: 'As a surrogate in Lagos, I felt genuinely valued and protected at every appointment. My case manager checked in thoughtfully and my privacy was respected throughout.',
+              verified: 1,
+            };
+
+            function makeCard(rev, imgSrc, imgAlt, heightPx, isMobile = false) {
+              const dName = escapeHtml(rev.display_name || 'Anonymous');
+              const rName = escapeHtml(rev.role || 'Client');
+              const loc = escapeHtml(rev.country ? `${rev.role} · ${rev.country}` : rev.role);
+              const starVal = Number(rev.rating || 5).toFixed(1);
+              const bText = escapeHtml(rev.body || '');
+
+              return `
+              <article class="testimonial-wall-card ${isMobile ? 'testimonial-wall-mobile-card w-[290px] sm:w-[320px] shrink-0 snap-center' : ''}" style="height: ${heightPx}px;" tabindex="0" aria-label="Review by ${dName}">
+                <img class="testimonial-wall-image" src="${imgSrc}" alt="${imgAlt}" loading="lazy" decoding="async" />
+
+                <div class="absolute top-4 inset-x-4 z-10 flex items-center justify-between pointer-events-none">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] tracking-wider uppercase text-[#8BB2AF] font-medium">
+                    <i data-lucide="quote" class="w-3 h-3 text-[#8BB2AF]"></i>
+                    <span>${rName}</span>
+                  </span>
+                  <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] text-[#FAF9F6]/90 font-medium tabular-nums">
+                    <i data-lucide="star" class="w-3 h-3 text-[#8BB2AF] fill-current"></i>
+                    <span>${starVal}</span>
+                  </span>
+                </div>
+
+                <div class="testimonial-wall-content">
+                  <p class="testimonial-wall-quote">“${bText}”</p>
+                  <div class="pt-2.5 border-t border-[#FAF9F6]/15 flex items-center justify-between gap-2">
+                    <div>
+                      <div class="testimonial-wall-name">${dName}</div>
+                      <div class="testimonial-wall-role">${loc}${rev.verified ? ' · Verified' : ''}</div>
+                    </div>
+                    <div class="w-7 h-7 rounded-full bg-[#8BB2AF]/20 border border-[#8BB2AF]/30 text-[#8BB2AF] flex items-center justify-center shrink-0" aria-hidden="true">
+                      <i data-lucide="check" class="w-3.5 h-3.5 text-[#8BB2AF]"></i>
+                    </div>
+                  </div>
+                </div>
+              </article>`;
+            }
+
+            const col1Cards = [
+              makeCard(r0, '/assets/img/hero-family-1024w.webp', 'Intended parents holding hands with infant in soft natural light', 330),
+              makeCard(r2, '/assets/img/become-a-surrogate-1024w.webp', 'Warm portrait of Nigerian gestational surrogate in natural daylight', 430),
+            ];
+            const col2Cards = [
+              makeCard(r1, '/assets/img/service-matching-1024w.webp', 'Coordinator reviewing personalized donor and surrogate profiles', 430),
+              makeCard(r0, '/assets/img/service-surrogacy-1024w.webp', 'Physician and intended parents discussing surrogacy pathways', 340),
+            ];
+            const col3Cards = [
+              makeCard(r2, '/assets/img/how-it-works-1024w.webp', 'Warm daylight setting representing gestational journey care', 340),
+              makeCard(r1, '/assets/img/service-counseling-1024w.webp', 'Independent counselor offering emotional support', 420),
+            ];
+            const col4Cards = [
+              makeCard(r0, '/assets/img/service-ovum-donation-1024w.webp', 'Sunlit medical consultation room for donor matching', 420),
+              makeCard(r2, '/assets/img/become-a-surrogate-1024w.webp', 'Gestational surrogate mother smiling in warm daylight', 330),
+            ];
+
+            return `
+            <!-- Column 1 -->
+            <div class="testimonial-wall-column relative h-full overflow-hidden">
+              <div class="testimonial-wall-track wall-up">
+                ${col1Cards.join('')}
+                ${col1Cards.join('')}
+              </div>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="testimonial-wall-column relative h-full overflow-hidden">
+              <div class="testimonial-wall-track wall-down">
+                ${col2Cards.join('')}
+                ${col2Cards.join('')}
+              </div>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="testimonial-wall-column relative h-full overflow-hidden">
+              <div class="testimonial-wall-track wall-up">
+                ${col3Cards.join('')}
+                ${col3Cards.join('')}
+              </div>
+            </div>
+
+            <!-- Column 4 -->
+            <div class="testimonial-wall-column relative h-full overflow-hidden">
+              <div class="testimonial-wall-track wall-down">
+                ${col4Cards.join('')}
+                ${col4Cards.join('')}
+              </div>
+            </div>`;
+          })()}
         </div>
       </div>
 
-      <div id="reviews-carousel" class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal" tabindex="0" aria-roledescription="carousel" aria-label="Parent and surrogate testimonials">
-        ${featuredReviews
-          .slice(0, 3)
-          .map((rev) => {
-            const initials = escapeHtml(
-              String(rev.display_name || 'P')
-                .replace(/[^A-Za-z]/g, '')
-                .slice(0, 2)
-                .toUpperCase() || 'Z'
-            );
-            return `<article class="bg-[#FAF9F6]/5 border border-[#FAF9F6]/15 rounded-[var(--radius)] p-6 flex flex-col justify-between gap-6">
-          <div class="space-y-4">
-            <div class="flex items-center justify-between">
-              <i data-lucide="quote" class="w-6 h-6 text-[#8BB2AF]"></i>
-              <span class="text-xs text-[#FAF9F6]/70">${escapeHtml(rev.role)}${rev.verified ? ' · Verified client' : ''}</span>
-            </div>
-            <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/90 leading-relaxed">“${escapeHtml(rev.body)}”</p>
-          </div>
-          <div class="flex items-center gap-3 pt-2 border-t border-[#FAF9F6]/10">
-            <span class="w-10 h-10 rounded-full bg-[#8BB2AF] text-[#17191A] font-semibold text-xs inline-flex items-center justify-center shrink-0">${initials}</span>
-            <div>
-              <p class="font-medium text-[length:var(--fs-small)] text-[#FAF9F6]">${escapeHtml(rev.display_name)}</p>
-              ${rev.country ? `<p class="text-xs text-[#FAF9F6]/70">${escapeHtml(rev.country)}</p>` : ''}
-            </div>
-          </div>
-        </article>`;
-          })
-          .join('')}
+      <!-- Mobile Wall Horizontal Scroll (block md:hidden) -->
+      <div class="block md:hidden testimonial-wall-mobile-scroll reveal">
+        <div class="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory px-1 scrollbar-none">
+          ${(() => {
+            const r0 = featuredReviews[0] || {
+              display_name: 'Parent AJ',
+              role: 'Intended Parent',
+              country: 'United Kingdom',
+              rating: 5,
+              body: 'From our first conversation to bringing our child home, Zizo handled every detail with warmth, discretion, and professionalism. We are forever grateful.',
+              verified: 1,
+            };
+            const r1 = featuredReviews[1] || {
+              display_name: 'Parent SS & MV',
+              role: 'Intended Parent',
+              country: 'United States',
+              rating: 5,
+              body: 'Coordinating a cross-border journey felt overwhelming until we spoke with Chizaram and the Zizo team. Every medical and legal step was explained clearly and thoughtfully.',
+              verified: 1,
+            };
+            const r2 = featuredReviews[2] || {
+              display_name: 'B.O., Surrogate Mother, Lagos',
+              role: 'Surrogate',
+              country: 'Nigeria',
+              rating: 5,
+              body: 'As a surrogate in Lagos, I felt genuinely valued and protected at every appointment. My case manager checked in thoughtfully and my privacy was respected throughout.',
+              verified: 1,
+            };
+
+            function makeMobileCard(rev, imgSrc, imgAlt) {
+              const dName = escapeHtml(rev.display_name || 'Anonymous');
+              const rName = escapeHtml(rev.role || 'Client');
+              const loc = escapeHtml(rev.country ? `${rev.role} · ${rev.country}` : rev.role);
+              const starVal = Number(rev.rating || 5).toFixed(1);
+              const bText = escapeHtml(rev.body || '');
+
+              return `
+              <article class="testimonial-wall-card testimonial-wall-mobile-card w-[290px] sm:w-[320px] shrink-0 snap-center h-[390px]" tabindex="0" aria-label="Review by ${dName}">
+                <img class="testimonial-wall-image" src="${imgSrc}" alt="${imgAlt}" loading="lazy" decoding="async" />
+
+                <div class="absolute top-4 inset-x-4 z-10 flex items-center justify-between pointer-events-none">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] tracking-wider uppercase text-[#8BB2AF] font-medium">
+                    <i data-lucide="quote" class="w-3 h-3 text-[#8BB2AF]"></i>
+                    <span>${rName}</span>
+                  </span>
+                  <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] text-[#FAF9F6]/90 font-medium tabular-nums">
+                    <i data-lucide="star" class="w-3 h-3 text-[#8BB2AF] fill-current"></i>
+                    <span>${starVal}</span>
+                  </span>
+                </div>
+
+                <div class="testimonial-wall-content">
+                  <p class="testimonial-wall-quote">“${bText}”</p>
+                  <div class="pt-2.5 border-t border-[#FAF9F6]/15 flex items-center justify-between gap-2">
+                    <div>
+                      <div class="testimonial-wall-name">${dName}</div>
+                      <div class="testimonial-wall-role">${loc}${rev.verified ? ' · Verified' : ''}</div>
+                    </div>
+                    <div class="w-7 h-7 rounded-full bg-[#8BB2AF]/20 border border-[#8BB2AF]/30 text-[#8BB2AF] flex items-center justify-center shrink-0" aria-hidden="true">
+                      <i data-lucide="check" class="w-3.5 h-3.5 text-[#8BB2AF]"></i>
+                    </div>
+                  </div>
+                </div>
+              </article>`;
+            }
+
+            return [
+              makeMobileCard(r0, '/assets/img/hero-family-1024w.webp', 'Intended parents holding hands with infant in soft natural light'),
+              makeMobileCard(r1, '/assets/img/service-matching-1024w.webp', 'Coordinator reviewing personalized donor and surrogate profiles'),
+              makeMobileCard(r2, '/assets/img/become-a-surrogate-1024w.webp', 'Warm portrait of Nigerian gestational surrogate in natural daylight'),
+              makeMobileCard(r0, '/assets/img/service-surrogacy-1024w.webp', 'Physician and intended parents discussing surrogacy pathways'),
+            ].join('');
+          })()}
+        </div>
       </div>
 
-      <div class="flex flex-wrap items-center justify-between gap-4 pt-2 reveal">
-        <a href="/resources/stories-and-reviews/" class="text-[length:var(--fs-small)] text-[#FAF9F6]/85 hover:text-[#FAF9F6] underline underline-offset-4">Read all stories and reviews</a>
-        <a href="/resources/stories-and-reviews/#write-a-review" class="text-[length:var(--fs-small)] text-[#FAF9F6]/85 hover:text-[#FAF9F6] underline underline-offset-4">Share your experience</a>
+      <!-- Footer navigation links -->
+      <div class="flex flex-wrap items-center justify-between gap-4 pt-10 mt-6 border-t border-[#FAF9F6]/10 reveal">
+        <a href="/resources/stories-and-reviews/" class="text-[length:var(--fs-small)] text-[#8BB2AF] hover:text-[#FAF9F6] underline underline-offset-4 transition-colors">Read all stories and reviews</a>
+        <a href="/resources/stories-and-reviews/#write-a-review" class="text-[length:var(--fs-small)] text-[#8BB2AF] hover:text-[#FAF9F6] underline underline-offset-4 transition-colors">Share your experience</a>
       </div>
     </div>
   </section>

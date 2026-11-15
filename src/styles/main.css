@@ -598,3 +598,194 @@
   animation: zizoSpin 600ms linear infinite;
   vertical-align: -2px;
 }
+
+/* ==========================================================================
+   Aura.build Moving Testimonial Wall for Zizo
+   ========================================================================== */
+
+@keyframes wallScrollUp {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes wallScrollDown {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.testimonial-wall-track {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  will-change: transform;
+}
+
+.wall-up {
+  animation: wallScrollUp 28s linear infinite;
+}
+
+.wall-down {
+  animation: wallScrollDown 28s linear infinite;
+}
+
+.testimonial-wall-column:hover .testimonial-wall-track {
+  animation-play-state: paused;
+}
+
+.testimonial-wall-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(250, 249, 246, 0.1);
+  background: rgba(250, 249, 246, 0.03);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(250, 249, 246, 0.06);
+  isolation: isolate;
+  cursor: default;
+}
+
+.testimonial-wall-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(23, 25, 26, 0.96) 0%,
+    rgba(23, 25, 26, 0.76) 35%,
+    rgba(23, 25, 26, 0.25) 65%,
+    rgba(23, 25, 26, 0.05) 85%
+  );
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.testimonial-wall-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(139, 178, 175, 0.18), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.testimonial-wall-card:hover::before,
+.testimonial-wall-card:hover::after,
+.testimonial-wall-card:focus-within::before,
+.testimonial-wall-card:focus-within::after {
+  opacity: 1;
+}
+
+.testimonial-wall-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.01);
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s ease;
+  filter: brightness(0.92) contrast(1.02);
+}
+
+.testimonial-wall-card:hover .testimonial-wall-image,
+.testimonial-wall-card:focus-within .testimonial-wall-image {
+  transform: scale(1.06);
+  filter: brightness(0.78) saturate(1.05);
+}
+
+.testimonial-wall-content {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 1.5rem 1.25rem 1.25rem;
+  transform: translateY(18px);
+  opacity: 0;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+}
+
+.testimonial-wall-card:hover .testimonial-wall-content,
+.testimonial-wall-card:focus-within .testimonial-wall-content {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.testimonial-wall-quote {
+  font-family: "Fraunces", Georgia, serif;
+  color: rgba(250, 249, 246, 0.96);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  font-weight: 300;
+  margin-bottom: 0.85rem;
+  text-wrap: balance;
+}
+
+.testimonial-wall-name {
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
+  color: #FAF9F6;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.testimonial-wall-role {
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
+  color: #8BB2AF;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+@media (max-width: 1023px) {
+  .wall-up,
+  .wall-down {
+    animation-duration: 36s;
+  }
+}
+
+@media (max-width: 767px) {
+  .testimonial-wall-mobile-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .testimonial-wall-mobile-card::before {
+    opacity: 0.92 !important;
+  }
+
+  .testimonial-wall-mobile-card .testimonial-wall-content {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wall-up,
+  .wall-down {
+    animation: none !important;
+  }
+
+  .testimonial-wall-content {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+  }
+
+  .testimonial-wall-card::before {
+    opacity: 0.88 !important;
+  }
+}
+
