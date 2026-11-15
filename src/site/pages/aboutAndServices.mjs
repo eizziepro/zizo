@@ -69,21 +69,35 @@ ${renderHeader({ isHome: false })}
 
   <section class="zizo-section bg-[#FAF9F6]">
     <div class="zizo-container grid grid-cols-1 lg:grid-cols-12 gap-[var(--space-lg)] items-start">
-      <div class="lg:col-span-5 reveal">
-        ${
-          founderPhoto
-            ? `<div class="rounded-[var(--radius)] overflow-hidden border border-[#E1E0DD] aspect-[4/5] bg-[#E1E0DD]">
-                <img src="${escapeHtml(founderPhoto)}" alt="Chizaram Ata, Founder of Zizo Donor and Surrogacy" width="800" height="1000" class="w-full h-full object-cover" />
-              </div>`
-            : `<div class="rounded-[var(--radius)] border border-[#E1E0DD] bg-[#E1E0DD]/45 aspect-[4/5] p-8 flex flex-col justify-between">
-                <div class="w-16 h-16 rounded-full bg-[#17645F] text-[#FAF9F6] font-display text-2xl font-medium inline-flex items-center justify-center">CA</div>
-                <div class="space-y-2">
-                  <p class="font-display text-[length:var(--fs-h3)] text-[#17191A]">Chizaram Ata</p>
-                  <p class="text-[length:var(--fs-small)] text-[#5D5E5F]">Founder, Zizo Donor and Surrogacy</p>
-                  <p class="text-xs text-[#5D5E5F]">Founder portrait pending client upload in Site Settings.</p>
-                </div>
-              </div>`
-        }
+      <div class="lg:col-span-5">
+        <div class="group rounded-2xl overflow-hidden aspect-[4/5] bg-[#E1E0DD] border border-[#E1E0DD] shadow-sm relative">
+          <div class="w-full h-full transition-transform duration-700 group-hover:scale-[1.02]">
+            ${
+              founderPhoto
+                ? `<img src="${escapeHtml(founderPhoto)}" alt="Chizaram Ata, Founder and Lead Partner at Zizo Donor and Surrogacy" width="800" height="1000" class="w-full h-full object-cover object-top" />`
+                : pictureTag({
+                    base: 'founder-about-chizaram-ata',
+                    alt: 'Chizaram Ata, Founder and Lead Partner at Zizo Donor and Surrogacy',
+                    width: 2429,
+                    height: 2144,
+                    className: 'w-full h-full object-cover object-top',
+                    sizes: '(min-width: 1024px) 480px, 100vw',
+                    eager: false,
+                  })
+            }
+          </div>
+          <!-- Floating Founder Badge -->
+          <div class="absolute bottom-4 inset-x-4 z-10 p-3.5 rounded-xl bg-[#17191A]/85 backdrop-blur-md border border-[#FAF9F6]/15 flex items-center justify-between text-[#FAF9F6]">
+            <div>
+              <p class="font-display text-sm font-medium leading-tight">Chizaram Ata</p>
+              <p class="text-[10px] text-[#8BB2AF] tracking-wider uppercase mt-0.5">Founder &amp; Lead Partner</p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#17645F]/70 text-[10px] text-[#FAF9F6] border border-[#8BB2AF]/30 tabular-nums">
+              <i data-lucide="award" class="w-3 h-3 text-[#8BB2AF]"></i>
+              <span>12+ Years Exp.</span>
+            </span>
+          </div>
+        </div>
       </div>
 
       <div class="lg:col-span-7 space-y-6 reveal">
