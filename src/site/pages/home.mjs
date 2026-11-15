@@ -221,31 +221,24 @@ ${header}
     </div>
 
     <div class="zizo-container relative z-10 pt-32 pb-[var(--space-lg)]">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-[var(--space-md)] items-end text-[#FAF9F6]">
-        <div class="lg:col-span-8 space-y-4">
-          <p class="hero-enter hero-delay-1 text-[length:var(--fs-small)] uppercase tracking-[0.14em] text-[#FAF9F6]/85">
-            Donor and Surrogacy · Lagos, Nigeria
-          </p>
-          <h1 class="hero-enter hero-delay-2 display text-[#FAF9F6] max-w-3xl">
-            Every family deserves a path to parenthood.
-          </h1>
+      <div class="max-w-2xl lg:max-w-3xl space-y-5 text-[#FAF9F6]">
+        <p class="hero-enter hero-delay-1 text-[length:var(--fs-small)] uppercase tracking-[0.14em] text-[#FAF9F6]/85">
+          Donor and Surrogacy · Lagos, Nigeria
+        </p>
+        <h1 class="hero-enter hero-delay-2 display text-[#FAF9F6] max-w-3xl">
+          Every family deserves a path to parenthood.
+        </h1>
+        <p class="hero-enter hero-delay-3 text-[length:var(--fs-body)] text-[#FAF9F6]/90 max-w-xl leading-relaxed">
+          A safe fertility brand that creates families across borders, with expert legal and medical coordination and compassionate, personal care at every step.
+        </p>
+        <div class="hero-enter hero-delay-4 flex items-center gap-3 flex-wrap sm:flex-nowrap pt-1">
+          <a href="/book/" class="btn-primary">Book Consultation</a>
+          <a href="/surrogates-donors/become-a-surrogate/" class="btn-secondary-light">Become Surrogate</a>
         </div>
-
-        <div class="lg:col-span-4 space-y-5">
-          <p class="hero-enter hero-delay-3 text-[length:var(--fs-body)] text-[#FAF9F6]/90">
-            A safe fertility brand that creates families across borders, with expert legal and medical coordination and compassionate, personal care at every step.
-          </p>
-          <div class="hero-enter hero-delay-4 space-y-3">
-            <div class="flex flex-wrap items-center gap-3">
-              <a href="/book/" class="btn-primary">Book a Consultation</a>
-              <a href="/surrogates-donors/become-a-surrogate/" class="btn-secondary-light">Become a Surrogate</a>
-            </div>
-            <p class="inline-flex items-center gap-2 text-[length:var(--fs-small)] text-[#FAF9F6]/80">
-              <i data-lucide="shield-check" class="w-4 h-4 text-[#8BB2AF] shrink-0"></i>
-              <span>Confidential. Ethical. Anonymous matching.</span>
-            </p>
-          </div>
-        </div>
+        <p class="hero-enter hero-delay-4 inline-flex items-center gap-2 text-[length:var(--fs-small)] text-[#FAF9F6]/80 pt-1">
+          <i data-lucide="shield-check" class="w-4 h-4 text-[#8BB2AF] shrink-0"></i>
+          <span>Confidential. Ethical. Anonymous matching.</span>
+        </p>
       </div>
     </div>
   </section>
@@ -643,7 +636,7 @@ ${header}
             At Zizo, gestational surrogates and egg donors are valued, deeply respected, transparently compensated, and supported with dedicated case management and medical care. Your privacy and anonymity are safeguarded at every step.
           </p>
           <div class="flex flex-wrap items-center gap-3 pt-2">
-            <a href="/surrogates-donors/become-a-surrogate/" class="btn-primary">Become a Surrogate</a>
+            <a href="/surrogates-donors/become-a-surrogate/" class="btn-primary">Become Surrogate</a>
             <a href="/surrogates-donors/become-an-egg-donor/" class="btn-secondary">Become an Egg Donor</a>
           </div>
         </div>

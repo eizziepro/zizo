@@ -219,7 +219,7 @@ ${renderHeader({ isHome: false })}
           <div class="border border-[#E1E0DD] rounded-[var(--radius)] p-5 space-y-3 bg-[#E1E0DD]/35">
             <p class="font-display text-lg text-[#17191A]">Have questions about your path?</p>
             <p class="text-[length:var(--fs-small)] text-[#2E3031]">Speak privately with a Zizo coordinator about your goals.</p>
-            <a href="/book/" class="btn-primary w-full justify-center">Book a Consultation</a>
+            <a href="/book/" class="btn-primary w-full justify-center">Book Consultation</a>
           </div>
         </aside>
 
@@ -588,7 +588,7 @@ ${renderHeader({ isHome: false })}
         <div class="border border-[#E1E0DD] rounded-[var(--radius)] p-6 space-y-3 bg-[#E1E0DD]/35">
           <h3 class="display text-lg">Prefer to schedule a time?</h3>
           <p class="text-[length:var(--fs-small)] text-[#2E3031]">Choose a consultation slot in your local timezone.</p>
-          <a href="/book/" class="btn-primary">Book a Consultation</a>
+          <a href="/book/" class="btn-primary">Book Consultation</a>
         </div>
       </div>
 
@@ -666,7 +666,7 @@ ${renderHeader({ isHome: false })}
     </p>
     <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
       <a href="/" class="btn-primary">Return Home</a>
-      <a href="/book/" class="btn-secondary">Book a Consultation</a>
+      <a href="/book/" class="btn-secondary">Book Consultation</a>
     </div>
   </div>
 </main>
@@ -724,7 +724,7 @@ ${renderHeader({ isHome: false })}
     <p class="text-[length:var(--fs-body)] text-[#2E3031]">Return to the home page or schedule a confidential consultation with our team.</p>
     <div class="flex flex-wrap justify-center gap-3">
       <a href="/" class="btn-primary">Return Home</a>
-      <a href="/book/" class="btn-secondary">Book a Consultation</a>
+      <a href="/book/" class="btn-secondary">Book Consultation</a>
     </div>
   </div>
 </main>

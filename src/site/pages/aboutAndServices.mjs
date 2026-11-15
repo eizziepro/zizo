@@ -406,7 +406,7 @@ ${renderHeader({ isHome: false })}
           <p class="text-[length:var(--fs-body)] text-[#2E3031]">${escapeHtml(service.screening)}</p>
         </div>
         <div class="lg:col-span-4 flex lg:justify-end">
-          <a href="/book/" class="btn-primary">Book a Consultation</a>
+          <a href="/book/" class="btn-primary">Book Consultation</a>
         </div>
       </div>
 

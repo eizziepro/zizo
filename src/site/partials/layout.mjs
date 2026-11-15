@@ -184,7 +184,7 @@ export function renderHeader({ isHome = false }) {
       </nav>
 
       <div class="flex items-center gap-3 shrink-0">
-        <a href="/book/" class="hidden lg:inline-flex btn-primary">Book a Consultation</a>
+        <a href="/book/" class="hidden lg:inline-flex btn-primary">Book Consultation</a>
         <button type="button" id="mobile-menu-toggle" class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-[var(--radius)] border border-current/25" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation menu">
           <span data-icon-menu><i data-lucide="menu" class="w-5 h-5"></i></span>
           <span data-icon-close class="hidden"><i data-lucide="x" class="w-5 h-5"></i></span>
@@ -250,7 +250,7 @@ export function renderHeader({ isHome = false }) {
       </div>
 
       <div class="pt-3 flex flex-col gap-3">
-        <a href="/book/" class="btn-primary w-full justify-center">Book a Consultation</a>
+        <a href="/book/" class="btn-primary w-full justify-center">Book Consultation</a>
         <a href="/contact/" class="btn-secondary w-full justify-center">Contact Us</a>
       </div>
     </div>
@@ -299,7 +299,7 @@ export function renderClosingCta({ settings = {}, whatsappHref = '' }) {
       <h2 class="display text-[#FAF9F6]">Your journey to parenthood starts here.</h2>
     </div>
     <div class="flex flex-wrap items-center gap-4 reveal">
-      <a href="/book/" class="btn-on-teal">Book a Consultation</a>
+      <a href="/book/" class="btn-on-teal">Book Consultation</a>
       <a href="${escapeHtml(resolvedHref)}"${resolvedHref.startsWith('http') ? ' target="_blank" rel="noopener noreferrer"' : ''} class="btn-secondary-light">
         ${whatsappSvg('w-4 h-4')}
         <span>Message us on WhatsApp</span>
@@ -428,7 +428,7 @@ ${
   hideStickyBar
     ? ''
     : `<div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md border-t border-[#E1E0DD] px-4 py-2.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] flex items-center gap-2.5">
-  <a href="/book/" class="btn-primary flex-1 justify-center !py-2.5 !min-h-[40px]">Book a Consultation</a>
+  <a href="/book/" class="btn-primary flex-1 justify-center !py-2.5 !min-h-[40px]">Book Consultation</a>
   <a href="${escapeHtml(whatsappHref)}" target="_blank" rel="noopener noreferrer" aria-label="Message Zizo on WhatsApp" class="inline-flex items-center justify-center w-10 h-10 rounded-[var(--radius)] bg-[#17191A] text-[#FAF9F6] shrink-0">
     ${whatsappSvg('w-5 h-5')}
   </a>

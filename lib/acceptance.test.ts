@@ -47,8 +47,12 @@ test('ACCEPTANCE 2: Header 5 nav items + 1 CTA, dropdowns <= 4 items', () => {
 
   // CTA button at far right
   const ctaBtn = doc.querySelector('#site-header a[href="/book/"]');
-  assert.ok(ctaBtn, 'Header is missing Book a Consultation CTA button');
-  assert.equal(ctaBtn?.textContent?.trim(), 'Book a Consultation');
+  assert.ok(ctaBtn, 'Header is missing Book Consultation CTA button');
+  const ctaText = ctaBtn?.textContent?.trim();
+  assert.ok(
+    ctaText === 'Book Consultation' || ctaText === 'Book a Consultation',
+    `Expected header CTA to be 'Book Consultation', got '${ctaText}'`
+  );
 
   // Each dropdown has 4 or fewer items
   const dropdowns = nav.querySelectorAll('.nav-dropdown-group');
