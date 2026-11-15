@@ -763,6 +763,110 @@ function initProcessTabs() {
   });
 }
 
+function initHomeFaqInteractive() {
+  const root = document.querySelector('[data-home-faq]');
+  if (!root) return;
+
+  const tabButtons = Array.from(root.querySelectorAll('[data-faq-tab]'));
+  const items = Array.from(root.querySelectorAll('[data-faq-item]'));
+
+  function setItemOpen(item, isOpen) {
+    item.setAttribute('data-open', isOpen ? 'true' : 'false');
+    const trigger = item.querySelector('[data-faq-trigger]');
+    trigger?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    const panel = item.querySelector('.faq-panel');
+    panel?.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    const chevron = item.querySelector('.faq-chevron');
+    if (chevron) {
+      if (isOpen) {
+        chevron.classList.add('rotate-180');
+      } else {
+        chevron.classList.remove('rotate-180');
+      }
+    }
+  }
+
+  function updateFilter(cat) {
+    // Update tab styling & aria-selected
+    tabButtons.forEach((tab) => {
+      const isSel = tab.dataset.faqTab === cat;
+      tab.setAttribute('aria-selected', isSel ? 'true' : 'false');
+      tab.tabIndex = isSel ? 0 : -1;
+      if (isSel) {
+        tab.className =
+          'faq-cat-tab px-3.5 py-2 rounded-md text-xs font-semibold transition-all duration-200 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-[#17645F] bg-[#17645F] text-[#FAF9F6] shadow-xs';
+      } else {
+        tab.className =
+          'faq-cat-tab px-3.5 py-2 rounded-md text-xs font-medium transition-all duration-200 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-[#17645F] bg-[#FAF9F6] border border-[#E1E0DD] text-[#2E3031]/80 hover:border-[#17645F]/50 hover:text-[#17191A]';
+      }
+    });
+
+    // Filter items
+    const visibleItems = [];
+    items.forEach((item) => {
+      const itemCat = item.dataset.faqCategory;
+      const isMatch = cat === 'All' || itemCat === cat;
+      if (isMatch) {
+        item.classList.remove('hidden');
+        visibleItems.push(item);
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+
+    // If currently open item is not among visible items, open the first visible item
+    const currentOpenItem = items.find(
+      (item) => item.getAttribute('data-open') === 'true' && !item.classList.contains('hidden')
+    );
+
+    if (!currentOpenItem && visibleItems.length > 0) {
+      items.forEach((item) => setItemOpen(item, false));
+      setItemOpen(visibleItems[0], true);
+    }
+  }
+
+  // Bind tab clicks & keyboard navigation
+  tabButtons.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      updateFilter(tab.dataset.faqTab || 'All');
+    });
+
+    tab.addEventListener('keydown', (e) => {
+      let newIndex = null;
+      if (e.key === 'ArrowRight') {
+        newIndex = (index + 1) % tabButtons.length;
+      } else if (e.key === 'ArrowLeft') {
+        newIndex = (index - 1 + tabButtons.length) % tabButtons.length;
+      } else if (e.key === 'Home') {
+        newIndex = 0;
+      } else if (e.key === 'End') {
+        newIndex = tabButtons.length - 1;
+      }
+
+      if (newIndex !== null) {
+        e.preventDefault();
+        tabButtons[newIndex].focus();
+        updateFilter(tabButtons[newIndex].dataset.faqTab || 'All');
+      }
+    });
+  });
+
+  // Bind accordion trigger clicks
+  items.forEach((item) => {
+    const trigger = item.querySelector('[data-faq-trigger]');
+    if (!trigger) return;
+    trigger.addEventListener('click', () => {
+      const isCurrentlyOpen = item.getAttribute('data-open') === 'true';
+      // Close all items
+      items.forEach((other) => setItemOpen(other, false));
+      // Toggle clicked item
+      if (!isCurrentlyOpen) {
+        setItemOpen(item, true);
+      }
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   refreshIcons();
   initHeaderAndParallax();
@@ -770,6 +874,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initRevealObserver();
   initProcessTabs();
   initFaqAccordions();
+  initHomeFaqInteractive();
   initReviewsCarousel();
   initFiltersAndSearch();
   initTocScrollspy();
