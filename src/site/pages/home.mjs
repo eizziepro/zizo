@@ -780,10 +780,10 @@ ${header}
 
   <!-- SECTION 7: FOUNDER SPOTLIGHT (CHIZARAM ATA) -->
   <section class="zizo-section bg-[#FAF9F6] border-t border-[#E1E0DD]">
-    <div class="zizo-container">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-[var(--space-lg)] items-center">
-        <!-- Founder Portrait -->
-        <div class="lg:col-span-5 group rounded-2xl overflow-hidden aspect-[4/5] bg-[#E1E0DD] border border-[#E1E0DD] shadow-sm relative reveal">
+    <div class="zizo-container !max-w-[1240px]">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+        <!-- Founder Portrait (513px width on desktop) -->
+        <div class="w-full lg:w-[513px] lg:shrink-0 group rounded-2xl overflow-hidden aspect-[4/5] bg-[#E1E0DD] border border-[#E1E0DD] shadow-sm relative reveal">
           <div class="w-full h-full transition-transform duration-700 group-hover:scale-[1.02]">
             ${pictureTag({
               base: 'founder-chizaram-ata',
@@ -805,8 +805,8 @@ ${header}
           </div>
         </div>
 
-        <!-- Founder Story & Achievements -->
-        <div class="lg:col-span-7 space-y-6 reveal">
+        <!-- Founder Story (627px width on desktop) -->
+        <div class="w-full lg:w-[627px] lg:shrink-0 space-y-6 reveal">
           <div class="space-y-2">
             <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#17645F]">Leadership &amp; Vision</p>
             <h2 class="display text-3xl md:text-4xl text-[#17191A] leading-tight">Chizaram Ata</h2>
