@@ -871,12 +871,6 @@ ${header}
               </div>
             </div>
           </div>
-
-          <!-- CTAs -->
-          <div class="pt-2 flex flex-wrap items-center gap-3">
-            <a href="/about/" class="btn-primary">Learn About Zizo</a>
-            <a href="/book/" class="btn-secondary">Book Consultation</a>
-          </div>
         </div>
       </div>
     </div>
