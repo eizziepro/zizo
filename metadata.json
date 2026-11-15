@@ -1,0 +1,8 @@
+{
+  "name": "Zizo Donor and Surrogacy",
+  "description": "A safe fertility brand that creates families across borders, with expert legal and medical coordination and compassionate, personal care at every step.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
