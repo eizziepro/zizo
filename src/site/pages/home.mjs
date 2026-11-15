@@ -417,16 +417,10 @@ ${header}
   <section class="zizo-section bg-[#E1E0DD] text-[#17191A] relative">
     <div class="zizo-container space-y-[var(--space-md)]">
       <!-- Section Header -->
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 reveal">
-        <div class="max-w-2xl">
-          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.14em] text-[#5D5E5F] font-medium mb-2">How It Works</p>
-          <h2 class="display !text-[#12504C] text-[length:var(--fs-h2)]">A clear route to parenthood</h2>
-          <p class="mt-2 text-[length:var(--fs-body)] text-[#2E3031]">Five transparent, physician-coordinated phases designed to protect every intended parent, donor, and surrogate.</p>
-        </div>
-        <a href="/intended-parents/how-it-works/" class="group inline-flex items-center gap-2 text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:text-[#12504C] shrink-0">
-          <span>Learn more about the process</span>
-          <i data-lucide="arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"></i>
-        </a>
+      <div class="max-w-2xl reveal">
+        <p class="text-[length:var(--fs-small)] uppercase tracking-[0.14em] text-[#5D5E5F] font-medium mb-2">How It Works</p>
+        <h2 class="display !text-[#12504C] text-[length:var(--fs-h2)]">A clear route to parenthood</h2>
+        <p class="mt-2 text-[length:var(--fs-body)] text-[#2E3031]">Five transparent, physician-coordinated phases designed to protect every intended parent, donor, and surrogate.</p>
       </div>
 
       <!-- Interactive Stage Spotlight Container -->
@@ -535,20 +529,6 @@ ${header}
           </div>`
             )
             .join('')}
-        </div>
-      </div>
-
-      <!-- Action & Reassurance Strip -->
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-[#8BB2AF]/30 reveal">
-        <div class="flex items-center gap-3">
-          <a href="/book/" class="btn-primary group inline-flex items-center gap-2">
-            <span>Start Your Journey</span>
-            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"></i>
-          </a>
-        </div>
-        <div class="flex items-center gap-2 text-[length:var(--fs-small)] text-[#5D5E5F]">
-          <i data-lucide="shield-check" class="w-4 h-4 text-[#17645F] shrink-0"></i>
-          <span>Confidential initial intake · No obligation · Global matching</span>
         </div>
       </div>
     </div>
