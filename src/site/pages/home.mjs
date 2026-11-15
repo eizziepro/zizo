@@ -125,30 +125,35 @@ export function renderHomePage({ settings = {}, homeFaqs = [], reviews = [], pos
       icon: 'message-square',
       title: 'Consultation',
       copy: 'Speak privately with our team about your family goals and cross-border options.',
+      milestone: 'Private Strategy Session',
     },
     {
       step: '2',
       icon: 'users',
       title: 'Matching',
       copy: 'Review carefully screened, anonymized profiles aligned with your preferences.',
+      milestone: 'Screened Anonymous Profiles',
     },
     {
       step: '3',
       icon: 'scale',
       title: 'Medical and Legal Coordination',
       copy: 'Complete clinic evaluations and independent legal agreements before cycles begin.',
+      milestone: 'Cross-Border Contracts',
     },
     {
       step: '4',
       icon: 'heart-pulse',
       title: 'Pregnancy and Support',
       copy: 'Receive steady case-manager updates, obstetric coordination, and counseling care.',
+      milestone: '24/7 Clinical Care Oversight',
     },
     {
       step: '5',
       icon: 'baby',
       title: 'Birth and Parentage',
       copy: 'Prepare hospital and post-birth documentation smoothly as you welcome your child.',
+      milestone: 'Consular & Travel Papers',
     },
   ];
 
@@ -170,57 +175,30 @@ ${header}
       <div class="hero-gradient-overlay absolute inset-0" aria-hidden="true"></div>
     </div>
 
-    <div class="zizo-container relative z-10 pt-36 sm:pt-40 lg:pt-44 pb-[var(--space-lg)] lg:pb-20">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end text-[#FAF9F6]">
-        <div class="lg:col-span-8 xl:col-span-7 space-y-6">
-          <div class="hero-enter hero-delay-1 inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[#FAF9F6] text-[length:var(--fs-small)] font-medium">
-            <span class="w-2 h-2 rounded-full bg-[#8BB2AF] animate-pulse"></span>
-            <span>Donor and Surrogacy · Lagos, Nigeria &amp; International</span>
-          </div>
-
-          <h1 class="hero-enter hero-delay-2 display text-[#FAF9F6] text-[length:var(--fs-h1)] font-medium leading-[1.08] tracking-[-0.02em] max-w-2xl">
-            Every family deserves<br class="hidden sm:inline" /> a path to parenthood.
-          </h1>
-
-          <p class="hero-enter hero-delay-3 text-[length:var(--fs-body)] text-[#FAF9F6]/90 leading-relaxed max-w-xl font-normal">
-            A safe fertility brand that creates families across borders, with expert legal and medical coordination and compassionate, personal care at every step.
+    <div class="zizo-container relative z-10 pt-32 pb-[var(--space-lg)]">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-[var(--space-md)] items-end text-[#FAF9F6]">
+        <div class="lg:col-span-8 space-y-4">
+          <p class="hero-enter hero-delay-1 text-[length:var(--fs-small)] uppercase tracking-[0.14em] text-[#FAF9F6]/85">
+            Donor and Surrogacy · Lagos, Nigeria
           </p>
-
-          <div class="hero-enter hero-delay-4 flex flex-wrap sm:flex-nowrap items-center gap-3.5 pt-1">
-            <a href="/book/" class="btn-primary group inline-flex items-center gap-2">
-              <span>Book Consultation</span>
-              <i data-lucide="arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"></i>
-            </a>
-            <a href="/surrogates-donors/become-a-surrogate/" class="btn-secondary-light">
-              Become Surrogate
-            </a>
-          </div>
-
-          <div class="hero-enter hero-delay-4 pt-5 border-t border-white/15 flex flex-wrap items-center gap-y-2.5 gap-x-6 text-[length:var(--fs-small)] text-[#FAF9F6]/85 max-w-xl">
-            <span class="inline-flex items-center gap-2">
-              <i data-lucide="shield-check" class="w-4 h-4 text-[#8BB2AF] shrink-0"></i>
-              <span>100% Confidential</span>
-            </span>
-            <span class="inline-flex items-center gap-2">
-              <i data-lucide="scale" class="w-4 h-4 text-[#8BB2AF] shrink-0"></i>
-              <span>Cross-Border Legal Care</span>
-            </span>
-            <span class="inline-flex items-center gap-2">
-              <i data-lucide="users" class="w-4 h-4 text-[#8BB2AF] shrink-0"></i>
-              <span>Anonymous Matching</span>
-            </span>
-          </div>
+          <h1 class="hero-enter hero-delay-2 display text-[#FAF9F6] max-w-3xl">
+            Every family deserves a path to parenthood.
+          </h1>
         </div>
 
-        <div class="lg:col-span-4 xl:col-span-5 hidden lg:flex justify-end pb-2">
-          <div class="hero-enter hero-delay-4 inline-flex items-center gap-3.5 px-4 py-3 rounded-2xl bg-[#17191A]/55 backdrop-blur-md border border-white/15 shadow-xl text-left">
-            <div class="w-10 h-10 rounded-xl bg-[#17645F]/40 border border-[#8BB2AF]/30 flex items-center justify-center text-[#8BB2AF] shrink-0">
-              <i data-lucide="award" class="w-5 h-5"></i>
+        <div class="lg:col-span-4 space-y-5">
+          <p class="hero-enter hero-delay-3 text-[length:var(--fs-body)] text-[#FAF9F6]/90">
+            A safe fertility brand that creates families across borders, with expert legal and medical coordination and compassionate, personal care at every step.
+          </p>
+          <div class="hero-enter hero-delay-4 space-y-3">
+            <div class="flex flex-wrap items-center gap-3">
+              <a href="/book/" class="btn-primary">Book a Consultation</a>
+              <a href="/surrogates-donors/become-a-surrogate/" class="btn-secondary-light">Become a Surrogate</a>
             </div>
-            <div>
-              <div class="text-xs font-semibold text-[#FAF9F6] tracking-wide">12+ Years Experience</div>
-              <div class="text-[11px] text-[#FAF9F6]/75">Cross-Border Care · 5 Global Regions</div>
-            </div>
+            <p class="inline-flex items-center gap-2 text-[length:var(--fs-small)] text-[#FAF9F6]/80">
+              <i data-lucide="shield-check" class="w-4 h-4 text-[#8BB2AF] shrink-0"></i>
+              <span>Confidential. Ethical. Anonymous matching.</span>
+            </p>
           </div>
         </div>
       </div>
@@ -398,36 +376,81 @@ ${header}
   </section>
 
   <!-- SECTION 5: PROCESS -->
-  <section class="zizo-section bg-[#E1E0DD] text-[#17191A]">
+  <section class="zizo-section bg-[#E1E0DD] text-[#17191A] relative overflow-hidden">
     <div class="zizo-container space-y-[var(--space-lg)]">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 reveal">
-        <div>
-          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F] mb-2">How It Works</p>
-          <h2 class="display !text-[#12504C]">A clear route to parenthood</h2>
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 reveal">
+        <div class="max-w-2xl">
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.14em] text-[#5D5E5F] font-medium mb-2">How It Works</p>
+          <h2 class="display !text-[#12504C] text-[length:var(--fs-h2)]">A clear route to parenthood</h2>
+          <p class="mt-2 text-[length:var(--fs-body)] text-[#2E3031]">Five transparent, physician-coordinated phases designed to protect every intended parent, donor, and surrogate.</p>
         </div>
-        <a href="/intended-parents/how-it-works/" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline underline-offset-4">Learn more about the process</a>
+        <a href="/intended-parents/how-it-works/" class="group inline-flex items-center gap-2 text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:text-[#12504C] shrink-0">
+          <span>Learn more about the process</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"></i>
+        </a>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
-        ${processSteps
-          .map(
-            (st) => `<div class="bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-6 flex flex-col justify-between gap-5 reveal">
-          <div class="space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="w-9 h-9 rounded-full bg-[#8BB2AF] text-[#17191A] font-semibold text-[length:var(--fs-small)] inline-flex items-center justify-center tabular-nums">${st.step}</span>
-              <i data-lucide="${st.icon}" class="w-5 h-5 text-[#17645F]"></i>
+      <!-- Connected Pipeline Track -->
+      <div class="relative">
+        <!-- Connecting Track Line (Desktop) -->
+        <div class="hidden lg:block absolute top-7 left-12 right-12 h-0.5 bg-[#8BB2AF]/35 z-0" aria-hidden="true"></div>
+
+        <!-- Vertical Connecting Track (Mobile/Tablet) -->
+        <div class="lg:hidden absolute top-8 bottom-8 left-6 sm:left-7 w-0.5 bg-[#8BB2AF]/40 z-0" aria-hidden="true"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-4 relative z-10">
+          ${processSteps
+            .map(
+              (st) => `<div class="reveal flex flex-row lg:flex-col gap-4 sm:gap-5 items-start group">
+            <!-- Node Marker -->
+            <div class="shrink-0 relative z-10 flex lg:justify-center w-12 sm:w-14">
+              <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#FAF9F6] border-2 border-[#8BB2AF] shadow-sm flex items-center justify-center text-[#17645F] group-hover:border-[#17645F] group-hover:bg-[#17645F] group-hover:text-[#FAF9F6] transition-all duration-300">
+                <i data-lucide="${st.icon}" class="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 group-hover:scale-110"></i>
+              </div>
             </div>
-            <h3 class="display text-[length:var(--fs-h3)]">${escapeHtml(st.title)}</h3>
-            <p class="text-[length:var(--fs-small)] text-[#2E3031]">${escapeHtml(st.copy)}</p>
-          </div>
-          <a href="/intended-parents/how-it-works/" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline underline-offset-4">Learn more</a>
-        </div>`
-          )
-          .join('')}
+
+            <!-- Card Body -->
+            <div class="flex-1 bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-5 sm:p-6 flex flex-col justify-between gap-4 transition-all duration-300 hover:shadow-md hover:border-[#8BB2AF]/70 min-h-[250px] w-full">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#8BB2AF]/20 text-[#12504C] text-[11px] font-semibold tabular-nums uppercase tracking-wider">Step 0${st.step}</span>
+                  <span class="text-[11px] font-medium text-[#5D5E5F] uppercase tracking-wider">Phase 0${st.step}</span>
+                </div>
+                <h3 class="display text-[length:var(--fs-h3)] leading-snug text-[#17191A] group-hover:text-[#17645F] transition-colors">${escapeHtml(st.title)}</h3>
+                <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(st.copy)}</p>
+              </div>
+
+              <div class="pt-3 border-t border-[#E1E0DD] space-y-2">
+                <div class="inline-flex items-center gap-1.5 text-xs text-[#12504C] font-medium">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-[#17645F] shrink-0"></i>
+                  <span>${escapeHtml(st.milestone)}</span>
+                </div>
+                <div>
+                  <a href="/intended-parents/how-it-works/" class="inline-flex items-center gap-1 text-xs font-semibold text-[#17645F] hover:text-[#12504C] transition-colors">
+                    <span>Learn more</span>
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>`
+            )
+            .join('')}
+        </div>
       </div>
 
-      <div class="reveal">
-        <a href="/book/" class="btn-primary">Start Your Journey</a>
+      <!-- Action & Reassurance Strip -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-[#8BB2AF]/30 reveal">
+        <div class="flex items-center gap-3">
+          <a href="/book/" class="btn-primary group inline-flex items-center gap-2">
+            <span>Start Your Journey</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1"></i>
+          </a>
+        </div>
+        <div class="flex items-center gap-2 text-[length:var(--fs-small)] text-[#5D5E5F]">
+          <i data-lucide="shield-check" class="w-4 h-4 text-[#17645F] shrink-0"></i>
+          <span>Confidential initial intake · No obligation · Global matching</span>
+        </div>
       </div>
     </div>
   </section>
