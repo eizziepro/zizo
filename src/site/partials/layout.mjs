@@ -327,31 +327,7 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
           A safe fertility brand that creates families across borders, with expert legal and medical coordination and personal care at every step.
         </p>
 
-        <div class="pt-2">
-          <h3 class="text-[length:var(--fs-small)] font-semibold uppercase tracking-[0.1em] text-[#FAF9F6] font-sans mb-2">Private Updates</h3>
-          <p class="text-[length:var(--fs-small)] text-[#FAF9F6]/70 mb-3">We send updates only when necessary.</p>
-          <form id="footer-newsletter-form" class="space-y-3 max-w-sm" novalidate>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <div>
-                <label for="nl-name" class="sr-only">First name</label>
-                <input id="nl-name" name="name" type="text" placeholder="Your name" class="input-field-dark" autocomplete="name" />
-              </div>
-              <div>
-                <label for="nl-email" class="sr-only">Email address</label>
-                <input id="nl-email" name="email" type="email" required placeholder="Email address" class="input-field-dark" autocomplete="email" />
-              </div>
-            </div>
-            <label class="flex items-start gap-2.5 text-xs text-[#FAF9F6]/80 cursor-pointer">
-              <input type="checkbox" name="consent" required class="mt-1 accent-[#17645F] w-4 h-4 shrink-0" />
-              <span>I agree to receive occasional Zizo updates and confirm the <a href="/privacy-policy/" class="underline text-[#FAF9F6]">Privacy Policy</a>.</span>
-            </label>
-            <input type="text" name="website_url" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
-            <div class="flex items-center gap-3">
-              <button type="submit" class="btn-primary">Sign up</button>
-              <p class="text-xs text-[#FAF9F6]/80" data-form-status aria-live="polite"></p>
-            </div>
-          </form>
-        </div>
+
       </div>
 
       <div class="lg:col-span-2 space-y-3">
