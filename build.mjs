@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import Database from 'better-sqlite3';
 import { JSDOM } from 'jsdom';
@@ -323,6 +324,15 @@ export function buildStaticSite() {
   const homeFaqs = faqs.filter((f) => f.show_on_home);
 
   // Copy static assets first
+  // Compile Tailwind CSS first so fresh styles are always bundled
+  try {
+    execSync('npx @tailwindcss/cli -i src/styles/main.css -o public/assets/css/styles.css --minify', {
+      stdio: 'ignore',
+    });
+  } catch (err) {
+    console.warn('[build.mjs] Warning: Tailwind CSS compile warning:', err.message);
+  }
+
   copyDir(PUBLIC_DIR, DIST);
 
   const staticPaths = [

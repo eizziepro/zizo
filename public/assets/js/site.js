@@ -196,7 +196,7 @@ function initRevealObserver() {
         }
       });
     },
-    { threshold: 0.15 }
+    { threshold: 0.02, rootMargin: '0px 0px -20px 0px' }
   );
 
   els.forEach((el) => io.observe(el));

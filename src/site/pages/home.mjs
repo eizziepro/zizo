@@ -7,39 +7,6 @@ import {
   renderHeader,
 } from '../partials/layout.mjs';
 
-const founderLicenses = [
-  {
-    acronym: 'GCRC',
-    name: 'Global Clinical Reproduction Council',
-    badge: 'Licensed Partner',
-    svg: `<svg class="w-6 h-6 text-[#17645F] group-hover:scale-105 transition-transform" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="14" stroke="#8BB2AF" stroke-width="1.2" stroke-dasharray="2 2"/><path d="M16 6v20M12 9c2-1 6-1 8 0s-2 3-8 3 6 2 8 3-2 3-8 3"/><circle cx="16" cy="6" r="1.5" fill="#17645F"/></svg>`,
-  },
-  {
-    acronym: 'IESB',
-    name: 'International Ethics & Surrogacy Board',
-    badge: 'Certified Fellow',
-    svg: `<svg class="w-6 h-6 text-[#17645F] group-hover:scale-105 transition-transform" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4l9 3.5v7.5c0 6.5-4 11.5-9 13-5-1.5-9-6.5-9-13V7.5L16 4z"/><path d="M12 16l3 3 5-5" stroke="#17645F" stroke-width="2"/></svg>`,
-  },
-  {
-    acronym: 'AFCC',
-    name: 'Alliance for Fertility Care & Coordination',
-    badge: 'Accredited Member',
-    svg: `<svg class="w-6 h-6 text-[#17645F] group-hover:scale-105 transition-transform" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="16" r="7"/><circle cx="20" cy="16" r="7"/><path d="M16 11.5c1.2 1.3 1.8 2.8 1.8 4.5s-.6 3.2-1.8 4.5c-1.2-1.3-1.8-2.8-1.8-4.5s.6-3.2 1.8-4.5z" fill="#8BB2AF" fill-opacity="0.35"/></svg>`,
-  },
-  {
-    acronym: 'ESHRP',
-    name: 'European Society of Human Reproduction Protocol',
-    badge: 'Protocol Certified',
-    svg: `<svg class="w-6 h-6 text-[#17645F] group-hover:scale-105 transition-transform" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="13" r="9"/><path d="M13.5 13l2 2 3.5-3.5"/><path d="M11 20.5l-2 7.5 7-3 7 3-2-7.5"/></svg>`,
-  },
-  {
-    acronym: 'WBRH',
-    name: 'World Board of Reproductive Healthcare',
-    badge: 'Board Certified',
-    svg: `<svg class="w-6 h-6 text-[#17645F] group-hover:scale-105 transition-transform" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="16" r="12"/><ellipse cx="16" cy="16" rx="6" ry="12"/><line x1="4" y1="16" x2="28" y2="16"/><circle cx="16" cy="16" r="3" fill="#FAF9F6" stroke="#17645F" stroke-width="1.5"/></svg>`,
-  },
-];
-
 function isConfirmedStat(val) {
   if (!val) return false;
   const s = String(val).trim();
@@ -608,7 +575,7 @@ ${header}
       </div>
 
       <!-- Desktop Moving Wall (md:block) -->
-      <div class="hidden md:block testimonial-wall-stage reveal"
+      <div class="hidden md:block testimonial-wall-stage"
         style="mask-image: linear-gradient(180deg, transparent 0%, black 10%, black 90%, transparent 100%); -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 10%, black 90%, transparent 100%);">
         <div class="testimonial-wall-3d grid grid-cols-2 lg:grid-cols-4 gap-5 overflow-hidden h-[780px] items-start">
           ${(() => {
@@ -728,7 +695,7 @@ ${header}
       </div>
 
       <!-- Mobile Wall Horizontal Scroll (block md:hidden) -->
-      <div class="block md:hidden testimonial-wall-mobile-scroll reveal">
+      <div class="block md:hidden testimonial-wall-mobile-scroll">
         <div class="flex gap-4 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory px-1 scrollbar-none">
           ${(() => {
             const r0 = featuredReviews[0] || {
@@ -813,10 +780,10 @@ ${header}
 
   <!-- SECTION 7: FOUNDER SPOTLIGHT (CHIZARAM ATA) -->
   <section class="zizo-section bg-[#FAF9F6] border-t border-[#E1E0DD]">
-    <div class="zizo-container !max-w-[1240px]">
-      <div class="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
-        <!-- Founder Portrait (513px width on desktop) -->
-        <div class="w-full lg:w-[513px] lg:shrink-0 group rounded-2xl overflow-hidden aspect-[4/5] bg-[#E1E0DD] border border-[#E1E0DD] shadow-sm relative reveal">
+    <div class="zizo-container !max-w-[1240px] px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-10 xl:gap-12">
+        <!-- Founder Portrait (513px width on xl desktop) -->
+        <div class="w-full lg:w-[460px] xl:w-[513px] lg:shrink-0 group rounded-2xl overflow-hidden aspect-[4/5] bg-[#E1E0DD] border border-[#E1E0DD] shadow-sm relative">
           <div class="w-full h-full transition-transform duration-700 group-hover:scale-[1.02]">
             ${pictureTag({
               base: 'founder-chizaram-ata',
@@ -838,8 +805,8 @@ ${header}
           </div>
         </div>
 
-        <!-- Founder Story (627px width on desktop) -->
-        <div class="w-full lg:w-[627px] lg:shrink-0 space-y-6 reveal">
+        <!-- Founder Story (627px width on xl desktop) -->
+        <div class="w-full lg:flex-1 xl:w-[627px] xl:shrink-0 space-y-6">
           <div class="space-y-2">
             <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#17645F]">Leadership &amp; Vision</p>
             <h2 class="display text-3xl md:text-4xl text-[#17191A] leading-tight">Chizaram Ata</h2>
@@ -853,37 +820,6 @@ ${header}
             <p>
               Chizaram brings a calming presence and a firm structure to every case we manage. Her hands-on approach ensures that every intended parent, surrogate, and donor is treated not just with care, but with dignity, respect, privacy, and consistent communication from the initial consultation through postpartum homecoming.
             </p>
-          </div>
-
-          <!-- Licenses & Professional Accreditations Grid -->
-          <div class="pt-2 space-y-4">
-            <div class="space-y-2.5">
-              <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#5D5E5F]">
-                Licenses &amp; Professional Accreditations
-              </p>
-              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
-                ${founderLicenses.map((lic) => `
-                <div class="group flex flex-col items-center justify-center p-3 rounded-xl bg-white border border-[#E1E0DD] shadow-xs hover:border-[#17645F]/40 hover:shadow-sm transition-all text-center" title="${escapeHtml(lic.name)}">
-                  <div class="w-9 h-9 rounded-lg bg-[#FAF9F6] border border-[#E1E0DD] flex items-center justify-center mb-2 group-hover:bg-[#17645F]/10 group-hover:border-[#17645F]/20 transition-colors">
-                    ${lic.svg}
-                  </div>
-                  <span class="font-display font-semibold text-xs text-[#17191A] tracking-wider group-hover:text-[#17645F] transition-colors leading-tight">
-                    ${lic.acronym}
-                  </span>
-                  <span class="text-[10px] text-[#5D5E5F] font-medium tracking-tight mt-0.5 leading-snug">
-                    ${lic.badge}
-                  </span>
-                </div>
-                `).join('')}
-              </div>
-            </div>
-
-            <!-- Read More About Her Button -->
-            <div class="pt-1">
-              <a href="/about/" class="btn-primary">
-                Read More About Her
-              </a>
-            </div>
           </div>
         </div>
       </div>
@@ -987,7 +923,7 @@ ${header}
     <div class="zizo-container">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start" data-home-faq>
         <!-- Left Column: Sticky Title, Description, Categories, and CTAs -->
-        <div class="lg:col-span-5 lg:sticky lg:top-28 space-y-6 reveal">
+        <div class="lg:col-span-5 lg:sticky lg:top-28 space-y-6">
           <div>
             <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#17645F] mb-2">Questions &amp; Answers</p>
             <h2 id="faq-section-heading" class="display text-3xl md:text-5xl font-medium text-[#17191A] leading-tight text-balance">Common questions, answered clearly</h2>
@@ -1029,7 +965,7 @@ ${header}
         </div>
 
         <!-- Right Column: Accordion Container -->
-        <div class="lg:col-span-7 reveal">
+        <div class="lg:col-span-7">
           <div class="bg-[#FAF9F6] rounded-2xl border border-[#E1E0DD] divide-y divide-[#E1E0DD] shadow-xs overflow-hidden" data-faq-accordion-container>
             ${displayFaqs
               .map((faq, idx) => {
