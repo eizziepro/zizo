@@ -172,7 +172,7 @@ ${header}
 
     <div class="zizo-container relative z-10 pt-32 pb-[var(--space-lg)]">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-[var(--space-md)] items-end text-[#FAF9F6]">
-        <div class="lg:col-span-8 space-y-4">
+        <div class="lg:col-span-7 space-y-4">
           <p class="hero-enter hero-delay-1 text-[length:var(--fs-small)] uppercase tracking-[0.14em] text-[#FAF9F6]/85">
             Donor and Surrogacy · Lagos, Nigeria
           </p>
@@ -181,14 +181,14 @@ ${header}
           </h1>
         </div>
 
-        <div class="lg:col-span-4 space-y-5">
-          <p class="hero-enter hero-delay-3 text-[length:var(--fs-body)] text-[#FAF9F6]/90">
+        <div class="lg:col-span-5 space-y-5">
+          <p class="hero-enter hero-delay-3 text-[length:var(--fs-body)] text-[#FAF9F6]/90 max-w-sm">
             A safe fertility brand that creates families across borders, with expert legal and medical coordination and compassionate, personal care at every step.
           </p>
           <div class="hero-enter hero-delay-4 space-y-3">
-            <div class="flex flex-wrap items-center gap-3">
-              <a href="/book/" class="btn-primary">Book a Consultation</a>
-              <a href="/surrogates-donors/become-a-surrogate/" class="btn-secondary-light">Become a Surrogate</a>
+            <div class="flex items-center gap-3 flex-wrap sm:flex-nowrap">
+              <a href="/book/" class="btn-primary">Book Consultation</a>
+              <a href="/surrogates-donors/become-a-surrogate/" class="btn-secondary-light">Become Surrogate</a>
             </div>
             <p class="inline-flex items-center gap-2 text-[length:var(--fs-small)] text-[#FAF9F6]/80">
               <i data-lucide="shield-check" class="w-4 h-4 text-[#8BB2AF] shrink-0"></i>
