@@ -194,7 +194,7 @@ export function renderHeader({ isHome = false }) {
   </div>
 
   <!-- Mobile Navigation Drawer -->
-  <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-[#FAF9F6]/95 backdrop-blur-xl text-[#17191A] border-b border-[#E1E0DD] z-40 max-h-[82vh] overflow-y-auto" aria-label="Mobile navigation">
+  <div id="mobile-menu" class="hidden lg:hidden absolute top-full left-0 right-0 bg-[#FAF9F6]/95 backdrop-blur-xl text-[#17191A] border-b border-[#E1E0DD] z-40 max-h-[82vh] overflow-y-auto px-4" aria-label="Mobile navigation">
     <div class="zizo-container py-5 space-y-2">
       <a href="/about/" class="block py-3 border-b border-[#E1E0DD] font-medium">About</a>
 

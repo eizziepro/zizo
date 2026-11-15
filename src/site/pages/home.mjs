@@ -354,7 +354,7 @@ ${header}
       <div class="divide-y divide-[#E1E0DD] border-y border-[#E1E0DD]">
         ${whyRows
           .map(
-            (row) => `<a href="${escapeHtml(row.href)}" class="group block py-7 px-3 -mx-3 rounded-[var(--radius)] hover:bg-[#E1E0DD]/40 transition-colors reveal">
+            (row) => `<a href="${escapeHtml(row.href)}" class="group block py-7 rounded-[var(--radius)] hover:bg-[#E1E0DD]/40 transition-colors reveal">
           <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
             <span class="md:col-span-1 text-[length:var(--fs-small)] font-medium tabular-nums text-[#5D5E5F]">${row.num}</span>
             <h3 class="md:col-span-4 display text-[#17191A]">${escapeHtml(row.title)}</h3>
