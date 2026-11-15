@@ -104,7 +104,29 @@ function checkRateLimit(key: string, maxPerHour: number): boolean {
   return true;
 }
 
-function queueEmail(toEmail: string, subject: string, bodyText: string, hasIcs = false): void {
+
+async function verifyTurnstile(token?: string, ip?: string): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET;
+  if (!secret) return true;
+  if (!token) return false;
+  try {
+    const formData = new URLSearchParams();
+    formData.append('secret', secret);
+    formData.append('response', token);
+    if (ip) formData.append('remoteip', ip);
+    const resp = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: formData,
+    });
+    const data: any = await resp.json();
+    return Boolean(data.success);
+  } catch (err) {
+    console.error('[server] Turnstile verification error:', err);
+    return false;
+  }
+}
+
+async function queueEmail(toEmail: string, subject: string, bodyText: string, hasIcs = false, icsContent?: string): Promise<void> {
   const db = getDb();
   const status = process.env.RESEND_API_KEY ? 'dispatched' : 'logged_local';
   db.prepare(
@@ -205,7 +227,7 @@ app.get('/api/reviews', (req, res) => {
   res.json({ reviews: rows, totalApproved, avgRating });
 });
 
-app.post('/api/reviews', (req, res) => {
+app.post('/api/reviews', async (req, res) => {
   const db = getDb();
   const ip = req.ip || 'local';
   if (!checkRateLimit(`rev:${ip}`, 10)) {
@@ -330,7 +352,7 @@ app.get('/api/availability', (req, res) => {
   res.status(400).json({ error: 'Provide month=YYYY-MM or date=YYYY-MM-DD.' });
 });
 
-app.post('/api/bookings', (req, res) => {
+app.post('/api/bookings', async (req, res) => {
   const db = getDb();
   const ip = req.ip || 'local';
   const bypassLimit = req.headers['x-test-bypass-rate-limit'] === '1';
@@ -599,7 +621,7 @@ app.get('/api/ics', (req, res) => {
   res.send(ics);
 });
 
-app.post('/api/forms', (req, res) => {
+app.post('/api/forms', async (req, res) => {
   const db = getDb();
   const body = req.body || {};
   if (body.website_url) {
