@@ -821,56 +821,6 @@ ${header}
               Chizaram brings a calming presence and a firm structure to every case we manage. Her hands-on approach ensures that every intended parent, surrogate, and donor is treated not just with care, but with dignity, respect, privacy, and consistent communication from the initial consultation through postpartum homecoming.
             </p>
           </div>
-
-          <!-- Blocks of Logos & Achievements -->
-          <div class="pt-2 space-y-3">
-            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#5D5E5F]">Milestones &amp; Professional Standards</p>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <!-- Achievement Block 1 -->
-              <div class="p-3.5 rounded-xl border border-[#E1E0DD] bg-[#FAF9F6] hover:border-[#17645F]/40 transition-colors flex flex-col justify-between gap-2 shadow-2xs">
-                <div class="w-8 h-8 rounded-lg bg-[#8BB2AF]/20 text-[#17645F] flex items-center justify-center shrink-0">
-                  <i data-lucide="award" class="w-4 h-4"></i>
-                </div>
-                <div>
-                  <div class="font-display text-lg font-semibold text-[#17191A] leading-tight">12+ Years</div>
-                  <div class="text-[11px] text-[#5D5E5F] leading-snug mt-0.5">Reproductive Health Leadership</div>
-                </div>
-              </div>
-
-              <!-- Achievement Block 2 -->
-              <div class="p-3.5 rounded-xl border border-[#E1E0DD] bg-[#FAF9F6] hover:border-[#17645F]/40 transition-colors flex flex-col justify-between gap-2 shadow-2xs">
-                <div class="w-8 h-8 rounded-lg bg-[#8BB2AF]/20 text-[#17645F] flex items-center justify-center shrink-0">
-                  <i data-lucide="globe-2" class="w-4 h-4"></i>
-                </div>
-                <div>
-                  <div class="font-display text-lg font-semibold text-[#17191A] leading-tight">5 Regions</div>
-                  <div class="text-[11px] text-[#5D5E5F] leading-snug mt-0.5">Nigeria, US, UK, EU &amp; Asia</div>
-                </div>
-              </div>
-
-              <!-- Achievement Block 3 -->
-              <div class="p-3.5 rounded-xl border border-[#E1E0DD] bg-[#FAF9F6] hover:border-[#17645F]/40 transition-colors flex flex-col justify-between gap-2 shadow-2xs">
-                <div class="w-8 h-8 rounded-lg bg-[#8BB2AF]/20 text-[#17645F] flex items-center justify-center shrink-0">
-                  <i data-lucide="shield-check" class="w-4 h-4"></i>
-                </div>
-                <div>
-                  <div class="font-display text-lg font-semibold text-[#17191A] leading-tight">100% Ethical</div>
-                  <div class="text-[11px] text-[#5D5E5F] leading-snug mt-0.5">Anonymous &amp; Legal Protection</div>
-                </div>
-              </div>
-
-              <!-- Achievement Block 4 -->
-              <div class="p-3.5 rounded-xl border border-[#E1E0DD] bg-[#FAF9F6] hover:border-[#17645F]/40 transition-colors flex flex-col justify-between gap-2 shadow-2xs">
-                <div class="w-8 h-8 rounded-lg bg-[#8BB2AF]/20 text-[#17645F] flex items-center justify-center shrink-0">
-                  <i data-lucide="heart-pulse" class="w-4 h-4"></i>
-                </div>
-                <div>
-                  <div class="font-display text-lg font-semibold text-[#17191A] leading-tight">Physician-Led</div>
-                  <div class="text-[11px] text-[#5D5E5F] leading-snug mt-0.5">Clinical Protocol Alignment</div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
