@@ -390,8 +390,7 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
         <a href="/cookie-policy/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline">Cookie Policy</a>
         <span aria-hidden="true">·</span>
         <button type="button" id="open-cookie-settings" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline">Cookie Choices</button>
-        <span aria-hidden="true">·</span>
-        <span>Images are illustrative.</span>
+
       </div>
     </div>
   </div>
