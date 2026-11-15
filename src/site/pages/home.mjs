@@ -778,30 +778,104 @@ ${header}
     </div>
   </section>
 
-  <!-- SECTION 7: SURROGATE AND DONOR BAND -->
-  <section class="zizo-section bg-[#FAF9F6]">
+  <!-- SECTION 7: FOUNDER SPOTLIGHT (CHIZARAM ATA) -->
+  <section class="zizo-section bg-[#FAF9F6] border-t border-[#E1E0DD]">
     <div class="zizo-container">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-[var(--space-lg)] items-center">
-        <div class="lg:col-span-6 group rounded-[var(--radius)] overflow-hidden aspect-[4/3] bg-[#E1E0DD] reveal">
-          <div class="w-full h-full transition-transform duration-700 group-hover:scale-[1.03]">
+        <!-- Founder Portrait -->
+        <div class="lg:col-span-5 group rounded-2xl overflow-hidden aspect-[4/5] bg-[#E1E0DD] border border-[#E1E0DD] shadow-sm relative reveal">
+          <div class="w-full h-full transition-transform duration-700 group-hover:scale-[1.02]">
             ${pictureTag({
-              base: 'become-a-surrogate',
-              alt: 'Warm portrait of a Nigerian woman seated in natural daylight',
-              width: 1920,
-              height: 1440,
+              base: 'founder-chizaram-ata',
+              alt: 'Chizaram Ata, Founder and Lead Partner at Zizo Donor and Surrogacy',
+              width: 2429,
+              height: 2330,
             })}
+          </div>
+          <!-- Floating Founder Badge -->
+          <div class="absolute bottom-4 inset-x-4 z-10 p-4 rounded-xl bg-[#17191A]/85 backdrop-blur-md border border-[#FAF9F6]/15 flex items-center justify-between text-[#FAF9F6]">
+            <div>
+              <p class="font-display text-base font-medium">Chizaram Ata</p>
+              <p class="text-xs text-[#8BB2AF] tracking-wider uppercase">Founder &amp; Lead Partner</p>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#17645F]/70 text-[11px] text-[#FAF9F6] border border-[#8BB2AF]/30 tabular-nums">
+              <i data-lucide="award" class="w-3.5 h-3.5 text-[#8BB2AF]"></i>
+              <span>12+ Years Exp.</span>
+            </span>
           </div>
         </div>
 
-        <div class="lg:col-span-6 space-y-5 reveal">
-          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Join our community</p>
-          <h2 class="display">Interested in becoming a surrogate?</h2>
-          <p class="text-[length:var(--fs-body)] text-[#2E3031]">
-            At Zizo, gestational surrogates and egg donors are valued, deeply respected, transparently compensated, and supported with dedicated case management and medical care. Your privacy and anonymity are safeguarded at every step.
-          </p>
-          <div class="flex flex-wrap items-center gap-3 pt-2">
-            <a href="/surrogates-donors/become-a-surrogate/" class="btn-primary">Become Surrogate</a>
-            <a href="/surrogates-donors/become-an-egg-donor/" class="btn-secondary">Become an Egg Donor</a>
+        <!-- Founder Story & Achievements -->
+        <div class="lg:col-span-7 space-y-6 reveal">
+          <div class="space-y-2">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#17645F]">Leadership &amp; Vision</p>
+            <h2 class="display text-3xl md:text-4xl text-[#17191A] leading-tight">Chizaram Ata</h2>
+            <p class="text-sm font-semibold text-[#8BB2AF] tracking-[0.14em] uppercase -mt-1">Founder &amp; Lead Partner</p>
+          </div>
+
+          <div class="space-y-3.5 text-[length:var(--fs-body)] text-[#2E3031] leading-relaxed">
+            <p>
+              At the heart of Zizo is <strong>Chizaram Ata</strong>, a visionary leader with over 12 years of specialized experience in reproductive healthcare and women’s health. Her passion for connecting intended parents with vetted gestational surrogates and egg donors is matched only by her dedication to providing guidance, confidentiality, and unwavering support every step of the way.
+            </p>
+            <p>
+              Chizaram brings a calming presence and a firm structure to every case we manage. Her hands-on approach ensures that every intended parent, surrogate, and donor is treated not just with care, but with dignity, respect, privacy, and consistent communication from the initial consultation through postpartum homecoming.
+            </p>
+          </div>
+
+          <!-- Blocks of Logos & Achievements -->
+          <div class="pt-2 space-y-3">
+            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#5D5E5F]">Milestones &amp; Professional Standards</p>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <!-- Achievement Block 1 -->
+              <div class="p-3.5 rounded-xl border border-[#E1E0DD] bg-[#FAF9F6] hover:border-[#17645F]/40 transition-colors flex flex-col justify-between gap-2 shadow-2xs">
+                <div class="w-8 h-8 rounded-lg bg-[#8BB2AF]/20 text-[#17645F] flex items-center justify-center shrink-0">
+                  <i data-lucide="award" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="font-display text-lg font-semibold text-[#17191A] leading-tight">12+ Years</div>
+                  <div class="text-[11px] text-[#5D5E5F] leading-snug mt-0.5">Reproductive Health Leadership</div>
+                </div>
+              </div>
+
+              <!-- Achievement Block 2 -->
+              <div class="p-3.5 rounded-xl border border-[#E1E0DD] bg-[#FAF9F6] hover:border-[#17645F]/40 transition-colors flex flex-col justify-between gap-2 shadow-2xs">
+                <div class="w-8 h-8 rounded-lg bg-[#8BB2AF]/20 text-[#17645F] flex items-center justify-center shrink-0">
+                  <i data-lucide="globe-2" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="font-display text-lg font-semibold text-[#17191A] leading-tight">5 Regions</div>
+                  <div class="text-[11px] text-[#5D5E5F] leading-snug mt-0.5">Nigeria, US, UK, EU &amp; Asia</div>
+                </div>
+              </div>
+
+              <!-- Achievement Block 3 -->
+              <div class="p-3.5 rounded-xl border border-[#E1E0DD] bg-[#FAF9F6] hover:border-[#17645F]/40 transition-colors flex flex-col justify-between gap-2 shadow-2xs">
+                <div class="w-8 h-8 rounded-lg bg-[#8BB2AF]/20 text-[#17645F] flex items-center justify-center shrink-0">
+                  <i data-lucide="shield-check" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="font-display text-lg font-semibold text-[#17191A] leading-tight">100% Ethical</div>
+                  <div class="text-[11px] text-[#5D5E5F] leading-snug mt-0.5">Anonymous &amp; Legal Protection</div>
+                </div>
+              </div>
+
+              <!-- Achievement Block 4 -->
+              <div class="p-3.5 rounded-xl border border-[#E1E0DD] bg-[#FAF9F6] hover:border-[#17645F]/40 transition-colors flex flex-col justify-between gap-2 shadow-2xs">
+                <div class="w-8 h-8 rounded-lg bg-[#8BB2AF]/20 text-[#17645F] flex items-center justify-center shrink-0">
+                  <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+                </div>
+                <div>
+                  <div class="font-display text-lg font-semibold text-[#17191A] leading-tight">Physician-Led</div>
+                  <div class="text-[11px] text-[#5D5E5F] leading-snug mt-0.5">Clinical Protocol Alignment</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTAs -->
+          <div class="pt-2 flex flex-wrap items-center gap-3">
+            <a href="/about/" class="btn-primary">Learn About Zizo</a>
+            <a href="/book/" class="btn-secondary">Book Consultation</a>
           </div>
         </div>
       </div>
