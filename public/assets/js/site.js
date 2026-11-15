@@ -1,10 +1,24 @@
-function showToast(msg) {
+function showToast(msg, kind = 'info') {
   const el = document.getElementById('zizo-toast');
   if (!el) return;
-  el.textContent = msg;
+
+  const isError = kind === 'error';
+  const iconSvg = isError
+    ? '<svg class="w-4 h-4 text-[#f87171] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+    : '<svg class="w-4 h-4 text-[#8BB2AF] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  el.innerHTML = `
+    <div class="flex items-center gap-3">
+      ${iconSvg}
+      <span class="flex-1 leading-snug">${escapeClient(msg)}</span>
+      <button type="button" aria-label="Dismiss notification" class="text-white/60 hover:text-white p-1 -mr-1 transition-colors" onclick="document.getElementById('zizo-toast').classList.add('hidden')">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  `;
   el.classList.remove('hidden');
   clearTimeout(el._timer);
-  el._timer = setTimeout(() => el.classList.add('hidden'), 4500);
+  el._timer = setTimeout(() => el.classList.add('hidden'), 5000);
 }
 
 window.zizoToast = showToast;
@@ -138,10 +152,14 @@ function initMenus() {
   mobileMenu?.querySelectorAll('[data-mobile-accordion]').forEach((acc) => {
     const btn = acc.querySelector('button');
     const panel = acc.querySelector('div');
+    const icon = btn?.querySelector('[data-lucide="chevron-down"]');
     btn?.addEventListener('click', () => {
       const expanded = btn.getAttribute('aria-expanded') === 'true';
       btn.setAttribute('aria-expanded', expanded ? 'false' : 'true');
       panel?.classList.toggle('hidden', expanded);
+      if (icon) {
+        icon.style.transform = expanded ? 'rotate(0deg)' : 'rotate(180deg)';
+      }
     });
   });
 
@@ -231,7 +249,7 @@ function initReviewsCarousel() {
         const countryHtml = rev.country
           ? `<p class="text-xs text-[#FAF9F6]/70">${escapeClient(rev.country)}</p>`
           : '';
-        return `<article class="bg-[#FAF9F6]/5 border border-[#FAF9F6]/15 rounded-[var(--radius)] p-6 flex flex-col justify-between gap-6">
+        return `<article class="bg-[#FAF9F6]/5 border border-[#FAF9F6]/15 rounded-[var(--radius)] p-6 flex flex-col justify-between gap-6 transition-opacity duration-300">
           <div class="space-y-4">
             <div class="flex items-center justify-between">
               <i data-lucide="quote" class="w-6 h-6 text-[#8BB2AF]"></i>
@@ -240,7 +258,7 @@ function initReviewsCarousel() {
             <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/90 leading-relaxed">“${escapeClient(rev.body)}”</p>
           </div>
           <div class="flex items-center gap-3 pt-2 border-t border-[#FAF9F6]/10">
-            <span class="w-10 h-10 rounded-full bg-[#8BB2AF] text-[#17191A] font-semibold text-xs inline-flex items-center justify-center shrink-0">${escapeClient(initials)}</span>
+            <span class="w-10 h-10 rounded-full bg-[#8BB2AF] text-[#17191A] font-semibold text-xs inline-flex items-center justify-center shrink-0 tabular-nums">${escapeClient(initials)}</span>
             <div>
               <p class="font-medium text-[length:var(--fs-small)] text-[#FAF9F6]">${escapeClient(rev.display_name)}</p>
               ${countryHtml}
@@ -278,6 +296,29 @@ function initReviewsCarousel() {
     if (e.key === 'ArrowRight') nextBtn?.click();
     if (e.key === 'ArrowLeft') prevBtn?.click();
   });
+
+  // Touch swipe support for mobile carousel
+  let touchStartX = 0;
+  container.addEventListener(
+    'touchstart',
+    (e) => {
+      touchStartX = e.changedTouches[0].clientX;
+    },
+    { passive: true }
+  );
+
+  container.addEventListener(
+    'touchend',
+    (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > 40) {
+        if (diff < 0) nextBtn?.click();
+        else prevBtn?.click();
+      }
+    },
+    { passive: true }
+  );
 }
 
 function escapeClient(s = '') {
@@ -341,12 +382,17 @@ function initFiltersAndSearch() {
     });
   });
 
-  // Copy article link
+  // Copy article link with tactile feedback
   document.querySelectorAll('[data-copy-link]').forEach((btn) => {
     btn.addEventListener('click', async () => {
+      const originalText = btn.textContent;
       try {
         await navigator.clipboard.writeText(window.location.href);
+        btn.textContent = 'Link copied!';
         showToast('Article link copied to clipboard.');
+        setTimeout(() => {
+          btn.textContent = originalText;
+        }, 2500);
       } catch {
         showToast('Copy link from your browser address bar.');
       }
@@ -354,13 +400,51 @@ function initFiltersAndSearch() {
   });
 }
 
+function initTocScrollspy() {
+  const tocLinks = document.querySelectorAll('nav[aria-label="Table of contents"] a');
+  if (tocLinks.length === 0) return;
+  const headings = Array.from(document.querySelectorAll('.zizo-prose h2[id], .zizo-prose h3[id]'));
+  if (headings.length === 0) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          tocLinks.forEach((link) => {
+            const match = link.getAttribute('href') === `#${id}`;
+            link.classList.toggle('text-[#17645F]', match);
+            link.classList.toggle('font-semibold', match);
+            link.classList.toggle('border-l-2', match);
+            link.classList.toggle('border-[#17645F]', match);
+            link.classList.toggle('pl-2', match);
+            link.classList.toggle('-ml-2', match);
+            link.classList.toggle('text-[#2E3031]', !match);
+          });
+        }
+      });
+    },
+    { rootMargin: '-10% 0px -70% 0px', threshold: 0 }
+  );
+
+  headings.forEach((h) => observer.observe(h));
+}
+
 function initForms() {
+  // Clear input-error styling as user edits inputs
+  document.querySelectorAll('.input-field, .input-field-dark').forEach((inp) => {
+    inp.addEventListener('input', () => {
+      inp.classList.remove('input-error');
+    });
+  });
+
   // Newsletter form
   const nlForm = document.getElementById('footer-newsletter-form');
   nlForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const status = nlForm.querySelector('[data-form-status]');
     const btn = nlForm.querySelector('button[type="submit"]');
+    const origHtml = btn ? btn.innerHTML : '';
     const fd = new FormData(nlForm);
     const payload = {
       form_kind: 'newsletter',
@@ -373,7 +457,10 @@ function initForms() {
       if (status) status.textContent = 'Please enter a valid email and confirm consent.';
       return;
     }
-    btn.disabled = true;
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="zizo-spinner mr-1.5"></span> Signing up…';
+    }
     try {
       const res = await fetch('/api/forms', {
         method: 'POST',
@@ -387,8 +474,12 @@ function initForms() {
       showToast('Newsletter signup received.');
     } catch (err) {
       if (status) status.textContent = err.message;
+      showToast(err.message, 'error');
     } finally {
-      btn.disabled = false;
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
     }
   });
 
@@ -397,19 +488,31 @@ function initForms() {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!form.checkValidity()) {
+        const firstInvalid = form.querySelector(':invalid');
+        if (firstInvalid) {
+          firstInvalid.classList.add('input-error');
+          firstInvalid.focus();
+        }
         form.reportValidity();
         return;
       }
       const status = form.querySelector('[data-form-status]');
       const btn = form.querySelector('button[type="submit"]');
+      const origHtml = btn ? btn.innerHTML : '';
       const formKind = form.dataset.zizoForm;
       const fd = new FormData(form);
       const body = Object.fromEntries(fd.entries());
       body.form_kind = formKind;
       body.consent = fd.get('consent') === 'on';
 
-      btn.disabled = true;
-      if (status) status.textContent = 'Sending securely…';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="zizo-spinner mr-2"></span> Sending securely…';
+      }
+      if (status) {
+        status.textContent = 'Sending securely…';
+        status.classList.remove('text-red-700');
+      }
 
       try {
         const res = await fetch('/api/forms', {
@@ -426,17 +529,49 @@ function initForms() {
           status.textContent = err.message;
           status.classList.add('text-red-700');
         }
-        btn.disabled = false;
+        showToast(err.message, 'error');
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = origHtml;
+        }
       }
     });
   });
 
   // Review Submission form (public & verified token)
   const revForm = document.getElementById('review-submit-form');
+  const revBody = document.getElementById('rev-body');
+  const revCount = document.getElementById('rev-body-count');
+  const starHint = document.getElementById('star-rating-hint');
+
+  const ratingDescriptions = {
+    1: '1 star · Needs significant improvement',
+    2: '2 stars · Modest experience',
+    3: '3 stars · Good guidance',
+    4: '4 stars · Very good care',
+    5: '5 stars · Exceptional care',
+  };
+
+  if (revBody && revCount) {
+    revBody.addEventListener('input', () => {
+      const len = revBody.value.length;
+      revCount.textContent = `${len} / 1500`;
+      revCount.classList.toggle('text-[#17645F]', len >= 50 && len <= 1500);
+      revCount.classList.toggle('text-red-700', len < 50 || len > 1500);
+    });
+  }
+
+  document.querySelectorAll('input[name="rating"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      if (starHint) starHint.textContent = ratingDescriptions[radio.value] || `${radio.value} stars`;
+    });
+  });
+
   revForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const status = revForm.querySelector('[data-form-status]');
     const btn = revForm.querySelector('button[type="submit"]');
+    const origHtml = btn ? btn.innerHTML : '';
     const fd = new FormData(revForm);
     const urlToken = new URLSearchParams(window.location.search).get('token') || '';
     const token = revForm.dataset.verifiedToken === 'url' ? urlToken : '';
@@ -454,7 +589,10 @@ function initForms() {
       website_url: String(fd.get('website_url') || ''),
     };
 
-    btn.disabled = true;
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="zizo-spinner mr-2"></span> Submitting for moderation…';
+    }
     if (status) {
       status.classList.remove('text-red-700');
       status.textContent = 'Submitting for moderation…';
@@ -469,6 +607,7 @@ function initForms() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Could not submit review.');
       revForm.reset();
+      if (revCount) revCount.textContent = '0 / 1500';
       if (status) status.textContent = data.message || 'Thank you. Your review is awaiting moderation.';
       showToast('Review submitted for moderation.');
     } catch (err) {
@@ -476,8 +615,12 @@ function initForms() {
         status.classList.add('text-red-700');
         status.textContent = err.message;
       }
+      showToast(err.message, 'error');
     } finally {
-      btn.disabled = false;
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
     }
   });
 
@@ -516,6 +659,7 @@ function initCookies() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ essential: true, analytics, savedAt: Date.now() }));
     banner?.classList.add('hidden');
     closeModal();
+    showToast(analytics ? 'Preferences saved: Analytics enabled.' : 'Preferences saved: Strictly essential only.');
   }
 
   function openModal() {
@@ -557,6 +701,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFaqAccordions();
   initReviewsCarousel();
   initFiltersAndSearch();
+  initTocScrollspy();
   initForms();
   initCookies();
 });

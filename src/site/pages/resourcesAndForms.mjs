@@ -376,16 +376,20 @@ export function renderReviewFormHtml({ verifiedToken = '' }) {
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <fieldset>
         <legend class="block text-[length:var(--fs-small)] font-medium mb-1.5">Rating (1 to 5 stars)</legend>
-        <div class="flex items-center gap-2" role="radiogroup" aria-label="Star rating">
+        <div class="flex items-center gap-1.5" role="radiogroup" aria-label="Star rating">
           ${[1, 2, 3, 4, 5]
             .map(
-              (n) => `<label class="inline-flex items-center gap-1.5 px-3 py-2 border border-[#E1E0DD] rounded-[var(--radius)] cursor-pointer has-[:checked]:border-[#17645F] has-[:checked]:bg-[#8BB2AF]/20">
-            <input type="radio" name="rating" value="${n}" ${n === 5 ? 'checked' : ''} class="accent-[#17645F]" />
-            <span class="text-sm font-medium tabular-nums">${n}</span>
+              (n) => `<label class="star-rating-label inline-flex items-center justify-center w-11 h-11 border border-[#E1E0DD] rounded-[var(--radius)] cursor-pointer text-[#17191A] hover:border-[#17645F] hover:bg-[#8BB2AF]/15 transition-all has-[:checked]:border-[#17645F] has-[:checked]:bg-[#17645F] has-[:checked]:text-[#FAF9F6]">
+            <input type="radio" name="rating" value="${n}" ${n === 5 ? 'checked' : ''} class="sr-only" />
+            <span class="text-sm font-semibold tabular-nums flex items-center gap-1">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>${n}</span>
+            </span>
           </label>`
             )
             .join('')}
         </div>
+        <p id="star-rating-hint" class="text-xs text-[#5D5E5F] mt-1.5" aria-live="polite">5 stars · Exceptional care</p>
       </fieldset>
       <div>
         <label for="rev-country" class="block text-[length:var(--fs-small)] font-medium mb-1.5">Country (optional)</label>
@@ -399,7 +403,10 @@ export function renderReviewFormHtml({ verifiedToken = '' }) {
     </div>
 
     <div>
-      <label for="rev-body" class="block text-[length:var(--fs-small)] font-medium mb-1.5">Your experience (50 to 1,500 characters)</label>
+      <div class="flex items-center justify-between mb-1.5">
+        <label for="rev-body" class="block text-[length:var(--fs-small)] font-medium">Your experience (50 to 1,500 characters)</label>
+        <span id="rev-body-count" class="text-xs text-[#5D5E5F] tabular-nums" aria-live="polite">0 / 1500 (min 50)</span>
+      </div>
       <textarea id="rev-body" name="body" rows="4" required minlength="50" maxlength="1500" class="input-field" placeholder="Please avoid full names, clinic IDs, or personal contact details."></textarea>
     </div>
 

@@ -427,7 +427,7 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
 ${
   hideStickyBar
     ? ''
-    : `<div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md border-t border-[#E1E0DD] px-4 py-2 flex items-center gap-2.5">
+    : `<div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FAF9F6]/95 backdrop-blur-md border-t border-[#E1E0DD] px-4 py-2.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] flex items-center gap-2.5">
   <a href="/book/" class="btn-primary flex-1 justify-center !py-2.5 !min-h-[40px]">Book a Consultation</a>
   <a href="${escapeHtml(whatsappHref)}" target="_blank" rel="noopener noreferrer" aria-label="Message Zizo on WhatsApp" class="inline-flex items-center justify-center w-10 h-10 rounded-[var(--radius)] bg-[#17191A] text-[#FAF9F6] shrink-0">
     ${whatsappSvg('w-5 h-5')}

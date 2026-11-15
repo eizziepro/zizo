@@ -26,14 +26,49 @@ if (app) {
       document.getElementById(`booking-step-${n}`)?.classList.toggle('hidden', n !== step);
       const ind = document.querySelector(`[data-step-indicator="${n}"]`);
       if (ind) {
-        ind.classList.toggle('border-[#17645F]', n === step);
-        ind.classList.toggle('bg-[#8BB2AF]/20', n === step);
-        ind.classList.toggle('font-semibold', n === step);
-        ind.classList.toggle('text-[#17191A]', n <= step);
-        ind.classList.toggle('border-[#E1E0DD]', n !== step);
+        const isCurrent = n === step;
+        const isPassed = n < step;
+        ind.classList.toggle('border-[#17645F]', isCurrent);
+        ind.classList.toggle('bg-[#8BB2AF]/20', isCurrent);
+        ind.classList.toggle('font-semibold', isCurrent);
+        ind.classList.toggle('text-[#17191A]', isCurrent || isPassed);
+        ind.classList.toggle('border-[#E1E0DD]', !isCurrent);
+        ind.classList.toggle('cursor-pointer', isPassed);
+        if (isPassed) {
+          ind.setAttribute('tabindex', '0');
+          ind.setAttribute('role', 'button');
+          ind.setAttribute('aria-label', `Step ${n}: Completed. Click to return.`);
+        } else {
+          ind.removeAttribute('role');
+          ind.removeAttribute('tabindex');
+          ind.removeAttribute('aria-label');
+        }
       }
     });
+
+    // Smoothly keep booking container in comfortable view
+    const rect = app.getBoundingClientRect();
+    if (rect.top < 80 || rect.top > 300) {
+      const targetY = window.scrollY + rect.top - 100;
+      window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+    }
   }
+
+  // Clickable completed step indicators
+  document.querySelectorAll('[data-step-indicator]').forEach((ind) => {
+    ind.addEventListener('click', () => {
+      const stepNum = Number(ind.dataset.stepIndicator);
+      if (stepNum < state.step) {
+        goToStep(stepNum);
+      }
+    });
+    ind.addEventListener('keydown', (e) => {
+      if ((e.key === 'Enter' || e.key === ' ') && Number(ind.dataset.stepIndicator) < state.step) {
+        e.preventDefault();
+        goToStep(Number(ind.dataset.stepIndicator));
+      }
+    });
+  });
 
   function formatTimeInZone(iso, tz) {
     return new Intl.DateTimeFormat('en-GB', {
@@ -69,7 +104,9 @@ if (app) {
       }).format(d);
     }
 
-    if (calGrid) calGrid.innerHTML = '<p class="col-span-7 text-xs text-[#5D5E5F] py-6 text-center">Loading available dates…</p>';
+    if (calGrid) {
+      calGrid.innerHTML = '<p class="col-span-7 text-xs text-[#5D5E5F] py-8 text-center flex items-center justify-center gap-2"><span class="zizo-spinner"></span> Checking available clinic slots…</p>';
+    }
 
     try {
       const res = await fetch(
@@ -90,24 +127,37 @@ if (app) {
 
     const firstDayWeekday = new Date(Date.UTC(state.currentYear, state.currentMonth - 1, 1)).getUTCDay();
     const daysInMonth = new Date(Date.UTC(state.currentYear, state.currentMonth, 0)).getUTCDate();
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
     let html = '';
     for (let i = 0; i < firstDayWeekday; i++) {
-      html += '<div></div>';
+      html += '<div aria-hidden="true"></div>';
     }
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = `${state.currentYear}-${String(state.currentMonth).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const available = state.availableDates.has(dateStr);
       const selected = state.selectedDate === dateStr;
-      let cls = 'h-11 rounded-[var(--radius)] text-sm tabular-nums transition-colors ';
+      const isToday = dateStr === todayStr;
+
+      let cls = 'relative h-11 rounded-[var(--radius)] text-sm tabular-nums transition-all focus-visible:outline-[#17645F] ';
       if (selected) {
-        cls += 'bg-[#17645F] text-[#FAF9F6] font-semibold';
+        cls += 'bg-[#17645F] text-[#FAF9F6] font-semibold shadow-sm';
       } else if (available) {
-        cls += 'bg-[#8BB2AF]/30 text-[#17191A] font-semibold hover:bg-[#8BB2AF]/55 border border-[#17645F]/30';
+        cls += 'bg-[#8BB2AF]/25 text-[#17191A] font-semibold hover:bg-[#8BB2AF]/50 border border-[#17645F]/30 cursor-pointer';
       } else {
-        cls += 'text-[#5D5E5F]/45 cursor-not-allowed';
+        cls += 'text-[#5D5E5F]/40 cursor-not-allowed opacity-60';
       }
-      html += `<button type="button" data-cal-date="${dateStr}" ${available ? '' : 'disabled'} class="${cls}" aria-label="${dateStr}${available ? ' available' : ' unavailable'}">${day}</button>`;
+
+      if (isToday && !selected) {
+        cls += ' ring-1 ring-[#17645F]';
+      }
+
+      const todayDot = isToday
+        ? `<span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full ${selected ? 'bg-[#FAF9F6]' : 'bg-[#17645F]'}" aria-hidden="true"></span>`
+        : '';
+
+      html += `<button type="button" data-cal-date="${dateStr}" ${available ? '' : 'disabled'} class="${cls}" aria-selected="${selected ? 'true' : 'false'}" aria-label="${dateStr}${isToday ? ' (today)' : ''}${available ? ' available' : ' unavailable'}">${day}${todayDot}</button>`;
     }
     calGrid.innerHTML = html;
 
@@ -131,8 +181,19 @@ if (app) {
   async function loadSlotsForDate(dateStr) {
     const list = document.getElementById('slots-list');
     const label = document.getElementById('selected-date-label');
-    if (label) label.textContent = `Available times on ${dateStr}`;
-    if (list) list.innerHTML = '<p class="col-span-2 text-xs text-[#5D5E5F]">Checking slots…</p>';
+    if (label) {
+      const d = new Date(dateStr + 'T12:00:00Z');
+      const dateFormatted = new Intl.DateTimeFormat('en-GB', {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      }).format(d);
+      label.textContent = `Available times on ${dateFormatted}`;
+    }
+    if (list) {
+      list.innerHTML = '<p class="col-span-2 text-xs text-[#5D5E5F] py-4 flex items-center gap-2"><span class="zizo-spinner"></span> Checking times…</p>';
+    }
 
     try {
       const res = await fetch(
@@ -141,7 +202,9 @@ if (app) {
       const data = await res.json();
       const slots = data.slots || [];
       if (slots.length === 0) {
-        if (list) list.innerHTML = '<p class="col-span-2 text-[length:var(--fs-small)] text-[#5D5E5F]">No slots remain on this date. Please choose another day.</p>';
+        if (list) {
+          list.innerHTML = '<p class="col-span-2 text-[length:var(--fs-small)] text-[#5D5E5F] py-4">No remaining slots on this date. Please choose another day from the calendar.</p>';
+        }
         return;
       }
 
@@ -150,8 +213,8 @@ if (app) {
           const localTime = formatTimeInZone(s.startAt, visitorTz);
           const watTime = s.clinicTime;
           const tzSub = visitorTz === 'Africa/Lagos' ? 'WAT' : `${watTime} WAT`;
-          return `<button type="button" data-slot-start="${s.startAt}" class="border border-[#E1E0DD] hover:border-[#17645F] hover:bg-[#8BB2AF]/15 rounded-[var(--radius)] p-2.5 text-left transition-colors min-h-[44px]">
-            <span class="block text-[length:var(--fs-small)] font-semibold text-[#17191A] tabular-nums">${localTime}</span>
+          return `<button type="button" data-slot-start="${s.startAt}" class="group border border-[#E1E0DD] hover:border-[#17645F] hover:bg-[#8BB2AF]/15 rounded-[var(--radius)] p-3 text-left transition-all min-h-[44px] focus-visible:outline-[#17645F]">
+            <span class="block text-[length:var(--fs-small)] font-semibold text-[#17191A] group-hover:text-[#17645F] tabular-nums">${localTime}</span>
             <span class="block text-xs text-[#5D5E5F] tabular-nums">${tzSub}</span>
           </button>`;
         })
@@ -165,7 +228,9 @@ if (app) {
         });
       });
     } catch {
-      if (list) list.innerHTML = '<p class="col-span-2 text-xs text-red-700">Could not load time slots. Please retry.</p>';
+      if (list) {
+        list.innerHTML = '<p class="col-span-2 text-xs text-red-700 py-4">Could not load time slots. Please refresh or retry.</p>';
+      }
     }
   }
 
@@ -175,14 +240,14 @@ if (app) {
     if (banner && state.selectedType && state.selectedSlot) {
       const dateTxt = formatDateInZone(state.selectedSlot.startAt, visitorTz);
       const localTxt = formatTimeInZone(state.selectedSlot.startAt, visitorTz);
-      banner.textContent = `${state.selectedType.name} (${state.selectedType.duration_min} min) · ${dateTxt} at ${localTxt} (${visitorTz})`;
+      banner.innerHTML = `<span class="font-semibold">${escapeClient(state.selectedType.name)}</span> (${Number(state.selectedType.duration_min)} min) · <span class="tabular-nums">${dateTxt} at ${localTxt} (${visitorTz})</span>`;
     }
     if (channelSel && state.selectedType) {
       const channels = Array.isArray(state.selectedType.channels)
         ? state.selectedType.channels
         : JSON.parse(state.selectedType.channels || '["Google Meet"]');
       channelSel.innerHTML = channels
-        .map((ch) => `<option value="${ch}">${ch}</option>`)
+        .map((ch) => `<option value="${escapeClient(ch)}">${escapeClient(ch)}</option>`)
         .join('');
     }
   }
@@ -231,6 +296,11 @@ if (app) {
     e.preventDefault();
     const errEl = document.getElementById('bk-error');
     if (!detailsForm.checkValidity()) {
+      const firstInvalid = detailsForm.querySelector(':invalid');
+      if (firstInvalid) {
+        firstInvalid.classList.add('input-error');
+        firstInvalid.focus();
+      }
       detailsForm.reportValidity();
       return;
     }
@@ -253,13 +323,33 @@ if (app) {
     if (errEl) errEl.textContent = '';
 
     const revBox = document.getElementById('booking-confirm-review');
-    if (revBox) {
+    if (revBox && state.selectedType && state.selectedSlot) {
       revBox.innerHTML = `
-        <p><strong>Consultation:</strong> ${state.selectedType.name} (${state.selectedType.duration_min} min)</p>
-        <p><strong>Date &amp; Time:</strong> ${formatDateInZone(state.selectedSlot.startAt, visitorTz)} at ${formatTimeInZone(state.selectedSlot.startAt, visitorTz)} (${visitorTz}) / ${state.selectedSlot.clinicTime} WAT</p>
-        <p><strong>Channel:</strong> ${state.details.channel}</p>
-        <p><strong>Name:</strong> ${state.details.name} (${state.details.audience})</p>
-        <p><strong>Contact:</strong> ${state.details.email} · ${state.details.phone}</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4 border-b border-[#E1E0DD]">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-[0.08em] text-[#5D5E5F]">Consultation Type</span>
+            <p class="font-display text-lg text-[#17191A] mt-0.5">${escapeClient(state.selectedType.name)}</p>
+            <p class="text-xs text-[#17645F] font-semibold tabular-nums">${Number(state.selectedType.duration_min)} minutes duration</p>
+          </div>
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-[0.08em] text-[#5D5E5F]">Scheduled Time</span>
+            <p class="text-sm font-semibold text-[#17191A] tabular-nums mt-0.5">${formatDateInZone(state.selectedSlot.startAt, visitorTz)}</p>
+            <p class="text-xs text-[#5D5E5F] tabular-nums">${formatTimeInZone(state.selectedSlot.startAt, visitorTz)} (${visitorTz}) · ${state.selectedSlot.clinicTime} WAT</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-[0.08em] text-[#5D5E5F]">Client Details</span>
+            <p class="text-sm font-medium text-[#17191A] mt-0.5">${escapeClient(state.details.name)}</p>
+            <p class="text-xs text-[#5D5E5F]">${escapeClient(state.details.audience)} · ${escapeClient(state.details.country)}</p>
+          </div>
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-[0.08em] text-[#5D5E5F]">Channel &amp; Contact</span>
+            <p class="text-xs text-[#17191A] mt-0.5">${escapeClient(state.details.email)}</p>
+            <p class="text-xs text-[#17191A]">${escapeClient(state.details.phone)}</p>
+            <span class="inline-block mt-1 text-xs px-2.5 py-0.5 rounded bg-[#8BB2AF]/20 text-[#17645F] font-medium">${escapeClient(state.details.channel)}</span>
+          </div>
+        </div>
       `;
     }
     goToStep(4);
@@ -269,7 +359,7 @@ if (app) {
   confirmBtn?.addEventListener('click', async () => {
     const errEl = document.getElementById('booking-submit-error');
     confirmBtn.disabled = true;
-    confirmBtn.textContent = 'Scheduling…';
+    confirmBtn.innerHTML = '<span class="zizo-spinner mr-2"></span> Scheduling your consultation…';
     if (errEl) errEl.textContent = '';
 
     try {
@@ -294,9 +384,14 @@ if (app) {
       window.location.href = `/book/confirmed/?token=${encodeURIComponent(data.manageToken)}`;
     } catch (err) {
       if (errEl) errEl.textContent = err.message;
-    } finally {
       confirmBtn.disabled = false;
       confirmBtn.textContent = 'Confirm Booking';
     }
   });
+
+  function escapeClient(s = '') {
+    const div = document.createElement('div');
+    div.textContent = String(s);
+    return div.innerHTML;
+  }
 }
