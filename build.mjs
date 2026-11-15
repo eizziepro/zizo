@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import Database from 'better-sqlite3';
 import { JSDOM } from 'jsdom';
 import createDOMPurify from 'dompurify';
@@ -526,6 +527,6 @@ ${rssItems}
   console.log(`[build.mjs] Built ${staticPaths.length + 7} pages into dist/`);
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   buildStaticSite();
 }
