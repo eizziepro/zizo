@@ -693,11 +693,82 @@ function initCookies() {
   });
 }
 
+function initProcessTabs() {
+  const tablist = document.querySelector('[role="tablist"][data-process-tablist]');
+  if (!tablist) return;
+
+  const tabs = Array.from(tablist.querySelectorAll('[data-stage-tab]'));
+  const panels = Array.from(document.querySelectorAll('[data-stage-panel]'));
+  if (!tabs.length || !panels.length) return;
+
+  function switchTab(index) {
+    tabs.forEach((tab, i) => {
+      const isSelected = i === index;
+      tab.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+      tab.setAttribute('tabindex', isSelected ? '0' : '-1');
+
+      const badge = tab.querySelector('.stage-tab-badge');
+
+      if (isSelected) {
+        tab.classList.add('bg-[#FAF9F6]', 'text-[#12504C]', 'font-semibold', 'shadow-sm', 'border-t-2', 'border-t-[#17645F]', 'border-x', 'border-[#E1E0DD]');
+        tab.classList.remove('text-[#5D5E5F]', 'hover:text-[#17191A]', 'hover:bg-[#FAF9F6]/50');
+        if (badge) {
+          badge.classList.add('bg-[#17645F]', 'text-[#FAF9F6]');
+          badge.classList.remove('bg-[#8BB2AF]/30', 'text-[#17191A]');
+        }
+      } else {
+        tab.classList.remove('bg-[#FAF9F6]', 'text-[#12504C]', 'font-semibold', 'shadow-sm', 'border-t-2', 'border-t-[#17645F]', 'border-x', 'border-[#E1E0DD]');
+        tab.classList.add('text-[#5D5E5F]', 'hover:text-[#17191A]', 'hover:bg-[#FAF9F6]/50');
+        if (badge) {
+          badge.classList.remove('bg-[#17645F]', 'text-[#FAF9F6]');
+          badge.classList.add('bg-[#8BB2AF]/30', 'text-[#17191A]');
+        }
+      }
+    });
+
+    panels.forEach((panel, i) => {
+      if (i === index) {
+        panel.classList.remove('hidden');
+        panel.classList.add('animate-fadeIn');
+      } else {
+        panel.classList.add('hidden');
+        panel.classList.remove('animate-fadeIn');
+      }
+    });
+
+    refreshIcons();
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => switchTab(index));
+
+    tab.addEventListener('keydown', (e) => {
+      let newIndex = null;
+      if (e.key === 'ArrowRight') {
+        newIndex = (index + 1) % tabs.length;
+      } else if (e.key === 'ArrowLeft') {
+        newIndex = (index - 1 + tabs.length) % tabs.length;
+      } else if (e.key === 'Home') {
+        newIndex = 0;
+      } else if (e.key === 'End') {
+        newIndex = tabs.length - 1;
+      }
+
+      if (newIndex !== null) {
+        e.preventDefault();
+        tabs[newIndex].focus();
+        switchTab(newIndex);
+      }
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   refreshIcons();
   initHeaderAndParallax();
   initMenus();
   initRevealObserver();
+  initProcessTabs();
   initFaqAccordions();
   initReviewsCarousel();
   initFiltersAndSearch();

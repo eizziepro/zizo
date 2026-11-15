@@ -392,13 +392,37 @@
 
 @media (prefers-reduced-motion: reduce) {
   .reveal,
-  .hero-enter {
+  .hero-enter,
+  .animate-fadeIn {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
     animation: none !important;
     transition: none !important;
   }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 220ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Header Transparent / Scrolled State */

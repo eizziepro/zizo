@@ -124,36 +124,81 @@ export function renderHomePage({ settings = {}, homeFaqs = [], reviews = [], pos
       step: '1',
       icon: 'message-square',
       title: 'Consultation',
-      copy: 'Speak privately with our team about your family goals and cross-border options.',
-      milestone: 'Private Strategy Session',
+      headline: 'Private discovery and customized family strategy',
+      duration: 'Week 1 · 1 to 2 Weeks',
+      copy: 'Speak privately with our clinical and legal coordination team about your family goals, medical history, budget, and cross-border options.',
+      safeguards: [
+        'Confidential 1-on-1 strategy session with a senior case director',
+        'Transparent breakdown of clinical timelines and total package costs',
+        'Direct preliminary review for cross-border parentage recognition',
+      ],
+      highlightBadge: 'Initial Strategy',
+      highlightMetric: '100% Confidential',
+      highlightDetail: 'Private consultation assessing your family building path with no upfront obligation.',
     },
     {
       step: '2',
       icon: 'users',
       title: 'Matching',
-      copy: 'Review carefully screened, anonymized profiles aligned with your preferences.',
-      milestone: 'Screened Anonymous Profiles',
+      headline: 'Thoroughly screened surrogates & profiled donors',
+      duration: 'Month 1–2 · 4 to 8 Weeks',
+      copy: 'Review carefully screened, anonymized profiles aligned with your cultural values, medical considerations, and personal preferences.',
+      safeguards: [
+        'Multi-stage psychological, medical, and background evaluations',
+        'Bespoke compatibility matching based on health records and values',
+        'Strict anonymous matching protocol protecting mutual dignity and privacy',
+      ],
+      highlightBadge: 'Screened Profiles',
+      highlightMetric: 'Clinical Vetting',
+      highlightDetail: 'Only medically cleared candidates with proven health records and psychological readiness.',
     },
     {
       step: '3',
       icon: 'scale',
-      title: 'Medical and Legal Coordination',
-      copy: 'Complete clinic evaluations and independent legal agreements before cycles begin.',
-      milestone: 'Cross-Border Contracts',
+      title: 'Medical & Legal Coordination',
+      headline: 'Dual legal counsel and synchronized clinic protocols',
+      duration: 'Month 2–3 · 3 to 6 Weeks',
+      copy: 'Complete clinic evaluations and independent legal agreements before cycles begin, protecting both intended parents and surrogates.',
+      safeguards: [
+        'Independent legal representation for intended parents and surrogates',
+        'Secure escrow management for all medical disbursements and living allowances',
+        'Direct IVF clinic liaison and laboratory synchronization',
+      ],
+      highlightBadge: 'Escrow Protected',
+      highlightMetric: 'Dual Legal Counsel',
+      highlightDetail: 'Binding cross-border contracts executed in full compliance before any embryo transfer.',
     },
     {
       step: '4',
       icon: 'heart-pulse',
-      title: 'Pregnancy and Support',
-      copy: 'Receive steady case-manager updates, obstetric coordination, and counseling care.',
-      milestone: '24/7 Clinical Care Oversight',
+      title: 'Pregnancy & Support',
+      headline: 'Continuous obstetric care and 24/7 case management',
+      duration: 'Month 4–12 · Full Term',
+      copy: 'Receive steady case-manager updates, obstetric coordination, milestone ultrasounds, and dedicated counseling care throughout gestation.',
+      safeguards: [
+        'Dedicated personal case manager providing scheduled milestone updates',
+        'Top-tier obstetric appointments, detailed ultrasound reports, and nutrition care',
+        'Ongoing emotional, nutritional, and psychological support for the surrogate',
+      ],
+      highlightBadge: 'Continuous Care',
+      highlightMetric: '24/7 Case Oversight',
+      highlightDetail: 'Direct access to your coordinator with documented milestone tracking throughout pregnancy.',
     },
     {
       step: '5',
       icon: 'baby',
-      title: 'Birth and Parentage',
-      copy: 'Prepare hospital and post-birth documentation smoothly as you welcome your child.',
-      milestone: 'Consular & Travel Papers',
+      title: 'Birth & Parentage',
+      headline: 'Hospital delivery and post-birth travel documentation',
+      duration: 'Delivery · Hospital Discharge',
+      copy: 'Prepare hospital and post-birth documentation smoothly as you welcome your child and prepare for safe departure.',
+      safeguards: [
+        'Coordinated hospital delivery protocols with private room accommodation',
+        'Expedited consular paperwork, legal parentage orders, and birth registration',
+        'Seamless departure coordination to return home safely with your newborn',
+      ],
+      highlightBadge: 'Global Recognition',
+      highlightMetric: 'Parentage Secured',
+      highlightDetail: 'Comprehensive legal documentation and passport processing coordinated for your child.',
     },
   ];
 
@@ -375,9 +420,10 @@ ${header}
     </div>
   </section>
 
-  <!-- SECTION 5: PROCESS -->
-  <section class="zizo-section bg-[#E1E0DD] text-[#17191A] relative overflow-hidden">
-    <div class="zizo-container space-y-[var(--space-lg)]">
+  <!-- SECTION 5: PROCESS (INTERACTIVE STAGE SPOTLIGHT) -->
+  <section class="zizo-section bg-[#E1E0DD] text-[#17191A] relative">
+    <div class="zizo-container space-y-[var(--space-md)]">
+      <!-- Section Header -->
       <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 reveal">
         <div class="max-w-2xl">
           <p class="text-[length:var(--fs-small)] uppercase tracking-[0.14em] text-[#5D5E5F] font-medium mb-2">How It Works</p>
@@ -390,46 +436,106 @@ ${header}
         </a>
       </div>
 
-      <!-- Connected Pipeline Track -->
-      <div class="relative">
-        <!-- Connecting Track Line (Desktop) -->
-        <div class="hidden lg:block absolute top-7 left-12 right-12 h-0.5 bg-[#8BB2AF]/35 z-0" aria-hidden="true"></div>
-
-        <!-- Vertical Connecting Track (Mobile/Tablet) -->
-        <div class="lg:hidden absolute top-8 bottom-8 left-6 sm:left-7 w-0.5 bg-[#8BB2AF]/40 z-0" aria-hidden="true"></div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8 lg:gap-4 relative z-10">
+      <!-- Interactive Stage Spotlight Container -->
+      <div class="reveal space-y-0">
+        <!-- Stage Tabs Header -->
+        <div role="tablist" data-process-tablist aria-label="Surrogacy and donor journey stages" class="flex items-center gap-1.5 overflow-x-auto pb-0 border-b border-[#C8C7C3] scrollbar-none">
           ${processSteps
             .map(
-              (st) => `<div class="reveal flex flex-row lg:flex-col gap-4 sm:gap-5 items-start group">
-            <!-- Node Marker -->
-            <div class="shrink-0 relative z-10 flex lg:justify-center w-12 sm:w-14">
-              <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#FAF9F6] border-2 border-[#8BB2AF] shadow-sm flex items-center justify-center text-[#17645F] group-hover:border-[#17645F] group-hover:bg-[#17645F] group-hover:text-[#FAF9F6] transition-all duration-300">
-                <i data-lucide="${st.icon}" class="w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 group-hover:scale-110"></i>
-              </div>
-            </div>
+              (st, idx) => `<button
+            type="button"
+            role="tab"
+            id="stage-tab-${idx}"
+            aria-selected="${idx === 0 ? 'true' : 'false'}"
+            aria-controls="stage-panel-${idx}"
+            data-stage-tab="${idx}"
+            tabindex="${idx === 0 ? '0' : '-1'}"
+            class="stage-tab group relative px-4 sm:px-5 py-3.5 rounded-t-xl transition-all duration-200 flex items-center gap-2.5 shrink-0 whitespace-nowrap text-left ${
+              idx === 0
+                ? 'bg-[#FAF9F6] text-[#12504C] font-semibold shadow-sm border-t-2 border-t-[#17645F] border-x border-[#E1E0DD]'
+                : 'text-[#5D5E5F] hover:text-[#17191A] hover:bg-[#FAF9F6]/50'
+            }"
+          >
+            <span class="stage-tab-badge w-6 h-6 rounded-full flex items-center justify-center text-xs tabular-nums font-semibold transition-colors ${
+              idx === 0 ? 'bg-[#17645F] text-[#FAF9F6]' : 'bg-[#8BB2AF]/30 text-[#17191A]'
+            }">
+              0${st.step}
+            </span>
+            <span class="text-xs sm:text-sm tracking-tight">${escapeHtml(st.title)}</span>
+          </button>`
+            )
+            .join('')}
+        </div>
 
-            <!-- Card Body -->
-            <div class="flex-1 bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-5 sm:p-6 flex flex-col justify-between gap-4 transition-all duration-300 hover:shadow-md hover:border-[#8BB2AF]/70 min-h-[250px] w-full">
-              <div class="space-y-3">
-                <div class="flex items-center justify-between gap-2">
-                  <span class="inline-flex items-center px-2 py-0.5 rounded bg-[#8BB2AF]/20 text-[#12504C] text-[11px] font-semibold tabular-nums uppercase tracking-wider">Step 0${st.step}</span>
-                  <span class="text-[11px] font-medium text-[#5D5E5F] uppercase tracking-wider">Phase 0${st.step}</span>
+        <!-- Stage Spotlight Panels -->
+        <div class="relative bg-[#FAF9F6] border-x border-b border-[#E1E0DD] rounded-b-2xl shadow-sm overflow-hidden">
+          ${processSteps
+            .map(
+              (st, idx) => `<div
+            role="tabpanel"
+            id="stage-panel-${idx}"
+            aria-labelledby="stage-tab-${idx}"
+            data-stage-panel="${idx}"
+            class="stage-panel p-6 sm:p-8 lg:p-10 ${idx === 0 ? '' : 'hidden'}"
+          >
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+              <!-- Left: Editorial Guidance & Safeguards -->
+              <div class="lg:col-span-7 space-y-5">
+                <div class="flex flex-wrap items-center gap-2.5">
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#8BB2AF]/25 text-[#12504C] text-xs font-semibold uppercase tracking-wider tabular-nums">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#17645F]"></span>
+                    Phase 0${st.step} of 05
+                  </span>
+                  <span class="px-3 py-1 rounded-full bg-[#E1E0DD] text-[#5D5E5F] text-xs font-medium">${escapeHtml(st.duration)}</span>
                 </div>
-                <h3 class="display text-[length:var(--fs-h3)] leading-snug text-[#17191A] group-hover:text-[#17645F] transition-colors">${escapeHtml(st.title)}</h3>
-                <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(st.copy)}</p>
-              </div>
 
-              <div class="pt-3 border-t border-[#E1E0DD] space-y-2">
-                <div class="inline-flex items-center gap-1.5 text-xs text-[#12504C] font-medium">
-                  <i data-lucide="check" class="w-3.5 h-3.5 text-[#17645F] shrink-0"></i>
-                  <span>${escapeHtml(st.milestone)}</span>
+                <div class="space-y-2">
+                  <h3 class="display text-[length:var(--fs-h2)] leading-tight text-[#17191A]">${escapeHtml(st.headline)}</h3>
+                  <p class="text-[length:var(--fs-body)] text-[#2E3031] leading-relaxed max-w-2xl">${escapeHtml(st.copy)}</p>
                 </div>
-                <div>
-                  <a href="/intended-parents/how-it-works/" class="inline-flex items-center gap-1 text-xs font-semibold text-[#17645F] hover:text-[#12504C] transition-colors">
-                    <span>Learn more</span>
-                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1"></i>
+
+                <div class="pt-2 space-y-2.5">
+                  <p class="text-xs font-semibold uppercase tracking-wider text-[#5D5E5F]">Key Safeguards in this Stage:</p>
+                  <ul class="space-y-2 text-[length:var(--fs-small)] text-[#2E3031]">
+                    ${st.safeguards
+                      .map(
+                        (item) => `<li class="flex items-start gap-2.5">
+                      <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
+                      <span>${escapeHtml(item)}</span>
+                    </li>`
+                      )
+                      .join('')}
+                  </ul>
+                </div>
+
+                <div class="pt-3 flex flex-wrap items-center gap-4 border-t border-[#E1E0DD]">
+                  <a href="/book/" class="btn-primary !py-2.5 !px-4 text-xs sm:text-sm">Start with Consultation</a>
+                  <a href="/intended-parents/how-it-works/" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline underline-offset-4 inline-flex items-center gap-1.5">
+                    <span>Full process guide</span>
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                   </a>
+                </div>
+              </div>
+
+              <!-- Right: Bento Spotlight Card -->
+              <div class="lg:col-span-5">
+                <div class="bg-[#FAF9F6] border border-[#E1E0DD] rounded-2xl p-6 sm:p-7 space-y-5 shadow-sm relative overflow-hidden bg-gradient-to-br from-[#FAF9F6] to-[#E1E0DD]/40">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs uppercase tracking-wider font-semibold text-[#12504C] bg-[#8BB2AF]/25 px-3 py-1 rounded-full">${escapeHtml(st.highlightBadge)}</span>
+                    <div class="w-10 h-10 rounded-full bg-[#17645F] text-[#FAF9F6] flex items-center justify-center shadow-sm">
+                      <i data-lucide="${st.icon}" class="w-5 h-5"></i>
+                    </div>
+                  </div>
+
+                  <div class="space-y-1.5">
+                    <div class="font-display text-2xl font-medium text-[#17191A]">${escapeHtml(st.highlightMetric)}</div>
+                    <p class="text-[length:var(--fs-small)] text-[#5D5E5F] leading-relaxed">${escapeHtml(st.highlightDetail)}</p>
+                  </div>
+
+                  <div class="pt-4 border-t border-[#E1E0DD] flex items-center gap-2.5 text-xs text-[#2E3031]">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-[#17645F] shrink-0"></i>
+                    <span>Physician &amp; attorney coordinated at every milestone.</span>
+                  </div>
                 </div>
               </div>
             </div>
