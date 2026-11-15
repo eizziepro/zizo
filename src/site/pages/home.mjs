@@ -228,8 +228,8 @@ ${header}
         <h1 class="hero-enter hero-delay-2 display text-[#FAF9F6] max-w-3xl">
           Every family deserves a path to parenthood.
         </h1>
-        <p class="hero-enter hero-delay-3 text-[length:var(--fs-body)] text-[#FAF9F6]/90 max-w-xl leading-relaxed">
-          A safe fertility brand that creates families across borders, with expert legal and medical coordination and compassionate, personal care at every step.
+        <p class="hero-enter hero-delay-3 text-[length:var(--fs-body)] text-[#FAF9F6]/90 max-w-3xl leading-relaxed">
+          A safe fertility brand that creates families across borders, with expert legal<br class="hidden sm:inline" /> and medical coordination and compassionate, personal care at every step.
         </p>
         <div class="hero-enter hero-delay-4 flex items-center gap-3 flex-wrap sm:flex-nowrap pt-1">
           <a href="/book/" class="btn-primary">Book Consultation</a>
