@@ -370,7 +370,8 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
         <ul class="space-y-2.5 text-[length:var(--fs-small)]">
           <li><a href="/services/surrogacy/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Surrogacy</a></li>
           <li><a href="/services/ovum-donation/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Donation</a></li>
-          <li><a href="/services/personalized-matching/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Matching &amp; IVF Support</a></li>
+          <li><a href="/services/personalized-matching/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Matching</a></li>
+          <li><a href="/services/counseling-ivf-support/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">IVF Support</a></li>
         </ul>
       </div>
 
