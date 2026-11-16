@@ -118,12 +118,11 @@ ${renderHeader({ isHome: false })}
         <!-- Bento 1: Legal & Escrow Shield (Hero Card, Span 7) -->
         <div class="lg:col-span-7 bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-7 md:p-8 space-y-6 reveal flex flex-col justify-between shadow-sm hover:border-[#8BB2AF]/60 transition-colors">
           <div class="space-y-4">
-            <div class="flex items-center justify-between gap-2">
+            <div>
               <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20">
                 <i data-lucide="shield-check" class="w-3.5 h-3.5 text-[#17645F]"></i>
                 Ethical Protection
               </span>
-              <span class="text-xs font-semibold text-[#8BB2AF] tracking-widest uppercase">Pillar 01</span>
             </div>
             <h3 class="display text-[length:var(--fs-h3)] text-[#17191A] leading-snug">Autonomous Legal Counsel &amp; Protected Escrow</h3>
             <p class="text-[length:var(--fs-body)] text-[#2E3031] leading-relaxed">
@@ -151,12 +150,11 @@ ${renderHeader({ isHome: false })}
         <!-- Bento 2: Clinical Stewardship (Span 5) -->
         <div class="lg:col-span-5 bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-7 md:p-8 space-y-6 reveal flex flex-col justify-between shadow-sm hover:border-[#8BB2AF]/60 transition-colors">
           <div class="space-y-4">
-            <div class="flex items-center justify-between gap-2">
+            <div>
               <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20">
                 <i data-lucide="stethoscope" class="w-3.5 h-3.5 text-[#17645F]"></i>
                 Physician-Led
               </span>
-              <span class="text-xs font-semibold text-[#8BB2AF] tracking-widest uppercase">Pillar 02</span>
             </div>
             <h3 class="display text-[length:var(--fs-h3)] text-[#17191A] leading-snug">12+ Years Clinical Oversight</h3>
             <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">
@@ -178,12 +176,11 @@ ${renderHeader({ isHome: false })}
         <!-- Bento 3: Cross-Border Concierge (Span 5) -->
         <div class="lg:col-span-5 bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-7 md:p-8 space-y-6 reveal flex flex-col justify-between shadow-sm hover:border-[#8BB2AF]/60 transition-colors">
           <div class="space-y-4">
-            <div class="flex items-center justify-between gap-2">
+            <div>
               <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20">
                 <i data-lucide="globe" class="w-3.5 h-3.5 text-[#17645F]"></i>
                 Global Compliance
               </span>
-              <span class="text-xs font-semibold text-[#8BB2AF] tracking-widest uppercase">Pillar 03</span>
             </div>
             <h3 class="display text-[length:var(--fs-h3)] text-[#17191A] leading-snug">Consular &amp; Legal Homecoming</h3>
             <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">
@@ -205,12 +202,11 @@ ${renderHeader({ isHome: false })}
         <!-- Bento 4: Zero Middlemen & Direct Support (Span 7) -->
         <div class="lg:col-span-7 bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-7 md:p-8 space-y-6 reveal flex flex-col justify-between shadow-sm hover:border-[#8BB2AF]/60 transition-colors">
           <div class="space-y-4">
-            <div class="flex items-center justify-between gap-2">
+            <div>
               <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20">
                 <i data-lucide="heart-handshake" class="w-3.5 h-3.5 text-[#17645F]"></i>
                 Direct Stewardship
               </span>
-              <span class="text-xs font-semibold text-[#8BB2AF] tracking-widest uppercase">Pillar 04</span>
             </div>
             <h3 class="display text-[length:var(--fs-h3)] text-[#17191A] leading-snug">Zero Middlemen, Full Human Care</h3>
             <p class="text-[length:var(--fs-body)] text-[#2E3031] leading-relaxed">
