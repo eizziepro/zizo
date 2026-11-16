@@ -867,6 +867,70 @@ function initHomeFaqInteractive() {
   });
 }
 
+function initCostEstimateModal() {
+  const modal = document.getElementById('cost-estimate-modal');
+  if (!modal) return;
+
+  const openBtns = document.querySelectorAll('[data-open-estimate-modal]');
+  const closeBtns = modal.querySelectorAll('[data-modal-close]');
+  const programmeSelect = modal.querySelector('select[name="preferred_region"]');
+  let lastFocused = null;
+
+  function openModal(programmeName) {
+    lastFocused = document.activeElement;
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    if (programmeName && programmeSelect) {
+      for (const opt of programmeSelect.options) {
+        if (
+          opt.value.toLowerCase().includes(programmeName.toLowerCase()) ||
+          programmeName.toLowerCase().includes(opt.value.toLowerCase())
+        ) {
+          programmeSelect.value = opt.value;
+          break;
+        }
+      }
+    }
+    const firstInput = modal.querySelector('input:not([type="hidden"])');
+    setTimeout(() => firstInput?.focus(), 60);
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+    if (lastFocused && typeof lastFocused.focus === 'function') {
+      lastFocused.focus();
+    }
+  }
+
+  openBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const prog = btn.dataset.programme || '';
+      openModal(prog);
+    });
+  });
+
+  closeBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeModal();
+    });
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   refreshIcons();
   initHeaderAndParallax();
@@ -880,4 +944,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initTocScrollspy();
   initForms();
   initCookies();
+  initCostEstimateModal();
 });
