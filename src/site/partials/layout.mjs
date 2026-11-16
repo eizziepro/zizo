@@ -361,6 +361,7 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
         <ul class="space-y-2.5 text-[length:var(--fs-small)]">
           <li><a href="/about/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">About Us</a></li>
           <li><a href="/intended-parents/how-it-works/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">How It Works</a></li>
+          <li><a href="/resources/stories-and-reviews/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Stories</a></li>
           <li><a href="/contact/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Contact Us</a></li>
         </ul>
       </div>
@@ -382,7 +383,6 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
           <li><a href="/surrogates-donors/become-an-egg-donor/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Egg Donor</a></li>
           <li><a href="/resources/blog/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Our Blog</a></li>
           <li><a href="/resources/faq/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">FAQs</a></li>
-          <li><a href="/resources/stories-and-reviews/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Stories</a></li>
         </ul>
       </div>
     </div>
