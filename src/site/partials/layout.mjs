@@ -269,12 +269,16 @@ export function renderInteriorHero({ breadcrumbs = [], title, intro, note = '' }
     })
     .join('<span aria-hidden="true" class="mx-2 text-[#5D5E5F]">/</span>');
 
+  const safeTitle = escapeHtml(title)
+    .replace(/&lt;br\s*class=(?:&quot;|")([^&"]+)(?:&quot;|")\s*\/?&gt;/gi, '<br class="$1" />')
+    .replace(/&lt;br\s*\/?&gt;/gi, '<br />');
+
   return `<section class="pt-32 pb-12 border-b border-[#E1E0DD] bg-[#FAF9F6]">
   <div class="zizo-container">
     <nav aria-label="Breadcrumb" class="text-[length:var(--fs-small)] mb-4">
       ${crumbsHtml}
     </nav>
-    <h1 class="display max-w-3xl mb-4">${escapeHtml(title)}</h1>
+    <h1 class="display max-w-3xl mb-4">${safeTitle}</h1>
     <p class="text-[length:var(--fs-body)] text-[#2E3031] max-w-2xl">${escapeHtml(intro)}</p>
     ${note ? `<p class="mt-4 text-[length:var(--fs-small)] text-[#5D5E5F]">${escapeHtml(note)}</p>` : ''}
   </div>
