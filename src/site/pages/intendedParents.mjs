@@ -67,7 +67,6 @@ ${renderHeader({ isHome: false })}
     title: 'A clear route to parenthood.',
     intro:
       'Step-by-step coordination designed to keep medical, legal, and emotional milestones calm and predictable.',
-    note: 'Phase durations are confirmed per individual clinic and legal pathway during consultation.',
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
