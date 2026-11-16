@@ -217,7 +217,7 @@ ${renderHeader({ isHome: false })}
     ],
     title: 'Programs across five global regions.',
     intro:
-      'Thoughtful cross-border coordination tailored to Nigeria, Europe, Asia, Canada, and the United States.',
+      'Thoughtful cross-border coordination tailored to Nigeria, Europe, Asia, Canada, and the United States for seamless, trusted family building.',
   })}
 
   <section class="zizo-section bg-[#FAF9F6]" id="cross-border">
