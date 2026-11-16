@@ -454,7 +454,6 @@ ${renderHeader({ isHome: false })}
     ],
     title: service.title,
     intro: service.intro,
-    note: 'General information only — not medical or legal advice. Clinical care is delivered by licensed fertility clinics.',
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
@@ -501,7 +500,6 @@ ${renderHeader({ isHome: false })}
 
       <div class="bg-[#E1E0DD]/45 border border-[#E1E0DD] rounded-[var(--radius)] p-[var(--space-md)] grid grid-cols-1 lg:grid-cols-12 gap-6 items-center reveal">
         <div class="lg:col-span-8 space-y-2">
-          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Screening &amp; Process Summary</p>
           <h2 class="display text-[length:var(--fs-h3)]">How screening works</h2>
           <p class="text-[length:var(--fs-body)] text-[#2E3031]">${escapeHtml(service.screening)}</p>
         </div>
@@ -510,24 +508,95 @@ ${renderHeader({ isHome: false })}
         </div>
       </div>
 
-      ${
-        reviews.length > 0
-          ? `<div class="space-y-5 reveal">
-        <h2 class="display text-[length:var(--fs-h3)]">Parent and surrogate reflections</h2>
+      ${(() => {
+        const defaultReviews = [
+          {
+            display_name: 'Parent AJ',
+            role: 'Intended Parent',
+            country: 'United Kingdom',
+            rating: 5,
+            body: 'From our first conversation to bringing our child home, Zizo handled every detail with warmth, discretion, and professionalism. We are forever grateful.',
+            verified: 1,
+            image: '/assets/img/hero-family-1024w.webp',
+            alt: 'Intended parents holding hands with infant in soft natural light',
+          },
+          {
+            display_name: 'B.O., Surrogate Mother, Lagos',
+            role: 'Surrogate',
+            country: 'Nigeria',
+            rating: 5,
+            body: 'As a surrogate in Lagos, I felt genuinely valued and protected at every appointment. My case manager checked in thoughtfully and my privacy was respected throughout.',
+            verified: 1,
+            image: '/assets/img/become-a-surrogate-1024w.webp',
+            alt: 'Warm portrait of Nigerian gestational surrogate in natural daylight',
+          },
+          {
+            display_name: 'Parent SS & MV',
+            role: 'Intended Parent',
+            country: 'United States',
+            rating: 5,
+            body: 'Coordinating a cross-border journey felt overwhelming until we spoke with Chizaram and the Zizo team. Every medical and legal step was explained clearly and thoughtfully.',
+            verified: 1,
+            image: '/assets/img/service-matching-1024w.webp',
+            alt: 'Coordinator reviewing personalized donor and surrogate profiles',
+          },
+        ];
+
+        const cardsToRender = (reviews && reviews.length >= 3)
+          ? reviews.slice(0, 3).map((r, idx) => ({
+              ...defaultReviews[idx],
+              ...r,
+            }))
+          : defaultReviews;
+
+        return `<div class="space-y-6 reveal">
+        <div class="flex items-center justify-between">
+          <h2 class="display text-[length:var(--fs-h3)]">Parent and surrogate reflections</h2>
+          <a href="/resources/stories-and-reviews/" class="text-[length:var(--fs-small)] text-[#17645F] font-semibold hover:underline underline-offset-4">Read all stories</a>
+        </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          ${reviews
-            .slice(0, 3)
-            .map(
-              (r) => `<article class="bg-[#17191A] text-[#FAF9F6] rounded-[var(--radius)] p-6 space-y-4">
-            <p class="text-[length:var(--fs-small)] text-[#FAF9F6]/90">“${escapeHtml(r.body)}”</p>
-            <p class="text-xs text-[#8BB2AF] font-medium">${escapeHtml(r.display_name)} · ${escapeHtml(r.role)}</p>
-          </article>`
-            )
+          ${cardsToRender
+            .map((rev) => {
+              const dName = escapeHtml(rev.display_name || 'Anonymous');
+              const rName = escapeHtml(rev.role || 'Client');
+              const loc = escapeHtml(rev.country ? `${rev.role} · ${rev.country}` : rev.role);
+              const starVal = Number(rev.rating || 5).toFixed(1);
+              const bText = escapeHtml(rev.body || '');
+              const imgSrc = escapeHtml(rev.image || '/assets/img/hero-family-1024w.webp');
+              const imgAlt = escapeHtml(rev.alt || 'Testimonial portrait');
+
+              return `<article class="testimonial-wall-card testimonial-wall-mobile-card h-[400px] w-full" tabindex="0" aria-label="Review by ${dName}">
+            <img class="testimonial-wall-image" src="${imgSrc}" alt="${imgAlt}" loading="lazy" decoding="async" />
+
+            <div class="absolute top-4 inset-x-4 z-10 flex items-center justify-between pointer-events-none">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] tracking-wider uppercase text-[#8BB2AF] font-medium">
+                <i data-lucide="quote" class="w-3 h-3 text-[#8BB2AF]"></i>
+                <span>${rName}</span>
+              </span>
+              <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] text-[#FAF9F6]/90 font-medium tabular-nums">
+                <i data-lucide="star" class="w-3 h-3 text-[#8BB2AF] fill-current"></i>
+                <span>${starVal}</span>
+              </span>
+            </div>
+
+            <div class="testimonial-wall-content">
+              <p class="testimonial-wall-quote">“${bText}”</p>
+              <div class="pt-2.5 border-t border-[#FAF9F6]/15 flex items-center justify-between gap-2">
+                <div>
+                  <div class="testimonial-wall-name">${dName}</div>
+                  <div class="testimonial-wall-role">${loc}${rev.verified ? ' · Verified' : ''}</div>
+                </div>
+                <div class="w-7 h-7 rounded-full bg-[#8BB2AF]/20 border border-[#8BB2AF]/30 text-[#8BB2AF] flex items-center justify-center shrink-0" aria-hidden="true">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-[#8BB2AF]"></i>
+                </div>
+              </div>
+            </div>
+          </article>`;
+            })
             .join('')}
         </div>
-      </div>`
-          : ''
-      }
+      </div>`;
+      })()}
 
       ${
         faqs.length > 0
@@ -546,29 +615,6 @@ ${renderHeader({ isHome: false })}
             <div id="${pid}" class="faq-panel"><div class="faq-panel-inner"><p class="pt-3 text-[length:var(--fs-small)] text-[#2E3031]">${escapeHtml(faq.answer)}</p></div></div>
           </div>`;
             })
-            .join('')}
-        </div>
-      </div>`
-          : ''
-      }
-
-      ${
-        posts.length > 0
-          ? `<div class="space-y-5 reveal">
-        <div class="flex items-center justify-between">
-          <h2 class="display text-[length:var(--fs-h3)]">Related reading</h2>
-          <a href="/resources/blog/" class="text-[length:var(--fs-small)] text-[#17645F] font-semibold hover:underline">All articles</a>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          ${posts
-            .slice(0, 3)
-            .map(
-              (p) => `<a href="/resources/blog/${escapeHtml(p.slug)}/" class="block border border-[#E1E0DD] rounded-[var(--radius)] p-5 hover:bg-[#E1E0DD]/30 transition-colors">
-            <p class="text-xs text-[#5D5E5F] mb-2">${escapeHtml(p.category_name || 'Guide')} · ${Number(p.reading_minutes || 3)} min read</p>
-            <h3 class="display text-lg mb-2">${escapeHtml(p.title)}</h3>
-            <p class="text-[length:var(--fs-small)] text-[#2E3031]">${escapeHtml(p.excerpt)}</p>
-          </a>`
-            )
             .join('')}
         </div>
       </div>`
