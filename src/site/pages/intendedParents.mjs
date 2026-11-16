@@ -275,63 +275,115 @@ ${renderFooter({ settings })}`;
 }
 
 export function renderCostsPage({ settings = {}, faqs = [], siteUrl = '' }) {
-  const includedItems = [
-    'Coordination and dedicated case-manager support from consultation to birth',
-    'Surrogate or donor recruitment, screening coordination, and anonymized profiling',
-    'Clinic scheduling and laboratory cycle-support coordination',
-    'Referrals to independent reproductive legal counsel',
-    'Milestone compensation administration and transparent escrow reporting',
+  const programmes = [
+    {
+      id: 'nigeria-surrogacy',
+      name: 'Nigeria Surrogacy Programme',
+      badge: 'Most Selected · Domestic & Diaspora',
+      isPopular: true,
+      tagline: 'Comprehensive gestational matching, clinical oversight, independent legal counsel, and prenatal case management within Nigeria.',
+      audience: 'Intended parents living in Nigeria or diaspora families seeking domestic coordination with world-class clinical care.',
+      programme: 'Nigeria Surrogacy',
+      inclusions: [
+        'Vetted gestational surrogate matching with obstetric, infectious disease and psychological clearance',
+        'Independent legal representation for both intended parents and gestational carrier',
+        'Dedicated third-party escrow account with verified clinical milestone disbursements',
+        'Dedicated case manager overseeing appointments, nutrition, living allowances, and hospital logistics',
+        'Hospital delivery coordination and high court legal parentage decree filings',
+        'Emergency 24/7 case management and contingency reserve oversight',
+      ],
+      stages: [
+        { phase: 'Phase 1', title: 'Consultation & Match Vetting', desc: 'Medical prerequisites review, non-identifying surrogate profile matching, and clinical obstetric clearance.' },
+        { phase: 'Phase 2', title: 'Independent Legal Contracts', desc: 'Surrogate and parent agreements drafted by separate independent reproductive attorneys; escrow account established.' },
+        { phase: 'Phase 3', title: 'Pregnancy Escrow Milestones', desc: 'Confirmed heartbeat milestone release, monthly living stipends, maternity allowances, and ongoing ultrasound monitoring.' },
+        { phase: 'Phase 4', title: 'Hospital Delivery & Parentage', desc: 'Private delivery room logistics, final milestone release, certified birth certificate, and court parentage orders.' },
+      ],
+      clinicNote: 'Clinical IVF laboratory cycles and medications are itemised and billed directly at licensed clinic cost with zero agency surcharges.',
+    },
+    {
+      id: 'cross-border',
+      name: 'Cross-Border Programme Planning',
+      badge: 'Global Compliance · UK, US, Canada, Europe, Asia',
+      isPopular: false,
+      tagline: 'Bespoke international coordination managing multi-jurisdictional legalities, certified DNA verification, and international consular homecoming.',
+      audience: 'International intended parents and overseas diaspora requiring synchronized immigration, passport, and court parentage documentation.',
+      programme: 'Cross-Border Planning',
+      inclusions: [
+        'Dual-jurisdiction reproductive legal counsel in Nigeria and intended parents’ home country',
+        'Consular birth certificate & passport documentation (CRBA, UK emergency travel document, etc.)',
+        'Embassy-approved chain-of-custody DNA testing and hospital discharge coordination',
+        'Bespoke travel concierge, accredited accommodation guidance, and arrival planning in Lagos',
+        'Coordination with embassy consular officers and high court legal parentage decrees',
+        'Continuous cross-border case management from embryo shipment to safe international arrival',
+      ],
+      stages: [
+        { phase: 'Phase 1', title: 'Dual-Jurisdiction Legal Review', desc: 'Conflict-of-law analysis and tailored roadmap ensuring lawful parentage recognition in your home country.' },
+        { phase: 'Phase 2', title: 'Embryo Transfer & Escrow Setup', desc: 'Embryo transport or creation coordination, surrogate cycle preparation, and international escrow funding.' },
+        { phase: 'Phase 3', title: 'Prenatal Care & Pre-Birth Filings', desc: 'Remote ultrasound sharing, monthly case reports, and drafting pre-birth court declarations.' },
+        { phase: 'Phase 4', title: 'Consular Passport & Homecoming', desc: 'Chain-of-custody DNA test, expedited birth certificate legalization, embassy appointment, and flight departure.' },
+      ],
+      clinicNote: 'Embassy filing fees, consular expedited processing, and certified DNA laboratory fees are outlined transparently before signing.',
+    },
+    {
+      id: 'donor-coordination',
+      name: 'Donor Coordination Pathway',
+      badge: 'Anonymous Matching · Verified Donors',
+      isPopular: false,
+      tagline: 'Curated non-identifying egg donor matching with multi-tier health and genetic screening, clinic synchronisation, and airtight parentage contracts.',
+      audience: 'Intended parents seeking verified, healthy ovum donation alongside IVF or gestational surrogacy.',
+      programme: 'Donor Coordination',
+      inclusions: [
+        'Curated non-identifying egg donor portfolio presentation tailored to your personal and physical preferences',
+        'Rigorous medical evaluation: infectious disease, genetic carrier screening, and AMH ovarian reserve testing',
+        'Clinic cycle synchronization and donor stimulation medication protocol management',
+        'Independent psychological counseling and formal informed consent documentation',
+        'Airtight donor contract execution ensuring permanent relinquishment of all parental rights',
+        'Dedicated donor coordinator ensuring donor wellbeing and cycle scheduling adherence',
+      ],
+      stages: [
+        { phase: 'Phase 1', title: 'Curated Profile Selection', desc: 'Review non-identifying donor profiles containing detailed health history, educational background, and physical traits.' },
+        { phase: 'Phase 2', title: 'Comprehensive Clinical Clearance', desc: 'Hormonal evaluations, ovarian reserve ultrasound, genetic carrier testing, and independent counseling.' },
+        { phase: 'Phase 3', title: 'Legal Contracts & Escrow', desc: 'Execution of anonymous legal agreements; donor compensation allowances placed securely in escrow.' },
+        { phase: 'Phase 4', title: 'Ovarian Stimulation & Retrieval', desc: 'Medication management, follicular monitoring, and synchronized egg retrieval with your partner clinic.' },
+      ],
+      clinicNote: 'IVF clinic laboratory fertilization, ICSI, and embryo freezing are billed directly by certified embryology laboratories.',
+    },
   ];
 
-  const tiers = [
+  const pillars = [
     {
-      name: 'Donor Coordination Pathway',
-      badge: 'Anonymous Matching',
-      audience: 'Intended parents seeking verified ovum donation alongside IVF or surrogacy',
-      estimate: 'Itemised Milestone Estimate',
-      estimateSub: 'Direct clinic & laboratory pricing',
-      notes: 'Curated donor matching, multi-tier screening, clinic synchronisation, and legal parentage contracts.',
-      features: [
-        'Curated non-identifying donor profile presentation',
-        'Infectious disease, genetic & ovarian reserve testing',
-        'Clinic cycle scheduling & medication management',
-        'Independent counseling & informed consent',
-      ],
-      programme: 'Donor Coordination',
-      isPopular: false,
+      icon: 'shield-check',
+      title: 'Dedicated Escrow Safeguards',
+      desc: 'All surrogate compensation and medical contingency reserves are held securely in independent third-party escrow and never co-mingled with operating agency funds.',
     },
     {
-      name: 'Nigeria Surrogacy Programme',
-      badge: 'Most Selected',
-      audience: 'Local and diaspora intended parents coordinating domestically within Nigeria',
-      estimate: 'Itemised Milestone Estimate',
-      estimateSub: 'Independent escrow protection',
-      notes: 'Comprehensive gestational matching, clinical oversight, independent legal counsel, and prenatal case management.',
-      features: [
-        'Vetted surrogate selection with obstetric & psychological clearance',
-        'Independent legal representation for intended parents and surrogate',
-        'Dedicated escrow account with verified milestone releases',
-        'Dedicated case manager from match to postpartum care',
-      ],
-      programme: 'Nigeria Surrogacy',
-      isPopular: true,
+      icon: 'sparkles',
+      title: 'Zero Clinical Markups',
+      desc: 'Partner fertility clinic laboratory fees, IVF cycles, and donor medications are billed directly at net clinic cost with full itemisation and zero agency markups.',
     },
     {
-      name: 'Cross-Border Programme Planning',
-      badge: 'Global Compliance',
-      audience: 'International pathways spanning Nigeria, the UK, US, Canada, Europe, and Asia',
-      estimate: 'Itemised Milestone Estimate',
-      estimateSub: 'Multi-jurisdictional concierge',
-      notes: 'Bespoke cross-border coordination handling consular legalities, DNA verification, and international homecoming.',
-      features: [
-        'Cross-border legal counsel & parentage court orders',
-        'Consular birth certificate & passport documentation (CRBA)',
-        'Certified DNA testing and hospital delivery coordination',
-        'International travel concierge & arrival planning',
-      ],
-      programme: 'Cross-Border Planning',
-      isPopular: false,
+      icon: 'clock',
+      title: 'Milestone-Based Releases',
+      desc: 'Funds are disbursed strictly upon verified clinical milestones (confirmed pregnancy, 20-week anatomy scan, hospital delivery) ensuring complete security.',
     },
+    {
+      icon: 'repeat',
+      title: 'Rematch Protection Guarantee',
+      desc: 'If an embryo transfer does not take or matching requires a medical pause, our agency coordination continues with zero duplicate matching retainer fees.',
+    },
+  ];
+
+  const comparisonMatrix = [
+    { feature: 'Vetted Gestational Surrogate Matching', nigeria: true, crossBorder: true, donor: false },
+    { feature: 'Curated Non-Identifying Egg Donor Profiling', nigeria: 'Optional Add-on', crossBorder: 'Optional Add-on', donor: true },
+    { feature: 'Independent Legal Counsel (Both Parties)', nigeria: true, crossBorder: true, donor: true },
+    { feature: 'Third-Party Milestone Escrow Protection', nigeria: true, crossBorder: true, donor: true },
+    { feature: 'Dedicated Case Manager & 24/7 Access', nigeria: true, crossBorder: true, donor: true },
+    { feature: 'Partner Clinic Cycle & Medication Scheduling', nigeria: true, crossBorder: true, donor: true },
+    { feature: 'High Court Parentage Decree Filings', nigeria: true, crossBorder: true, donor: 'Relinquishment Order' },
+    { feature: 'Consular Passport & Embassy CRBA Filing', nigeria: false, crossBorder: true, donor: false },
+    { feature: 'Embassy-Approved Chain-of-Custody DNA', nigeria: 'Optional', crossBorder: true, donor: false },
+    { feature: 'Rematch Guarantee Protection', nigeria: true, crossBorder: true, donor: true },
   ];
 
   const defaultFaqs = [
@@ -390,106 +442,201 @@ ${renderHeader({ isHome: false })}
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
-    <div class="zizo-container space-y-[var(--space-lg)]">
-      <!-- Refined Service Cards -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-        ${tiers
-          .map(
-            (t) => `<div class="relative ${t.isPopular ? 'border-2 border-[#17645F] shadow-md' : 'border border-[#E1E0DD] shadow-sm'} rounded-[var(--radius)] p-7 md:p-8 flex flex-col justify-between gap-6 bg-[#FAF9F6] hover:border-[#8BB2AF]/60 transition-all duration-300 reveal">
-          ${
-            t.isPopular
-              ? `<span class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[#17645F] text-[#FAF9F6] text-[11px] font-semibold tracking-wider uppercase shadow-sm">
-                  ${escapeHtml(t.badge)}
-                </span>`
-              : `<div class="flex items-center justify-between">
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#E1E0DD]/50 text-[#17645F] text-[11px] font-semibold border border-[#E1E0DD]">
-                    ${escapeHtml(t.badge)}
-                  </span>
-                </div>`
-          }
+    <div class="zizo-container space-y-[var(--space-xl)]">
 
-          <div class="space-y-4">
-            <div>
-              <h2 class="display text-[length:var(--fs-h3)] text-[#17191A] leading-snug">${escapeHtml(t.name)}</h2>
+      <!-- 1. Financial Transparency & Escrow Pillars -->
+      <div class="space-y-6">
+        <div class="max-w-2xl">
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Financial Principles</p>
+          <h2 class="display text-[length:var(--fs-h3)] mt-1">Ethical, milestone-based financial safeguards</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          ${pillars
+            .map(
+              (p) => `<div class="border border-[#E1E0DD] rounded-[var(--radius)] p-6 bg-[#FAF9F6] shadow-sm hover:border-[#8BB2AF]/60 transition-colors reveal flex flex-col justify-between">
+            <div class="space-y-3">
+              <span class="w-10 h-10 rounded-full bg-[#17645F]/10 text-[#17645F] inline-flex items-center justify-center">
+                <i data-lucide="${p.icon}" class="w-5 h-5"></i>
+              </span>
+              <h3 class="font-display text-lg text-[#17191A] leading-snug">${escapeHtml(p.title)}</h3>
+              <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(p.desc)}</p>
             </div>
-
-            <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(t.notes)}</p>
-
-            <div class="pt-3 border-t border-[#E1E0DD]/80">
-              <p class="text-xs font-semibold text-[#17191A] uppercase tracking-wider mb-2.5">Key Inclusions</p>
-              <ul class="space-y-2 text-[length:var(--fs-small)] text-[#2E3031]">
-                ${t.features
-                  .map(
-                    (f) => `<li class="flex items-start gap-2.5">
-                  <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
-                  <span>${escapeHtml(f)}</span>
-                </li>`
-                  )
-                  .join('')}
-              </ul>
-            </div>
-          </div>
-
-          <button type="button" class="${t.isPopular ? 'btn-primary' : 'btn-secondary'} w-full justify-center" data-open-estimate-modal data-programme="${escapeHtml(t.programme)}">
-            Request estimate
-          </button>
-        </div>`
-          )
-          .join('')}
+          </div>`
+            )
+            .join('')}
+        </div>
       </div>
 
-      <!-- Coordination Scope & Financial Commitments -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-[var(--space-lg)] items-start pt-6">
+      <!-- 2. Master Programme Pathway Cards (Elevated Architectural Layout) -->
+      <div class="space-y-8">
+        <div class="max-w-3xl">
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Core Programmes</p>
+          <h2 class="display text-[length:var(--fs-h2)] md:text-[length:var(--fs-h1)] mt-1">Structured coordination pathways</h2>
+          <p class="text-[length:var(--fs-body)] text-[#2E3031] mt-2">
+            Every family journey is unique. Select your preferred pathway to view complete inclusions, clinical coordination milestones, and request an itemised written estimate.
+          </p>
+        </div>
+
+        <div class="space-y-8">
+          ${programmes
+            .map(
+              (p) => `<article class="relative border ${p.isPopular ? 'border-2 border-[#17645F] shadow-lg' : 'border-[#E1E0DD] shadow-sm'} rounded-2xl bg-[#FAF9F6] p-7 sm:p-9 lg:p-10 reveal" id="${p.id}">
+            ${
+              p.isPopular
+                ? `<div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#17645F] text-[#FAF9F6] text-xs font-semibold tracking-wider uppercase mb-5 shadow-sm">
+                    <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                    <span>${escapeHtml(p.badge)}</span>
+                  </div>`
+                : `<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E1E0DD]/60 text-[#17645F] text-xs font-semibold border border-[#E1E0DD] mb-5">
+                    <span>${escapeHtml(p.badge)}</span>
+                  </div>`
+            }
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+              <!-- Left: Pathway Header & Inclusions -->
+              <div class="lg:col-span-7 space-y-6">
+                <div>
+                  <h3 class="display text-2xl sm:text-3xl text-[#17191A] leading-tight">${escapeHtml(p.name)}</h3>
+                  <p class="text-[length:var(--fs-body)] text-[#2E3031] mt-2 leading-relaxed font-medium">${escapeHtml(p.tagline)}</p>
+                  <p class="text-[length:var(--fs-small)] text-[#5D5E5F] mt-1">${escapeHtml(p.audience)}</p>
+                </div>
+
+                <div class="pt-4 border-t border-[#E1E0DD]">
+                  <p class="text-xs font-semibold text-[#17191A] uppercase tracking-wider mb-3.5">Included In Agency Coordination</p>
+                  <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[length:var(--fs-small)] text-[#2E3031]">
+                    ${p.inclusions
+                      .map(
+                        (inc) => `<li class="flex items-start gap-2.5">
+                      <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
+                      <span>${escapeHtml(inc)}</span>
+                    </li>`
+                      )
+                      .join('')}
+                  </ul>
+                </div>
+
+                <div class="p-4 rounded-xl bg-[#E1E0DD]/30 border border-[#E1E0DD]/80 text-xs text-[#5D5E5F]">
+                  <strong class="text-[#17191A]">Transparency note:</strong> ${escapeHtml(p.clinicNote)}
+                </div>
+              </div>
+
+              <!-- Right: Milestone Disbursement Blueprint & Action -->
+              <div class="lg:col-span-5 border border-[#E1E0DD] rounded-xl p-6 sm:p-7 bg-[#FAF9F6]/80 flex flex-col justify-between gap-6 shadow-sm">
+                <div>
+                  <div class="flex items-center justify-between pb-3 border-b border-[#E1E0DD]">
+                    <span class="text-xs font-semibold text-[#17191A] uppercase tracking-wider">Milestone Disbursement Schedule</span>
+                    <span class="text-xs text-[#17645F] font-medium">4 Key Phases</span>
+                  </div>
+
+                  <div class="mt-4 space-y-3.5">
+                    ${p.stages
+                      .map(
+                        (st, sidx) => `<div class="flex items-start gap-3">
+                      <span class="w-6 h-6 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold flex items-center justify-center shrink-0 mt-0.5">
+                        ${sidx + 1}
+                      </span>
+                      <div>
+                        <p class="text-xs font-semibold text-[#17191A]">${escapeHtml(st.title)}</p>
+                        <p class="text-[11px] text-[#5D5E5F] mt-0.5 leading-snug">${escapeHtml(st.desc)}</p>
+                      </div>
+                    </div>`
+                      )
+                      .join('')}
+                  </div>
+                </div>
+
+                <div class="pt-4 border-t border-[#E1E0DD] space-y-3">
+                  <button type="button" class="${p.isPopular ? 'btn-primary' : 'btn-secondary'} w-full justify-center text-sm !py-3" data-open-estimate-modal data-programme="${escapeHtml(p.programme)}">
+                    Request Personalised Written Estimate
+                  </button>
+                  <p class="text-[11px] text-center text-[#5D5E5F]">Itemised estimate returned within 24 hours · Confidential</p>
+                </div>
+              </div>
+            </div>
+          </article>`
+            )
+            .join('')}
+        </div>
+      </div>
+
+      <!-- 3. What Coordination Covers vs Direct Clinical Costs -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-[var(--space-lg)] items-start">
         <div class="lg:col-span-6 space-y-4 reveal">
-          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Coverage &amp; Scope</p>
-          <h2 class="display text-[length:var(--fs-h3)]">What coordination covers</h2>
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Three Financial Components</p>
+          <h2 class="display text-[length:var(--fs-h3)]">Understanding how funding works</h2>
           <p class="text-[length:var(--fs-body)] text-[#2E3031]">
-            We coordinate the administrative, clinical, and legal components of your journey so you can focus on building your family.
+            To ensure complete clarity and protect every family from hidden markups, surrogacy and donor journeys are divided into three clear financial tiers:
           </p>
-          <ul class="divide-y divide-[#E1E0DD] border-y border-[#E1E0DD]">
-            ${includedItems
-              .map(
-                (i) => `<li class="py-3.5 text-[length:var(--fs-small)] text-[#2E3031] flex items-start gap-3">
-              <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
-              <span>${escapeHtml(i)}</span>
-            </li>`
-              )
-              .join('')}
-          </ul>
-          <p class="text-xs text-[#5D5E5F]">
-            Compensation for gestational surrogates follows transparent, milestone-based schedules confirmed in independent legal agreements.
-          </p>
+
+          <div class="space-y-4 pt-2">
+            <div class="border border-[#E1E0DD] rounded-xl p-5 bg-[#FAF9F6]">
+              <div class="flex items-center gap-2.5 text-[#17191A] font-medium mb-1">
+                <span class="w-6 h-6 rounded-full bg-[#17645F] text-[#FAF9F6] text-xs font-semibold flex items-center justify-center">1</span>
+                <span class="font-display text-base">Agency Coordination Fee (Fixed)</span>
+              </div>
+              <p class="text-[length:var(--fs-small)] text-[#5D5E5F] pl-8">
+                Covers surrogate recruitment, thorough vetting, case management, hospital coordination, and milestone escrow management throughout your journey.
+              </p>
+            </div>
+
+            <div class="border border-[#E1E0DD] rounded-xl p-5 bg-[#FAF9F6]">
+              <div class="flex items-center gap-2.5 text-[#17191A] font-medium mb-1">
+                <span class="w-6 h-6 rounded-full bg-[#17645F] text-[#FAF9F6] text-xs font-semibold flex items-center justify-center">2</span>
+                <span class="font-display text-base">Clinical IVF &amp; Medications (Direct at Cost)</span>
+              </div>
+              <p class="text-[length:var(--fs-small)] text-[#5D5E5F] pl-8">
+                Billed directly by licensed fertility clinics and embryology laboratories. Zero agency markup on IVF procedures, ICSI, PGT-A genetic screening, or medications.
+              </p>
+            </div>
+
+            <div class="border border-[#E1E0DD] rounded-xl p-5 bg-[#FAF9F6]">
+              <div class="flex items-center gap-2.5 text-[#17191A] font-medium mb-1">
+                <span class="w-6 h-6 rounded-full bg-[#17645F] text-[#FAF9F6] text-xs font-semibold flex items-center justify-center">3</span>
+                <span class="font-display text-base">Surrogate Living &amp; Medical Escrow (Milestones)</span>
+              </div>
+              <p class="text-[length:var(--fs-small)] text-[#5D5E5F] pl-8">
+                Surrogate compensation, monthly allowances, maternity clothes, and emergency medical reserves are deposited into independent escrow and released only after verified medical milestones.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div class="lg:col-span-6 border border-[#E1E0DD] rounded-[var(--radius)] p-7 md:p-8 bg-[#E1E0DD]/30 space-y-5 reveal">
           <div class="space-y-2">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20">
-              <i data-lucide="shield-check" class="w-3.5 h-3.5 text-[#17645F]"></i>
-              Financial Transparency
+              <i data-lucide="calculator" class="w-3.5 h-3.5 text-[#17645F]"></i>
+              Personalised Planning
             </span>
-            <h2 class="display text-[length:var(--fs-h3)] text-[#17191A]">Our financial commitments</h2>
+            <h2 class="display text-[length:var(--fs-h3)] text-[#17191A]">Receive an itemised cost estimate</h2>
           </div>
           <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">
-            Clinical IVF laboratory fees, donor medications, and independent attorney fees are itemised and billed directly at cost by licensed providers with zero agency surcharges.
+            Every family’s clinical prerequisites and destination preferences are distinct. We provide a comprehensive, transparent cost estimate sheet detailing every stage before you make any commitment.
           </p>
           <div class="space-y-3 pt-2">
             <div class="p-3.5 rounded-xl bg-[#FAF9F6] border border-[#E1E0DD] flex items-start gap-3">
               <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
               <div>
-                <p class="text-xs font-semibold text-[#17191A]">Independent Escrow Account</p>
-                <p class="text-[11px] text-[#5D5E5F] mt-0.5">Surrogate compensation is safeguarded and released strictly after verified medical milestones.</p>
+                <p class="text-xs font-semibold text-[#17191A]">Independent Legal Representation</p>
+                <p class="text-[11px] text-[#5D5E5F] mt-0.5">Separate counsel for parents and surrogate to guarantee informed consent.</p>
               </div>
             </div>
             <div class="p-3.5 rounded-xl bg-[#FAF9F6] border border-[#E1E0DD] flex items-start gap-3">
               <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
               <div>
-                <p class="text-xs font-semibold text-[#17191A]">Itemised Written Estimates</p>
-                <p class="text-[11px] text-[#5D5E5F] mt-0.5">Every potential expense—from matching to hospital delivery—is outlined clearly before you commit.</p>
+                <p class="text-xs font-semibold text-[#17191A]">Emergency Contingency Planning</p>
+                <p class="text-[11px] text-[#5D5E5F] mt-0.5">Pre-calculated reserves so unforeseen medical needs never cause stress.</p>
+              </div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-[#FAF9F6] border border-[#E1E0DD] flex items-start gap-3">
+              <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
+              <div>
+                <p class="text-xs font-semibold text-[#17191A]">Fast 24-Hour Coordinator Turnaround</p>
+                <p class="text-[11px] text-[#5D5E5F] mt-0.5">Confidential written response directly from a senior care coordinator.</p>
               </div>
             </div>
           </div>
           <div class="pt-2">
-            <button type="button" class="btn-primary inline-flex items-center gap-2" data-open-estimate-modal>
+            <button type="button" class="btn-primary inline-flex items-center gap-2 w-full sm:w-auto justify-center" data-open-estimate-modal>
               <i data-lucide="calculator" class="w-4 h-4"></i>
               <span>Request Personalised Estimate</span>
             </button>
@@ -497,7 +644,64 @@ ${renderHeader({ isHome: false })}
         </div>
       </div>
 
-      <!-- Cost & Legal FAQs (At least 5 FAQs) -->
+      <!-- 4. Comparison Matrix (Clean Editorial Table) -->
+      <div class="space-y-6 reveal">
+        <div>
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Programme Comparison</p>
+          <h2 class="display text-[length:var(--fs-h3)] mt-1">Compare coordination features</h2>
+        </div>
+
+        <div class="overflow-x-auto border border-[#E1E0DD] rounded-xl bg-[#FAF9F6]">
+          <table class="w-full text-left border-collapse text-[length:var(--fs-small)]">
+            <thead>
+              <tr class="border-b border-[#E1E0DD] bg-[#E1E0DD]/20">
+                <th class="py-4 px-6 font-semibold text-[#17191A] w-2/5">Feature / Inclusion</th>
+                <th class="py-4 px-4 font-semibold text-[#17645F] w-1/5 text-center">Nigeria Surrogacy</th>
+                <th class="py-4 px-4 font-semibold text-[#17191A] w-1/5 text-center">Cross-Border Planning</th>
+                <th class="py-4 px-4 font-semibold text-[#17191A] w-1/5 text-center">Donor Coordination</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[#E1E0DD]">
+              ${comparisonMatrix
+                .map(
+                  (row) => `<tr class="hover:bg-[#E1E0DD]/15 transition-colors">
+                <td class="py-3.5 px-6 text-[#2E3031] font-medium">${escapeHtml(row.feature)}</td>
+                <td class="py-3.5 px-4 text-center">
+                  ${
+                    typeof row.nigeria === 'boolean'
+                      ? row.nigeria
+                        ? `<i data-lucide="check" class="w-4 h-4 text-[#17645F] mx-auto"></i>`
+                        : `<span class="text-[#5D5E5F]">—</span>`
+                      : `<span class="text-xs text-[#17645F] font-medium">${escapeHtml(row.nigeria)}</span>`
+                  }
+                </td>
+                <td class="py-3.5 px-4 text-center">
+                  ${
+                    typeof row.crossBorder === 'boolean'
+                      ? row.crossBorder
+                        ? `<i data-lucide="check" class="w-4 h-4 text-[#17645F] mx-auto"></i>`
+                        : `<span class="text-[#5D5E5F]">—</span>`
+                      : `<span class="text-xs text-[#17191A] font-medium">${escapeHtml(row.crossBorder)}</span>`
+                  }
+                </td>
+                <td class="py-3.5 px-4 text-center">
+                  ${
+                    typeof row.donor === 'boolean'
+                      ? row.donor
+                        ? `<i data-lucide="check" class="w-4 h-4 text-[#17645F] mx-auto"></i>`
+                        : `<span class="text-[#5D5E5F]">—</span>`
+                      : `<span class="text-xs text-[#5D5E5F] font-medium">${escapeHtml(row.donor)}</span>`
+                  }
+                </td>
+              </tr>`
+                )
+                .join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5. Cost & Legal FAQs (At least 5 FAQs) -->
       <div class="space-y-4 reveal">
         <h2 class="display text-[length:var(--fs-h3)]">Cost &amp; legal FAQs</h2>
         <div class="divide-y divide-[#E1E0DD] border-y border-[#E1E0DD]" data-faq-group>
