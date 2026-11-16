@@ -10,32 +10,6 @@ import {
 
 export function renderAboutPage({ settings = {}, siteUrl = '' }) {
   const founderPhoto = String(settings.founder_photo_url || '').trim();
-  const standards = [
-    {
-      badge: 'Ethical Protection',
-      icon: 'shield-check',
-      title: 'Surrogate & Donor Primacy',
-      desc: 'Independent legal representation, secure escrow disbursements, comprehensive medical coverage, and dedicated postpartum care.',
-    },
-    {
-      badge: 'Physician-Led',
-      icon: 'stethoscope',
-      title: 'Clinical Rigor & Screening',
-      desc: 'Collaborating strictly with certified IVF laboratories and embryologists; thorough genetic, infectious disease, and psychological vetting.',
-    },
-    {
-      badge: 'Global Compliance',
-      icon: 'globe',
-      title: 'Cross-Border Legal Certainty',
-      desc: 'Airtight parentage orders, consular paperwork, and passport coordination across Nigeria, the UK, US, and beyond for an anxiety-free homecoming.',
-    },
-    {
-      badge: 'Zero Hidden Fees',
-      icon: 'scale',
-      title: 'Radical Transparency & Stewardship',
-      desc: 'Milestone-based financial clarity with zero hidden agency costs, backed by direct founder oversight from initial match to birth.',
-    },
-  ];
 
   const whoWeWorkWith = [
     'Individuals and couples of all backgrounds seeking a safe, private pathway to parenthood',
@@ -135,27 +109,131 @@ ${renderHeader({ isHome: false })}
   <section class="zizo-section bg-[#E1E0DD]/40 border-y border-[#E1E0DD]">
     <div class="zizo-container space-y-[var(--space-md)]">
       <div class="max-w-2xl reveal">
-        <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F] mb-2">Our Core Standards</p>
-        <h2 class="display">Four non-negotiable principles behind every journey</h2>
+        <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F] mb-2">The Zizo Care Architecture</p>
+        <h2 class="display">How we safeguard every stage of your journey</h2>
+        <p class="text-[length:var(--fs-body)] text-[#5D5E5F] mt-2">From autonomous legal counsel and secure escrow to physician-led matching and international homecoming, our care structure is built with zero gray areas.</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        ${standards
-          .map(
-            (s, idx) => `<div class="bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-6 space-y-4 reveal flex flex-col justify-between hover:border-[#8BB2AF]/60 transition-colors shadow-sm">
-          <div class="space-y-3">
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <!-- Bento 1: Legal & Escrow Shield (Hero Card, Span 7) -->
+        <div class="lg:col-span-7 bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-7 md:p-8 space-y-6 reveal flex flex-col justify-between shadow-sm hover:border-[#8BB2AF]/60 transition-colors">
+          <div class="space-y-4">
             <div class="flex items-center justify-between gap-2">
-              <span class="text-xs font-semibold text-[#17645F] tabular-nums tracking-widest">0${idx + 1}</span>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#E1E0DD]/50 text-[#17645F] text-[11px] font-medium border border-[#E1E0DD]">
-                <i data-lucide="${s.icon}" class="w-3.5 h-3.5 text-[#17645F]"></i>
-                ${escapeHtml(s.badge)}
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-[#17645F]"></i>
+                Ethical Protection
               </span>
+              <span class="text-xs font-semibold text-[#8BB2AF] tracking-widest uppercase">Pillar 01</span>
             </div>
-            <h3 class="display text-[length:var(--fs-h3)] leading-snug">${escapeHtml(s.title)}</h3>
+            <h3 class="display text-[length:var(--fs-h3)] text-[#17191A] leading-snug">Autonomous Legal Counsel &amp; Protected Escrow</h3>
+            <p class="text-[length:var(--fs-body)] text-[#2E3031] leading-relaxed">
+              We eliminate conflicts of interest before medical protocols begin. Every surrogate receives independent legal representation funded by escrow, ensuring informed consent, while intended parent finances are safeguarded through milestone disbursements.
+            </p>
           </div>
-          <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(s.desc)}</p>
-        </div>`
-          )
-          .join('')}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-5 border-t border-[#E1E0DD]/80">
+            <div class="p-3.5 rounded-xl bg-[#E1E0DD]/30 border border-[#E1E0DD]/60 flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
+              <div>
+                <p class="text-xs font-semibold text-[#17191A]">Dedicated Escrow Account</p>
+                <p class="text-[11px] text-[#5D5E5F] mt-0.5">Disbursements released strictly upon clinical verification.</p>
+              </div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-[#E1E0DD]/30 border border-[#E1E0DD]/60 flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
+              <div>
+                <p class="text-xs font-semibold text-[#17191A]">Independent Legal Representation</p>
+                <p class="text-[11px] text-[#5D5E5F] mt-0.5">Separate attorneys for intended parents and surrogates.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 2: Clinical Stewardship (Span 5) -->
+        <div class="lg:col-span-5 bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-7 md:p-8 space-y-6 reveal flex flex-col justify-between shadow-sm hover:border-[#8BB2AF]/60 transition-colors">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between gap-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20">
+                <i data-lucide="stethoscope" class="w-3.5 h-3.5 text-[#17645F]"></i>
+                Physician-Led
+              </span>
+              <span class="text-xs font-semibold text-[#8BB2AF] tracking-widest uppercase">Pillar 02</span>
+            </div>
+            <h3 class="display text-[length:var(--fs-h3)] text-[#17191A] leading-snug">12+ Years Clinical Oversight</h3>
+            <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">
+              Every medical match is supervised under Chizaram Ata’s reproductive healthcare background. We partner strictly with certified IVF laboratories and embryologists adhering to international ESHRE &amp; ASRM clinical standards.
+            </p>
+          </div>
+          <div class="space-y-2.5 pt-5 border-t border-[#E1E0DD]/80 text-xs text-[#2E3031]">
+            <div class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-[#17645F] shrink-0"></i>
+              <span>Triple-tier infectious, genetic, and ovarian reserve screening</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-[#17645F] shrink-0"></i>
+              <span>Comprehensive psychological readiness evaluations</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 3: Cross-Border Concierge (Span 5) -->
+        <div class="lg:col-span-5 bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-7 md:p-8 space-y-6 reveal flex flex-col justify-between shadow-sm hover:border-[#8BB2AF]/60 transition-colors">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between gap-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20">
+                <i data-lucide="globe" class="w-3.5 h-3.5 text-[#17645F]"></i>
+                Global Compliance
+              </span>
+              <span class="text-xs font-semibold text-[#8BB2AF] tracking-widest uppercase">Pillar 03</span>
+            </div>
+            <h3 class="display text-[length:var(--fs-h3)] text-[#17191A] leading-snug">Consular &amp; Legal Homecoming</h3>
+            <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">
+              Connecting Nigeria, the US, UK, Canada, Europe, and Asia. We manage court parentage declarations, certified DNA testing, birth certificate legalization, and embassy passport paperwork for an anxiety-free journey home.
+            </p>
+          </div>
+          <div class="space-y-2.5 pt-5 border-t border-[#E1E0DD]/80 text-xs text-[#2E3031]">
+            <div class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-[#17645F] shrink-0"></i>
+              <span>Pre-birth &amp; post-birth court orders for legal parentage</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-[#17645F] shrink-0"></i>
+              <span>Consular Report of Birth Abroad (CRBA) and visa filings</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bento 4: Zero Middlemen & Direct Support (Span 7) -->
+        <div class="lg:col-span-7 bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-7 md:p-8 space-y-6 reveal flex flex-col justify-between shadow-sm hover:border-[#8BB2AF]/60 transition-colors">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between gap-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20">
+                <i data-lucide="heart-handshake" class="w-3.5 h-3.5 text-[#17645F]"></i>
+                Direct Stewardship
+              </span>
+              <span class="text-xs font-semibold text-[#8BB2AF] tracking-widest uppercase">Pillar 04</span>
+            </div>
+            <h3 class="display text-[length:var(--fs-h3)] text-[#17191A] leading-snug">Zero Middlemen, Full Human Care</h3>
+            <p class="text-[length:var(--fs-body)] text-[#2E3031] leading-relaxed">
+              You are never handed off to anonymous call centers or rotating junior coordinators. Chizaram Ata and your dedicated care team provide transparent milestone communication, real-time clinical logs, 24/7 urgent response, and long-term postpartum support.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-5 border-t border-[#E1E0DD]/80">
+            <div class="p-3.5 rounded-xl bg-[#E1E0DD]/30 border border-[#E1E0DD]/60 flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
+              <div>
+                <p class="text-xs font-semibold text-[#17191A]">Direct Founder &amp; Team Access</p>
+                <p class="text-[11px] text-[#5D5E5F] mt-0.5">Private WhatsApp channels with real-time updates.</p>
+              </div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-[#E1E0DD]/30 border border-[#E1E0DD]/60 flex items-start gap-2.5">
+              <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
+              <div>
+                <p class="text-xs font-semibold text-[#17191A]">Comprehensive Postpartum Care</p>
+                <p class="text-[11px] text-[#5D5E5F] mt-0.5">Continued wellness and recovery monitoring for surrogates.</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
