@@ -207,8 +207,7 @@ ${renderHeader({ isHome: false })}
           <span>By ${escapeHtml(post.author_name || 'Chizaram Ata')}</span>
         </div>
         <h1 class="display text-[length:var(--fs-h2)] md:text-[length:var(--fs-h1)]">${escapeHtml(post.title)}</h1>
-        <p class="text-[length:var(--fs-body)] text-[#2E3031] max-w-none">${escapeHtml(post.excerpt)}</p>
-      </header>
+        </header>
 
       <div class="w-full aspect-[16/9] md:aspect-[21/9] rounded-[var(--radius)] overflow-hidden bg-[#E1E0DD] mb-12">
         <img src="${escapeHtml(post.featured_image_url || '/assets/img/blog-default-1920w.webp')}" alt="${escapeHtml(post.featured_image_alt || post.title)}" width="1920" height="1080" class="w-full h-full object-cover" />
