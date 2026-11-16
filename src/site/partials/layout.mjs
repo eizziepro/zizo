@@ -327,19 +327,31 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
           A safe fertility brand that creates families across borders, with expert legal and medical coordination and personal care at every step.
         </p>
 
-        <!-- Social Media Icons -->
-        <div class="flex items-center gap-2.5 pt-1" aria-label="Zizo social media">
-          <a href="${escapeHtml(settings.social_facebook || 'https://facebook.com/')}" target="_blank" rel="noopener noreferrer" aria-label="Follow Zizo on Facebook" class="w-8 h-8 rounded-full bg-[#FAF9F6]/10 hover:bg-[#17645F] text-[#FAF9F6] flex items-center justify-center transition-colors">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        <!-- Social Media Icons (Lightweight Icons) -->
+        <div class="flex items-center gap-4 pt-1" aria-label="Zizo social media">
+          <a href="${escapeHtml(settings.social_facebook || 'https://facebook.com/')}" target="_blank" rel="noopener noreferrer" aria-label="Follow Zizo on Facebook" class="opacity-80 hover:opacity-100 transition-opacity text-[#FAF9F6] inline-flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-auto" viewBox="0 0 224 432" aria-hidden="true">
+              <path fill="#FAF9F6" d="M145 429H66V235H0v-76h66v-56q0-48 27-74t72-26q36 0 59 3v67l-41 1q-22 0-30 9t-8 27v49h76l-10 76h-66v194z"></path>
+            </svg>
           </a>
-          <a href="${escapeHtml(settings.social_linkedin || 'https://linkedin.com/')}" target="_blank" rel="noopener noreferrer" aria-label="Follow Zizo on LinkedIn" class="w-8 h-8 rounded-full bg-[#FAF9F6]/10 hover:bg-[#17645F] text-[#FAF9F6] flex items-center justify-center transition-colors">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          <a href="${escapeHtml(settings.social_linkedin || 'https://linkedin.com/')}" target="_blank" rel="noopener noreferrer" aria-label="Follow Zizo on LinkedIn" class="opacity-80 hover:opacity-100 transition-opacity text-[#FAF9F6] inline-flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-auto" viewBox="0 0 432 432" aria-hidden="true">
+              <path fill="#FAF9F6" d="M319 221.5q-8-10.5-30-10.5q-27 0-38 16t-11 45v146q0 5-3 8t-8 3h-76q-4 0-7.5-3t-3.5-8V148q0-4 3.5-7.5t7.5-3.5h74q4 0 6.5 2t3.5 6v5q1 2 1 7q28-27 76-27q53 0 83 27t30 79v182q0 5-3.5 8t-7.5 3h-78q-4 0-7.5-3t-3.5-8V254q0-22-8-32.5zM88 91.5Q73 107 51.5 107T15 91.5t-15-37T15 18T51.5 3T88 18t15 36.5t-15 37zm13 56.5v270q0 5-3.5 8t-7.5 3H14q-5 0-8-3t-3-8V148q0-4 3-7.5t8-3.5h76q4 0 7.5 3.5t3.5 7.5z"></path>
+            </svg>
           </a>
-          <a href="${escapeHtml(settings.social_instagram || 'https://instagram.com/')}" target="_blank" rel="noopener noreferrer" aria-label="Follow Zizo on Instagram" class="w-8 h-8 rounded-full bg-[#FAF9F6]/10 hover:bg-[#17645F] text-[#FAF9F6] flex items-center justify-center transition-colors">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.13-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <a href="${escapeHtml(settings.social_instagram || 'https://instagram.com/')}" target="_blank" rel="noopener noreferrer" aria-label="Follow Zizo on Instagram" class="opacity-80 hover:opacity-100 transition-opacity text-[#FAF9F6] inline-flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-auto" viewBox="0 0 14 14" aria-hidden="true">
+              <g fill="none" stroke="#FAF9F6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.333 3.644a.25.25 0 1 1 0-.5m0 .5a.25.25 0 1 0 0-.5"></path>
+                <path d="M.858 3.431A2.573 2.573 0 0 1 3.431.858h6.862a2.573 2.573 0 0 1 2.573 2.573v6.862a2.573 2.573 0 0 1-2.573 2.573H3.43a2.573 2.573 0 0 1-2.573-2.573V3.43Z"></path>
+                <path d="M4.312 6.862a2.55 2.55 0 1 0 5.1 0a2.55 2.55 0 1 0-5.1 0"></path>
+              </g>
+            </svg>
           </a>
-          <a href="${escapeHtml(settings.social_twitter || 'https://x.com/')}" target="_blank" rel="noopener noreferrer" aria-label="Follow Zizo on X (formerly Twitter)" class="w-8 h-8 rounded-full bg-[#FAF9F6]/10 hover:bg-[#17645F] text-[#FAF9F6] flex items-center justify-center transition-colors">
-            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          <a href="${escapeHtml(settings.social_twitter || 'https://x.com/')}" target="_blank" rel="noopener noreferrer" aria-label="Follow Zizo on X (formerly Twitter)" class="opacity-80 hover:opacity-100 transition-opacity text-[#FAF9F6] inline-flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-auto" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#FAF9F6" d="M8 2H1l8.26 11.014L1.45 22H4.1l6.388-7.349L16 22h7l-8.608-11.478L21.8 2h-2.65l-5.986 6.886L8 2Zm9 18L5 4h2l12 16h-2Z"></path>
+            </svg>
           </a>
         </div>
       </div>
