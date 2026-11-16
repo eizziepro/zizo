@@ -378,7 +378,8 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
       <div class="lg:col-span-2 space-y-3">
         <h3 class="text-[length:var(--fs-small)] font-semibold uppercase tracking-[0.1em] text-[#FAF9F6] font-sans">Resources</h3>
         <ul class="space-y-2.5 text-[length:var(--fs-small)]">
-          <li><a href="/surrogates-donors/become-a-surrogate/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Surrogate &amp; Egg Donor</a></li>
+          <li><a href="/surrogates-donors/become-a-surrogate/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Surrogate</a></li>
+          <li><a href="/surrogates-donors/become-an-egg-donor/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Egg Donor</a></li>
           <li><a href="/resources/blog/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Our Blog</a></li>
           <li><a href="/resources/faq/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">FAQs</a></li>
           <li><a href="/resources/stories-and-reviews/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Stories</a></li>
