@@ -411,13 +411,6 @@ ${renderHeader({ isHome: false })}
           <div class="space-y-4">
             <div>
               <h2 class="display text-[length:var(--fs-h3)] text-[#17191A] leading-snug">${escapeHtml(t.name)}</h2>
-              <p class="text-[length:var(--fs-small)] text-[#5D5E5F] mt-1.5 leading-relaxed">${escapeHtml(t.audience)}</p>
-            </div>
-
-            <div class="p-4 rounded-xl bg-[#E1E0DD]/30 border border-[#E1E0DD]/60 space-y-1">
-              <p class="text-[10px] uppercase tracking-wider text-[#5D5E5F] font-semibold">Pricing Structure</p>
-              <p class="font-display text-lg text-[#17645F] font-medium">${escapeHtml(t.estimate)}</p>
-              <p class="text-[11px] text-[#5D5E5F]">${escapeHtml(t.estimateSub)}</p>
             </div>
 
             <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(t.notes)}</p>
