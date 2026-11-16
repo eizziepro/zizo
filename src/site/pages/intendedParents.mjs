@@ -792,22 +792,203 @@ ${renderFooter({ settings })}`;
 }
 
 export function renderLegalEthicsPage({ settings = {}, siteUrl = '' }) {
-  const pillars = [
+  const safeguardPillars = [
     {
-      title: 'Strict Anonymity & Discretion',
-      body: 'Surrogates, egg donors, and intended parents are protected by strict privacy standards. Matching profiles exclude identifying contact details, and reviews never publish full names or photographs.',
+      icon: 'scale',
+      tag: 'Representation',
+      title: 'Dual Independent Counsel',
+      desc: 'Both the intended parents and gestational surrogate retain separate, accredited reproductive law solicitors. This guarantees zero conflict of interest and uncompromised advocacy.',
     },
     {
-      title: 'Independent Legal Representation',
-      body: 'Every party should receive independent advice from qualified reproductive legal counsel in the relevant jurisdiction before executing any agreement.',
+      icon: 'file-check',
+      tag: 'Informed Consent',
+      title: 'Voluntary Autonomy',
+      desc: 'Comprehensive multi-session medical, psychological, and counselor evaluations ensure all parties participate voluntarily with complete autonomy and unhurried informed consent.',
     },
     {
-      title: 'Informed Consent & Ethical Screening',
-      body: 'No matching proceeds without documented medical, psychological, and counselor readiness assessments. Participants may ask questions or pause without pressure.',
+      icon: 'shield-check',
+      tag: 'Financial Security',
+      title: 'Regulated Milestone Escrow',
+      desc: 'All surrogate allowances, medical coverage, and living stipends are held in dedicated third-party escrow and disbursed strictly upon certified clinical milestones.',
     },
     {
-      title: 'Transparent Compensation Standards',
-      body: 'Reimbursements and surrogate compensation are structured transparently around documented milestones and health-care protections.',
+      icon: 'heart-handshake',
+      tag: 'Parentage Decrees',
+      title: 'Irrevocable Parentage',
+      desc: 'Pre-transfer legal agreements coupled with Nigerian judicial parentage orders extinguish third-party claims and establish intended parents as sole legal guardians.',
+    },
+  ];
+
+  const legalRoadmap = [
+    {
+      step: '01',
+      title: 'Pre-Transfer Surrogacy Agreement',
+      timing: 'Executed Before Clinical Cycle',
+      summary:
+        'A comprehensive legal contract finalized between intended parents and the surrogate with separate, independent legal representation for each party.',
+      deliverables: [
+        'Unambiguous declaration of parental intent',
+        'Surrogate bodily autonomy & health supremacy protocols',
+        'Milestone-based compensation & reimbursement schedule',
+        'Emergency obstetric decision-making directives',
+      ],
+    },
+    {
+      step: '02',
+      title: 'Judicial Parentage Decrees & Pre-Birth Filings',
+      timing: 'Mid-Pregnancy Court Filings',
+      summary:
+        'Reproductive legal counsel petitions the Nigerian High Court to secure formal parentage declarations establishing the intended parents as lawful parents upon delivery.',
+      deliverables: [
+        'Formal parental order petition filings in Nigerian court',
+        'Judicial recognition of intended parents as lawful parents',
+        'Legal extinguishing of any surrogate parental status',
+        'Hospital notification and delivery custody clearances',
+      ],
+    },
+    {
+      step: '03',
+      title: 'Delivery, Birth Registration & Certified DNA',
+      timing: 'Delivery to Postpartum (Week 1–2)',
+      summary:
+        'Immediate parental custody at birth with official hospital documentation and accredited DNA parentage verification.',
+      deliverables: [
+        'Official hospital discharge directly to intended parents',
+        'National birth certificate issuance naming intended parents',
+        'Chain-of-custody certified DNA parentage testing',
+        'Consular notification documentation package',
+      ],
+    },
+    {
+      step: '04',
+      title: 'Consular Exit, Passport & International Return',
+      timing: 'Post-Birth (Week 3–8 Depending on Country)',
+      summary:
+        'Bespoke international exit coordination for diaspora and overseas intended parents returning to the UK, US, Canada, Europe, or Asia.',
+      deliverables: [
+        'Embassy DNA compliance & CRBA / British High Commission filings',
+        'Emergency travel document or passport issuance',
+        'Apostille and Hague-compliant document legalisation',
+        'Post-return home country parental order validation (e.g. UK s54 HFEA)',
+      ],
+    },
+  ];
+
+  const partyProtections = [
+    {
+      badge: 'For Intended Parents',
+      badgeColor: 'bg-[#17645F]/10 text-[#17645F] border-[#17645F]/20',
+      title: 'Uncompromised Parental Security',
+      subtitle: 'Complete legal certainty from embryo creation to international homecoming.',
+      items: [
+        'Pre-transfer contracts ensuring enforceable parental intent',
+        'Direct-to-provider medical billing with zero agency markups',
+        'Protected third-party escrow shielding all financial allocations',
+        'Dedicated legal liaison for home country embassy and visa exit',
+        'Rematch protection guarantee in case of medical cycle cancellation',
+      ],
+    },
+    {
+      badge: 'For Gestational Surrogates',
+      badgeColor: 'bg-[#8BB2AF]/20 text-[#17645F] border-[#8BB2AF]/40',
+      title: 'Dignity, Autonomy & Wellbeing',
+      subtitle: 'Ethical standards prioritizing surrogate health, respect, and peace of mind.',
+      items: [
+        '100% independent legal counsel paid by intended parents',
+        'Maternal health supremacy—obstetric decisions prioritize her life & health',
+        'Comprehensive private medical, dental, and life insurance',
+        'Guaranteed monthly escrow allowances disbursed punctually on milestones',
+        'Continuous clinical counseling, postpartum recovery, and doula care',
+      ],
+    },
+    {
+      badge: 'For Egg & Sperm Donors',
+      badgeColor: 'bg-[#17191A]/5 text-[#17191A] border-[#E1E0DD]',
+      title: 'Privacy & Voluntary Altruism',
+      subtitle: 'Strict confidentiality and comprehensive ethical safeguards.',
+      items: [
+        'Full privacy protection with non-identifying profile representation',
+        'Complete legal waiver of parental rights and future financial liability',
+        'In-depth genetic, psychological, and infectious disease screening',
+        'Standard-aligned compensation for time, travel, and clinical effort',
+        'Data protected under the Nigeria Data Protection Act (NDPA 2023)',
+      ],
+    },
+  ];
+
+  const jurisdictions = [
+    {
+      country: 'Nigeria (Host Jurisdiction)',
+      flag: 'NG',
+      law: 'Contract Law, Child Welfare Doctrine & NDPA 2023',
+      points: [
+        'Gestational surrogacy agreements are recognized and enforceable under Nigerian contract law and child welfare doctrine.',
+        'High Court declaratory orders vest full parental rights in intended parents upon birth, extinguishing surrogate claims.',
+        'Strict health facility accreditation standards under the Federal Ministry of Health.',
+      ],
+    },
+    {
+      country: 'United Kingdom',
+      flag: 'UK',
+      law: 'Section 54, Human Fertilisation & Embryology Act 2008',
+      points: [
+        'UK courts grant Parental Orders extinguishing surrogate parenthood upon application after birth.',
+        'Requires at least one intended parent to have a genetic link to the child.',
+        'Surrogate must give free, informed consent at least 6 weeks post-birth with independent legal representation.',
+      ],
+    },
+    {
+      country: 'United States',
+      flag: 'US',
+      law: 'Immigration & Nationality Act (INA §§ 301, 309)',
+      points: [
+        'US citizenship is transmitted by bloodline from a qualifying US citizen intended parent.',
+        'Consular Report of Birth Abroad (CRBA) and US passport issued via the US Consulate General in Lagos.',
+        'Embassy-approved chain-of-custody DNA testing confirms genetic parentage.',
+      ],
+    },
+    {
+      country: 'Canada, Europe & Asia',
+      flag: 'GLOBAL',
+      law: 'Provincial Decrees, Hague Conventions & Foreign Affairs',
+      points: [
+        'Canada: Provincial parentage declarations or citizenship certificates based on genetic descent.',
+        'Europe & Asia: Embassy-specific travel documents, apostille verifications, and cross-border adoption or parentage filings.',
+        'Tailored legal liaison to match the exact requirements of your domestic nationality laws.',
+      ],
+    },
+  ];
+
+  const legalFaqs = [
+    {
+      question: 'Can a gestational surrogate legally claim parental rights over our child?',
+      answer:
+        'No. In gestational surrogacy, the surrogate carries an embryo created from the intended parents’ eggs/sperm or donor gametes, meaning she has zero genetic relationship to the child. Under Nigerian law, when combined with a pre-transfer Gestational Surrogacy Agreement and High Court parentage declarations, the intended parents are recognized as the sole lawful parents from the moment of birth.',
+    },
+    {
+      question: 'Why is independent legal representation mandatory for the surrogate?',
+      answer:
+        'Dual independent representation eliminates conflicts of interest and ensures that the surrogate fully understands her rights, medical commitments, and compensation terms without any agency coercion. Furthermore, foreign courts and embassies (including the UK family court and US State Department) require documented proof that the surrogate received independent legal counsel before they issue parental orders or passports.',
+    },
+    {
+      question: 'How are surrogate funds and living allowances protected during the pregnancy?',
+      answer:
+        'All surrogate reimbursements, allowances, and medical contingency funds are held in an independent, ring-fenced escrow account prior to the start of medications. Funds are never paid informally in cash; they are disbursed strictly according to pre-agreed clinical milestones certified by obstetric and clinic records.',
+    },
+    {
+      question: 'How does international exit and passport issuance work for diaspora parents?',
+      answer:
+        'Our dedicated legal and consular liaison guides you through every step: registering the official birth certificate, coordinating embassy-accredited DNA chain-of-custody testing, assembling the consular application dossier (such as the US CRBA or British High Commission passport application), and assisting until you safely board your flight home.',
+    },
+    {
+      question: 'How is donor and surrogate confidentiality protected under data privacy laws?',
+      answer:
+        'Zizo operates in strict compliance with the Nigeria Data Protection Act (NDPA 2023) and international data privacy principles. Intended parents receive curated, non-identifying donor and surrogate profiles. Identifying contact details, home addresses, and official identity documents are securely encrypted and never shared without mutual, explicit written authorization.',
+    },
+    {
+      question: 'What happens in the rare event of an obstetric emergency during pregnancy?',
+      answer:
+        'Our ethical and legal charter places the surrogate’s health and bodily autonomy as the paramount priority. The Surrogacy Agreement clearly defines emergency medical protocols wherein qualified obstetricians and maternal-fetal medicine specialists make necessary clinical decisions to safeguard maternal life and wellbeing.',
     },
   ];
 
@@ -832,15 +1013,192 @@ ${renderHeader({ isHome: false })}
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
-    <div class="zizo-container grid grid-cols-1 md:grid-cols-2 gap-6">
-      ${pillars
-        .map(
-          (p) => `<div class="border border-[#E1E0DD] rounded-[var(--radius)] p-7 space-y-3 reveal">
-        <h2 class="display text-[length:var(--fs-h3)]">${escapeHtml(p.title)}</h2>
-        <p class="text-[length:var(--fs-body)] text-[#2E3031]">${escapeHtml(p.body)}</p>
-      </div>`
-        )
-        .join('')}
+    <div class="zizo-container space-y-[var(--space-xl)]">
+
+      <!-- 1. The Four Ethical Pillars -->
+      <div class="space-y-6">
+        <div>
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Core Guarantees</p>
+          <h2 class="display text-[length:var(--fs-h2)] mt-1">Foundational legal &amp; ethical safeguards</h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          ${safeguardPillars
+            .map(
+              (p) => `<div class="border border-[#E1E0DD] rounded-xl p-6 bg-[#FAF9F6] shadow-sm hover:border-[#8BB2AF]/60 transition-colors reveal flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="w-10 h-10 rounded-full bg-[#17645F]/10 flex items-center justify-center">
+                <i data-lucide="${p.icon}" class="w-5 h-5 text-[#17645F]"></i>
+              </div>
+              <span class="inline-block text-[11px] uppercase tracking-wider font-semibold text-[#17645F]">${escapeHtml(p.tag)}</span>
+              <h3 class="display text-[length:var(--fs-h4)] text-[#17191A]">${escapeHtml(p.title)}</h3>
+              <p class="text-[length:var(--fs-small)] text-[#5D5E5F] leading-relaxed">${escapeHtml(p.desc)}</p>
+            </div>
+          </div>`
+            )
+            .join('')}
+        </div>
+      </div>
+
+      <!-- 2. The 4-Stage Legal Roadmap -->
+      <div class="space-y-6 reveal">
+        <div class="max-w-2xl">
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Legal Lifecycle</p>
+          <h2 class="display text-[length:var(--fs-h2)] mt-1">The four-stage parentage roadmap</h2>
+          <p class="text-[length:var(--fs-body)] text-[#5D5E5F] mt-2">
+            Every legal step is sequenced chronologically to ensure absolute protection and unambiguous parental rights before, during, and after birth.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          ${legalRoadmap
+            .map(
+              (stage) => `<div class="border border-[#E1E0DD] rounded-2xl p-7 bg-[#FAF9F6] shadow-sm hover:border-[#8BB2AF]/60 transition-colors reveal flex flex-col justify-between space-y-5">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between gap-4">
+                <span class="display text-3xl font-light text-[#17645F]/40">${stage.step}</span>
+                <span class="text-[11px] font-medium tracking-wide uppercase px-2.5 py-1 rounded-full bg-[#E1E0DD]/60 text-[#2E3031]">${escapeHtml(stage.timing)}</span>
+              </div>
+              <h3 class="display text-[length:var(--fs-h3)] text-[#17191A]">${escapeHtml(stage.title)}</h3>
+              <p class="text-[length:var(--fs-small)] text-[#5D5E5F] leading-relaxed">${escapeHtml(stage.summary)}</p>
+            </div>
+            <div class="pt-4 border-t border-[#E1E0DD] space-y-2">
+              <p class="text-xs font-semibold uppercase tracking-wider text-[#17191A]">Key Legal Deliverables</p>
+              <ul class="space-y-2">
+                ${stage.deliverables
+                  .map(
+                    (d) => `<li class="flex items-start gap-2.5 text-[length:var(--fs-small)] text-[#2E3031]">
+                  <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
+                  <span>${escapeHtml(d)}</span>
+                </li>`
+                  )
+                  .join('')}
+              </ul>
+            </div>
+          </div>`
+            )
+            .join('')}
+        </div>
+      </div>
+
+      <!-- 3. Tri-Party Protection Charter -->
+      <div class="space-y-6 reveal">
+        <div class="max-w-2xl">
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Protection Charter</p>
+          <h2 class="display text-[length:var(--fs-h2)] mt-1">Rights guaranteed to every participant</h2>
+          <p class="text-[length:var(--fs-body)] text-[#5D5E5F] mt-2">
+            True ethical surrogacy balances the security of intended parents with the dignity and bodily autonomy of surrogates and donors.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          ${partyProtections
+            .map(
+              (party) => `<div class="border border-[#E1E0DD] rounded-2xl p-7 bg-[#FAF9F6] shadow-sm flex flex-col justify-between space-y-6 reveal">
+            <div class="space-y-4">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${party.badgeColor}">
+                ${escapeHtml(party.badge)}
+              </span>
+              <h3 class="display text-[length:var(--fs-h3)] text-[#17191A]">${escapeHtml(party.title)}</h3>
+              <p class="text-[length:var(--fs-small)] text-[#5D5E5F] leading-relaxed">${escapeHtml(party.subtitle)}</p>
+              <div class="pt-2">
+                <ul class="space-y-3">
+                  ${party.items
+                    .map(
+                      (item) => `<li class="flex items-start gap-2.5 text-[length:var(--fs-small)] text-[#2E3031]">
+                    <i data-lucide="shield-check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
+                    <span>${escapeHtml(item)}</span>
+                  </li>`
+                    )
+                    .join('')}
+                </ul>
+              </div>
+            </div>
+          </div>`
+            )
+            .join('')}
+        </div>
+      </div>
+
+      <!-- 4. Jurisdictional & Cross-Border Frameworks -->
+      <div class="space-y-6 reveal">
+        <div class="max-w-2xl">
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Cross-Border Law</p>
+          <h2 class="display text-[length:var(--fs-h2)] mt-1">Jurisdictional alignment &amp; parentage recognition</h2>
+          <p class="text-[length:var(--fs-body)] text-[#5D5E5F] mt-2">
+            How Nigerian reproductive agreements coordinate seamlessly with destination country immigration, consular citizenship, and parentage laws.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          ${jurisdictions
+            .map(
+              (j) => `<div class="border border-[#E1E0DD] rounded-2xl p-7 bg-[#FAF9F6] shadow-sm space-y-4 reveal">
+            <div class="flex items-center justify-between gap-4 pb-3 border-b border-[#E1E0DD]">
+              <h3 class="display text-[length:var(--fs-h4)] text-[#17191A]">${escapeHtml(j.country)}</h3>
+              <span class="text-xs font-semibold px-2.5 py-1 rounded-md bg-[#17645F]/10 text-[#17645F] border border-[#17645F]/20">${escapeHtml(j.flag || 'LAW')}</span>
+            </div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-[#5D5E5F]">${escapeHtml(j.law)}</p>
+            <ul class="space-y-2.5 pt-1">
+              ${j.points
+                .map(
+                  (pt) => `<li class="flex items-start gap-2.5 text-[length:var(--fs-small)] text-[#2E3031]">
+                <i data-lucide="check" class="w-4 h-4 text-[#17645F] mt-0.5 shrink-0"></i>
+                <span class="leading-relaxed">${escapeHtml(pt)}</span>
+              </li>`
+                )
+                .join('')}
+            </ul>
+          </div>`
+            )
+            .join('')}
+        </div>
+      </div>
+
+      <!-- 5. Interactive Legal FAQs -->
+      <div class="space-y-6 reveal">
+        <div class="max-w-2xl">
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Common Inquiries</p>
+          <h2 class="display text-[length:var(--fs-h2)] mt-1">Frequently asked legal &amp; ethical questions</h2>
+          <p class="text-[length:var(--fs-body)] text-[#5D5E5F] mt-2">
+            Answers to key questions regarding parental rights, custody decrees, surrogate autonomy, and consular exit.
+          </p>
+        </div>
+
+        <div class="divide-y divide-[#E1E0DD] border-y border-[#E1E0DD]" data-faq-group>
+          ${legalFaqs
+            .map((faq, i) => {
+              const pid = `legal-faq-${i}`;
+              return `<div class="faq-item py-4" data-open="false">
+            <button type="button" class="w-full flex items-center justify-between gap-4 text-left min-h-[44px]" aria-expanded="false" aria-controls="${pid}" data-faq-trigger>
+              <span class="font-display text-lg text-[#17191A]">${escapeHtml(faq.question)}</span>
+              <span class="faq-plus shrink-0 w-8 h-8 rounded-full border border-[#E1E0DD] inline-flex items-center justify-center"><i data-lucide="plus" class="w-4 h-4"></i></span>
+            </button>
+            <div id="${pid}" class="faq-panel"><div class="faq-panel-inner"><p class="pt-3 text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(faq.answer)}</p></div></div>
+          </div>`;
+            })
+            .join('')}
+        </div>
+      </div>
+
+      <!-- 6. Legal Liaison Callout Banner -->
+      <div class="p-8 sm:p-10 rounded-2xl bg-[#E1E0DD]/30 border border-[#E1E0DD] reveal flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="space-y-2 max-w-xl">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20">
+            <i data-lucide="scale" class="w-3.5 h-3.5 text-[#17645F]"></i>
+            Jurisdiction-Specific Counsel
+          </span>
+          <h3 class="display text-2xl sm:text-3xl text-[#17191A]">Need legal clarity for your destination country?</h3>
+          <p class="text-[length:var(--fs-small)] text-[#5D5E5F] leading-relaxed">
+            Our legal liaison coordinates directly with qualified reproductive law solicitors in Nigeria, the UK, the US, Canada, and the EU to ensure your parentage orders and travel documents are unassailable.
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+          <a href="/book/" class="btn-primary text-center">Book Consultation</a>
+          <a href="/contact/" class="btn-secondary text-center">Contact Legal Liaison</a>
+        </div>
+      </div>
+
     </div>
   </section>
 
