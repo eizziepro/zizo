@@ -342,7 +342,7 @@ ${renderHeader({ isHome: false })}
       { label: 'Surrogates & Donors' },
       { label: 'Compensation and Support' },
     ],
-    title: 'Clear compensation<br class="hidden sm:inline" /> and attentive care.',
+    title: 'Transparent compensation<br class="hidden sm:inline" /> and attentive care.',
     intro:
       'Every surrogate and donor deserves clarity on reimbursements, medical coverage, and emotional support before making any commitment.',
   })}
