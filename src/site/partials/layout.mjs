@@ -369,17 +369,15 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
         <h3 class="text-[length:var(--fs-small)] font-semibold uppercase tracking-[0.1em] text-[#FAF9F6] font-sans">Services</h3>
         <ul class="space-y-2.5 text-[length:var(--fs-small)]">
           <li><a href="/services/surrogacy/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Surrogacy</a></li>
-          <li><a href="/services/ovum-donation/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Ovum Donation</a></li>
-          <li><a href="/services/personalized-matching/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Personalized Matching</a></li>
-          <li><a href="/services/counseling-ivf-support/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Counseling and IVF Support</a></li>
+          <li><a href="/services/ovum-donation/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Donation</a></li>
+          <li><a href="/services/personalized-matching/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Matching &amp; IVF Support</a></li>
         </ul>
       </div>
 
       <div class="lg:col-span-2 space-y-3">
         <h3 class="text-[length:var(--fs-small)] font-semibold uppercase tracking-[0.1em] text-[#FAF9F6] font-sans">Resources</h3>
         <ul class="space-y-2.5 text-[length:var(--fs-small)]">
-          <li><a href="/surrogates-donors/become-a-surrogate/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Become a Surrogate</a></li>
-          <li><a href="/surrogates-donors/become-an-egg-donor/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Become an Egg Donor</a></li>
+          <li><a href="/surrogates-donors/become-a-surrogate/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Surrogate &amp; Egg Donor</a></li>
           <li><a href="/resources/blog/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Our Blog</a></li>
           <li><a href="/resources/faq/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">FAQs</a></li>
           <li><a href="/resources/stories-and-reviews/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Stories</a></li>
