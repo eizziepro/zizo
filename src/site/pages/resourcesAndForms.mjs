@@ -41,7 +41,7 @@ ${renderHeader({ isHome: false })}
       : [{ label: 'Home', href: '/' }, { label: 'Resources' }, { label: 'Blog' }],
     title: activeCategory ? activeCategory.name : 'The Zizo Journal.',
     intro:
-      'Calm, practical guides on surrogacy, egg donation screening, and cross-border family building.',
+      'Calm, practical guides on surrogacy, egg donation screening, and cross-border family building with clarity, compassion, and trust.',
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
