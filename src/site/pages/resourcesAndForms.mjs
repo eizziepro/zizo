@@ -197,6 +197,7 @@ ${renderHeader({ isHome: false })}
       </nav>
 
       <header class="w-full space-y-4 mb-10">
+        <h1 class="display text-[length:var(--fs-h2)] md:text-[length:var(--fs-h1)]">${escapeHtml(post.title)}</h1>
         <div class="flex flex-wrap items-center gap-2 text-[length:var(--fs-small)] text-[#5D5E5F]">
           <span>${escapeHtml(post.category_name || 'Guide')}</span>
           <span aria-hidden="true">·</span>
@@ -206,8 +207,7 @@ ${renderHeader({ isHome: false })}
           <span aria-hidden="true">·</span>
           <span>By ${escapeHtml(post.author_name || 'Chizaram Ata')}</span>
         </div>
-        <h1 class="display text-[length:var(--fs-h2)] md:text-[length:var(--fs-h1)]">${escapeHtml(post.title)}</h1>
-        </header>
+      </header>
 
       <div class="w-full aspect-[16/9] md:aspect-[21/9] rounded-[var(--radius)] overflow-hidden bg-[#E1E0DD] mb-12">
         <img src="${escapeHtml(post.featured_image_url || '/assets/img/blog-default-1920w.webp')}" alt="${escapeHtml(post.featured_image_alt || post.title)}" width="1920" height="1080" class="w-full h-full object-cover" />
