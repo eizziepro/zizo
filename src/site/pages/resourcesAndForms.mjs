@@ -196,20 +196,21 @@ ${renderHeader({ isHome: false })}
         <span class="text-[#17191A]">${escapeHtml(post.title)}</span>
       </nav>
 
-      <header class="max-w-3xl space-y-4 mb-10">
+      <header class="w-full space-y-4 mb-10">
         <div class="flex flex-wrap items-center gap-2 text-[length:var(--fs-small)] text-[#5D5E5F]">
           <span>${escapeHtml(post.category_name || 'Guide')}</span>
           <span aria-hidden="true">·</span>
           <span>${escapeHtml(pubDate)}</span>
           <span aria-hidden="true">·</span>
           <span>${Number(post.reading_minutes || 3)} min read</span>
+          <span aria-hidden="true">·</span>
+          <span>By ${escapeHtml(post.author_name || 'Chizaram Ata')}</span>
         </div>
-        <h1 class="display">${escapeHtml(post.title)}</h1>
-        <p class="text-[length:var(--fs-body)] text-[#2E3031]">${escapeHtml(post.excerpt)}</p>
-        <p class="text-xs text-[#5D5E5F]">By ${escapeHtml(post.author_name || 'Zizo Care Team')}</p>
+        <h1 class="display text-[length:var(--fs-h2)] md:text-[length:var(--fs-h1)]">${escapeHtml(post.title)}</h1>
+        <p class="text-[length:var(--fs-body)] text-[#2E3031] max-w-none">${escapeHtml(post.excerpt)}</p>
       </header>
 
-      <div class="aspect-[16/9] max-h-[34rem] rounded-[var(--radius)] overflow-hidden bg-[#E1E0DD] mb-12">
+      <div class="w-full aspect-[16/9] md:aspect-[21/9] rounded-[var(--radius)] overflow-hidden bg-[#E1E0DD] mb-12">
         <img src="${escapeHtml(post.featured_image_url || '/assets/img/blog-default-1920w.webp')}" alt="${escapeHtml(post.featured_image_alt || post.title)}" width="1920" height="1080" class="w-full h-full object-cover" />
       </div>
 
@@ -279,11 +280,23 @@ ${renderHeader({ isHome: false })}
           ${relatedPosts
             .slice(0, 3)
             .map(
-              (rp) => `<a href="/resources/blog/${escapeHtml(rp.slug)}/" class="border border-[#E1E0DD] rounded-[var(--radius)] p-5 hover:bg-[#E1E0DD]/30">
-            <p class="text-xs text-[#5D5E5F] mb-2">${escapeHtml(rp.category_name || 'Guide')} · ${Number(rp.reading_minutes || 3)} min read</p>
-            <h3 class="display text-lg mb-2">${escapeHtml(rp.title)}</h3>
-            <p class="text-[length:var(--fs-small)] text-[#2E3031]">${escapeHtml(rp.excerpt)}</p>
-          </a>`
+              (rp) => `<article class="border border-[#E1E0DD] rounded-[var(--radius)] overflow-hidden bg-[#FAF9F6] flex flex-col justify-between reveal">
+            <a href="/resources/blog/${escapeHtml(rp.slug)}/" class="block aspect-[16/10] bg-[#E1E0DD] overflow-hidden">
+              <img src="${escapeHtml(rp.featured_image_url || '/assets/img/blog-default-1920w.webp')}" alt="${escapeHtml(rp.featured_image_alt || rp.title)}" width="1200" height="750" loading="lazy" decoding="async" class="w-full h-full object-cover" />
+            </a>
+            <div class="p-6 flex-1 flex flex-col justify-between gap-4">
+              <div class="space-y-2">
+                <div class="flex items-center gap-2 text-xs text-[#5D5E5F]">
+                  <span>${escapeHtml(rp.category_name || 'Guide')}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>${Number(rp.reading_minutes || 3)} min read</span>
+                </div>
+                <h3 class="display text-[length:var(--fs-h3)]"><a href="/resources/blog/${escapeHtml(rp.slug)}/" class="hover:text-[#17645F]">${escapeHtml(rp.title)}</a></h3>
+                <p class="text-[length:var(--fs-small)] text-[#2E3031]">${escapeHtml(rp.excerpt)}</p>
+              </div>
+              <a href="/resources/blog/${escapeHtml(rp.slug)}/" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline">Read article</a>
+            </div>
+          </article>`
             )
             .join('')}
         </div>
