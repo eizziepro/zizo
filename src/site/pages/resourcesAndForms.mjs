@@ -338,8 +338,7 @@ ${renderHeader({ isHome: false })}
     breadcrumbs: [{ label: 'Home', href: '/' }, { label: 'Resources' }, { label: 'FAQ' }],
     title: 'Frequently asked questions.',
     intro:
-      'Clear answers grouped for intended parents, gestational surrogates, egg donors, and legal planning.',
-    note: 'General information only, not medical or legal advice.',
+      'Clear answers grouped for intended parents, gestational surrogates, egg donors, and legal planning to guide your fertility journey with complete confidence.',
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
