@@ -218,7 +218,6 @@ ${renderHeader({ isHome: false })}
     title: 'Programs across five global regions.',
     intro:
       'Thoughtful cross-border coordination tailored to Nigeria, Europe, Asia, Canada, and the United States.',
-    note: 'General information only, not legal or medical advice. Surrogacy laws vary widely by country and require independent legal counsel.',
   })}
 
   <section class="zizo-section bg-[#FAF9F6]" id="cross-border">
