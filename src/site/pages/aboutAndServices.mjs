@@ -10,26 +10,30 @@ import {
 
 export function renderAboutPage({ settings = {}, siteUrl = '' }) {
   const founderPhoto = String(settings.founder_photo_url || '').trim();
-  const values = [
+  const standards = [
     {
-      title: 'Professionalism',
-      desc: 'Structured medical, legal, and administrative coordination handled with reliability across time zones.',
+      badge: 'Ethical Protection',
+      icon: 'shield-check',
+      title: 'Surrogate & Donor Primacy',
+      desc: 'Independent legal representation, secure escrow disbursements, comprehensive medical coverage, and dedicated postpartum care.',
     },
     {
-      title: 'Excellence',
-      desc: 'Partnering only with vetted clinics, qualified counselors, and experienced reproductive legal practitioners.',
+      badge: 'Physician-Led',
+      icon: 'stethoscope',
+      title: 'Clinical Rigor & Screening',
+      desc: 'Collaborating strictly with certified IVF laboratories and embryologists; thorough genetic, infectious disease, and psychological vetting.',
     },
     {
-      title: 'Compassion',
-      desc: 'Listening without judgement and honouring the emotional weight of every fertility and surrogacy decision.',
+      badge: 'Global Compliance',
+      icon: 'globe',
+      title: 'Cross-Border Legal Certainty',
+      desc: 'Airtight parentage orders, consular paperwork, and passport coordination across Nigeria, the UK, US, and beyond for an anxiety-free homecoming.',
     },
     {
-      title: 'Integrity',
-      desc: 'Clear communication, honest expectations, and transparent milestone coordination without hidden claims.',
-    },
-    {
-      title: 'Ethical Care',
-      desc: 'Respecting the autonomy, informed consent, privacy, and fair compensation of surrogates and donors.',
+      badge: 'Zero Hidden Fees',
+      icon: 'scale',
+      title: 'Radical Transparency & Stewardship',
+      desc: 'Milestone-based financial clarity with zero hidden agency costs, backed by direct founder oversight from initial match to birth.',
     },
   ];
 
@@ -131,16 +135,24 @@ ${renderHeader({ isHome: false })}
   <section class="zizo-section bg-[#E1E0DD]/40 border-y border-[#E1E0DD]">
     <div class="zizo-container space-y-[var(--space-md)]">
       <div class="max-w-2xl reveal">
-        <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F] mb-2">Core Values</p>
-        <h2 class="display">Five principles behind every decision</h2>
+        <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F] mb-2">Our Core Standards</p>
+        <h2 class="display">Four non-negotiable principles behind every journey</h2>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5">
-        ${values
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        ${standards
           .map(
-            (v, idx) => `<div class="bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-6 space-y-3 reveal">
-          <span class="text-xs font-semibold text-[#17645F] tabular-nums">0${idx + 1}</span>
-          <h3 class="display text-[length:var(--fs-h3)]">${escapeHtml(v.title)}</h3>
-          <p class="text-[length:var(--fs-small)] text-[#2E3031]">${escapeHtml(v.desc)}</p>
+            (s, idx) => `<div class="bg-[#FAF9F6] border border-[#E1E0DD] rounded-[var(--radius)] p-6 space-y-4 reveal flex flex-col justify-between hover:border-[#8BB2AF]/60 transition-colors shadow-sm">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-semibold text-[#17645F] tabular-nums tracking-widest">0${idx + 1}</span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#E1E0DD]/50 text-[#17645F] text-[11px] font-medium border border-[#E1E0DD]">
+                <i data-lucide="${s.icon}" class="w-3.5 h-3.5 text-[#17645F]"></i>
+                ${escapeHtml(s.badge)}
+              </span>
+            </div>
+            <h3 class="display text-[length:var(--fs-h3)] leading-snug">${escapeHtml(s.title)}</h3>
+          </div>
+          <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(s.desc)}</p>
         </div>`
           )
           .join('')}
