@@ -1184,10 +1184,6 @@ ${renderHeader({ isHome: false })}
       <!-- 6. Legal Liaison Callout Banner -->
       <div class="p-8 sm:p-10 rounded-2xl bg-[#E1E0DD]/30 border border-[#E1E0DD] reveal flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div class="space-y-2 max-w-xl">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20">
-            <i data-lucide="scale" class="w-3.5 h-3.5 text-[#17645F]"></i>
-            Jurisdiction-Specific Counsel
-          </span>
           <h3 class="display text-2xl sm:text-3xl text-[#17191A]">Need legal clarity for your destination country?</h3>
           <p class="text-[length:var(--fs-small)] text-[#5D5E5F] leading-relaxed">
             Our legal liaison coordinates directly with qualified reproductive law solicitors in Nigeria, the UK, the US, Canada, and the EU to ensure your parentage orders and travel documents are unassailable.
