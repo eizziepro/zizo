@@ -260,14 +260,14 @@ export function renderAdminPage({ settings = {}, siteUrl = '' }) {
           ${zizoLogoSvg()}
           <span class="font-display text-xl font-semibold">Zizo Staff Portal</span>
         </a>
-        <span class="text-xs text-[#5D5E5F]">2FA Protected</span>
+        <span class="text-xs text-[#5D5E5F]">Secure Staff Access</span>
       </div>
 
       <!-- Step 1: Email & Password -->
       <form id="admin-login-form" class="space-y-4" novalidate>
         <div>
           <h1 class="display text-2xl mb-1">Staff sign in</h1>
-          <p class="text-[length:var(--fs-small)] text-[#5D5E5F]">Sign in with your staff email, password, and two-factor authenticator.</p>
+          <p class="text-[length:var(--fs-small)] text-[#5D5E5F]">Sign in with your authorized staff email and password.</p>
         </div>
         <div>
           <label for="auth-email" class="block text-[length:var(--fs-small)] font-medium mb-1.5">Email address</label>
@@ -282,30 +282,6 @@ export function renderAdminPage({ settings = {}, siteUrl = '' }) {
         <div class="pt-3 border-t border-[#E1E0DD] text-xs text-[#5D5E5F] space-y-1">
           <p>Sessions automatically lock after 30 minutes of inactivity.</p>
           <p><a href="/" class="text-[#17645F] underline">Return to public website</a></p>
-        </div>
-      </form>
-
-      <!-- Step 2: Mandatory TOTP 2FA -->
-      <form id="admin-totp-form" class="hidden space-y-4" novalidate>
-        <div>
-          <h2 class="display text-2xl mb-1" id="totp-heading">Two-factor authentication</h2>
-          <p class="text-[length:var(--fs-small)] text-[#5D5E5F]" id="totp-subtitle">Enter the 6-digit code from your authenticator app.</p>
-        </div>
-
-        <div id="totp-setup-box" class="hidden border border-[#E1E0DD] rounded-[var(--radius)] p-4 bg-[#E1E0DD]/30 space-y-2 text-xs">
-          <p class="font-semibold text-[#17191A]">First-time 2FA enrollment required</p>
-          <p class="text-[#2E3031]">Add this key to Google Authenticator, 1Password, or Authy, then enter the 6-digit code below:</p>
-          <p class="font-mono bg-[#FAF9F6] border border-[#E1E0DD] p-2 rounded break-all select-all" id="totp-secret-display"></p>
-        </div>
-
-        <div>
-          <label for="auth-totp-code" class="block text-[length:var(--fs-small)] font-medium mb-1.5">6-digit authenticator code</label>
-          <input id="auth-totp-code" name="code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required class="input-field font-mono tracking-widest text-center" placeholder="000000" autocomplete="one-time-code" />
-        </div>
-        <div id="auth-totp-error" class="text-[length:var(--fs-small)] text-red-700" role="alert" aria-live="assertive"></div>
-        <div class="flex items-center gap-2.5">
-          <button type="submit" class="btn-primary flex-1 justify-center">Verify &amp; Open Dashboard</button>
-          <button type="button" id="auth-back-btn" class="btn-secondary">Back</button>
         </div>
       </form>
     </div>

@@ -1,7 +1,6 @@
 const authScreen = document.getElementById('admin-auth-screen');
 const workspace = document.getElementById('admin-workspace');
 const loginForm = document.getElementById('admin-login-form');
-const totpForm = document.getElementById('admin-totp-form');
 const adminContent = document.getElementById('admin-content');
 const sectionTitle = document.getElementById('admin-section-title');
 const topActions = document.getElementById('admin-top-actions');
@@ -137,55 +136,7 @@ loginForm?.addEventListener('submit', async (e) => {
 
     if (data.ok && data.staff) {
       enterWorkspace(data.staff);
-      return;
     }
-
-    pendingChallengeToken = data.challengeToken;
-    loginForm.classList.add('hidden');
-    totpForm.classList.remove('hidden');
-
-    const setupBox = document.getElementById('totp-setup-box');
-    const heading = document.getElementById('totp-heading');
-    const subtitle = document.getElementById('totp-subtitle');
-    if (data.requiresTotpSetup) {
-      setupBox?.classList.remove('hidden');
-      if (heading) heading.textContent = 'Set up 2FA authenticator';
-      if (subtitle) subtitle.textContent = 'Enroll your two-factor authenticator to continue.';
-      document.getElementById('totp-secret-display').textContent = data.secret || '';
-    } else {
-      setupBox?.classList.add('hidden');
-      if (heading) heading.textContent = 'Two-factor authentication';
-      if (subtitle) subtitle.textContent = 'Enter the 6-digit code from your authenticator app.';
-    }
-    document.getElementById('auth-totp-code')?.focus();
-  } catch (ex) {
-    if (err) err.textContent = ex.message;
-  }
-});
-
-document.getElementById('auth-back-btn')?.addEventListener('click', () => {
-  totpForm.classList.add('hidden');
-  loginForm.classList.remove('hidden');
-  pendingChallengeToken = null;
-});
-
-totpForm?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const err = document.getElementById('auth-totp-error');
-  const code = String(new FormData(totpForm).get('code') || '').trim();
-  if (err) err.textContent = '';
-
-  try {
-    const data = await fetch('/api/admin/auth/verify-totp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ challengeToken: pendingChallengeToken, code }),
-    }).then(async (r) => {
-      const j = await r.json();
-      if (!r.ok) throw new Error(j.error || 'Verification failed');
-      return j;
-    });
-    enterWorkspace(data.staff);
   } catch (ex) {
     if (err) err.textContent = ex.message;
   }
