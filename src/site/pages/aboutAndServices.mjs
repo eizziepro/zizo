@@ -62,7 +62,7 @@ ${renderHeader({ isHome: false })}
 <main id="main-content">
   ${renderInteriorHero({
     breadcrumbs: [{ label: 'Home', href: '/' }, { label: 'About' }],
-    title: 'A safe fertility brand built on compassion, privacy, and trust.',
+    title: 'Safe fertility care, built on trust.',
     intro:
       'Zizo Donor and Surrogacy guides intended parents, gestational surrogates, and egg donors across borders with calm, personal coordination from Lagos, Nigeria.',
   })}
