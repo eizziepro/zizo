@@ -754,29 +754,32 @@ app.post('/api/admin/auth/login', (req, res) => {
     return;
   }
 
-  let secret = staff.totp_secret;
-  let requiresTotpSetup = false;
-  if (!staff.totp_enabled || !secret) {
-    secret = generateTotpSecret();
-    db.prepare('UPDATE staff SET totp_secret = ? WHERE id = ?').run(secret, staff.id);
-    requiresTotpSetup = true;
-  }
-
-  const challengeToken = createSignedToken(
-    { staffId: staff.id, purpose: 'totp' },
+  const sessionToken = createSignedToken(
+    {
+      id: staff.id,
+      email: staff.email,
+      role: staff.role,
+      full_name: staff.full_name,
+    },
     SESSION_SECRET,
-    600
+    1800
+  );
+
+  logAudit(staff.email, 'login', 'staff', staff.id, { role: staff.role });
+
+  res.setHeader(
+    'Set-Cookie',
+    `zizo_staff_session=${encodeURIComponent(sessionToken)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=1800`
   );
 
   res.json({
-    requiresTotpSetup,
-    requiresTotp: !requiresTotpSetup,
-    challengeToken,
-    ...(requiresTotpSetup
-      ? {
-          secret,
-        }
-      : {}),
+    ok: true,
+    staff: {
+      id: staff.id,
+      email: staff.email,
+      role: staff.role,
+      full_name: staff.full_name,
+    },
   });
 });
 

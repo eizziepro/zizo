@@ -135,6 +135,11 @@ loginForm?.addEventListener('submit', async (e) => {
       return j;
     });
 
+    if (data.ok && data.staff) {
+      enterWorkspace(data.staff);
+      return;
+    }
+
     pendingChallengeToken = data.challengeToken;
     loginForm.classList.add('hidden');
     totpForm.classList.remove('hidden');

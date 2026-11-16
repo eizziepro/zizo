@@ -278,7 +278,7 @@ export function renderAdminPage({ settings = {}, siteUrl = '' }) {
           <input id="auth-password" name="password" type="password" required class="input-field" autocomplete="current-password" />
         </div>
         <div id="auth-login-error" class="text-[length:var(--fs-small)] text-red-700" role="alert" aria-live="assertive"></div>
-        <button type="submit" class="btn-primary w-full justify-center">Continue to 2FA</button>
+        <button type="submit" class="btn-primary w-full justify-center">Sign in to Dashboard</button>
         <div class="pt-3 border-t border-[#E1E0DD] text-xs text-[#5D5E5F] space-y-1">
           <p>Sessions automatically lock after 30 minutes of inactivity.</p>
           <p><a href="/" class="text-[#17645F] underline">Return to public website</a></p>
