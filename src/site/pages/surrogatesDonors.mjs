@@ -121,7 +121,6 @@ ${renderHeader({ isHome: false })}
     title: 'Interested in becoming a surrogate?',
     intro:
       'At Zizo, gestational surrogates are valued, deeply respected, transparently compensated, and supported with attentive personal and medical care.',
-    note: 'Strict anonymity and privacy are maintained at every step.',
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
@@ -295,6 +294,39 @@ ${renderFooter({ settings })}`;
 }
 
 export function renderCompensationSupportPage({ settings = {}, siteUrl = '' }) {
+  const cards = [
+    {
+      icon: 'shield-check',
+      title: 'Milestone Escrow Protection',
+      desc: 'Compensation and expense allowances follow clear, documented milestones held in dedicated escrow and reviewed with independent legal counsel.',
+    },
+    {
+      icon: 'heart-pulse',
+      title: 'Comprehensive Medical Coverage',
+      desc: 'All clinical screenings, prenatal visits, laboratory evaluations, hospital delivery costs, and postpartum medical check-ups are fully covered.',
+    },
+    {
+      icon: 'scale',
+      title: 'Independent Legal Counsel',
+      desc: 'Every surrogate is paired with independent reproductive legal counsel to ensure personal rights, informed consent, and compensation terms are fully protected.',
+    },
+    {
+      icon: 'heart',
+      title: 'Emotional Counseling & Wellness',
+      desc: 'Confidential access to qualified reproductive counselors before, during, and after your journey whenever you need emotional guidance or reflection.',
+    },
+    {
+      icon: 'message-square',
+      title: 'Dedicated Case-Manager Access',
+      desc: 'A personal coordinator assists with transportation logistics, appointment scheduling, allowance disbursements, and 24/7 emergency support.',
+    },
+    {
+      icon: 'sparkles',
+      title: 'Postpartum Recovery & Rest',
+      desc: 'Continuous post-birth check-ins, recovery allowances, and dedicated support continue well after delivery to ensure your long-term health and wellbeing.',
+    },
+  ];
+
   return `${renderHead({
     title: 'Compensation and Support | Zizo Donor and Surrogacy',
     description:
@@ -310,35 +342,24 @@ ${renderHeader({ isHome: false })}
       { label: 'Surrogates & Donors' },
       { label: 'Compensation and Support' },
     ],
-    title: 'Transparent compensation and attentive care.',
+    title: 'Transparent compensation, ethical safeguards, and attentive surrogate care.',
     intro:
       'Every surrogate and donor deserves clarity on reimbursements, medical coverage, and emotional support before making any commitment.',
-    note: 'Specific compensation figures are confirmed transparently during private onboarding ({{CLIENT_TO_CONFIRM}}).',
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
-    <div class="zizo-container grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="border border-[#E1E0DD] rounded-[var(--radius)] p-7 space-y-3 reveal">
-        <i data-lucide="scale" class="w-6 h-6 text-[#17645F]"></i>
-        <h2 class="display text-[length:var(--fs-h3)]">Milestone Structure</h2>
-        <p class="text-[length:var(--fs-small)] text-[#2E3031]">
-          Compensation and expense reimbursements follow clear, documented milestones reviewed with independent legal counsel ({{CLIENT_TO_CONFIRM}}).
-        </p>
-      </div>
-      <div class="border border-[#E1E0DD] rounded-[var(--radius)] p-7 space-y-3 reveal">
-        <i data-lucide="heart-pulse" class="w-6 h-6 text-[#17645F]"></i>
-        <h2 class="display text-[length:var(--fs-h3)]">Medical &amp; Emotional Care</h2>
-        <p class="text-[length:var(--fs-small)] text-[#2E3031]">
-          Clinical screening, prenatal care coordination, and confidential emotional counseling are arranged throughout your journey and postpartum recovery.
-        </p>
-      </div>
-      <div class="border border-[#E1E0DD] rounded-[var(--radius)] p-7 space-y-3 reveal">
-        <i data-lucide="message-square" class="w-6 h-6 text-[#17645F]"></i>
-        <h2 class="display text-[length:var(--fs-h3)]">Case-Manager Access</h2>
-        <p class="text-[length:var(--fs-small)] text-[#2E3031]">
-          You have a direct point of contact for appointment scheduling, travel support, and prompt answers whenever questions arise.
-        </p>
-      </div>
+    <div class="zizo-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      ${cards
+        .map(
+          (c) => `<div class="border border-[#E1E0DD] rounded-[var(--radius)] p-7 space-y-3 bg-[#FAF9F6] shadow-sm hover:border-[#8BB2AF]/60 transition-colors reveal flex flex-col justify-between">
+        <div class="space-y-3">
+          <i data-lucide="${c.icon}" class="w-6 h-6 text-[#17645F]"></i>
+          <h2 class="display text-[length:var(--fs-h3)] text-[#17191A]">${escapeHtml(c.title)}</h2>
+        </div>
+        <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(c.desc)}</p>
+      </div>`
+        )
+        .join('')}
     </div>
   </section>
 

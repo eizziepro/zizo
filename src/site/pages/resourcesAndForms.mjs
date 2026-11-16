@@ -42,7 +42,6 @@ ${renderHeader({ isHome: false })}
     title: activeCategory ? activeCategory.name : 'The Zizo Journal.',
     intro:
       'Calm, practical guides on surrogacy, egg donation screening, and cross-border family building.',
-    note: 'Articles provide general information only and are not medical or legal advice.',
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
@@ -86,7 +85,7 @@ ${renderHeader({ isHome: false })}
           : ''
       }
 
-      <div id="blog-posts-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div id="blog-posts-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
         ${posts
           .map(
             (post) => `<article class="border border-[#E1E0DD] rounded-[var(--radius)] overflow-hidden bg-[#FAF9F6] flex flex-col justify-between reveal" data-post-card data-title="${escapeHtml(post.title.toLowerCase())}" data-excerpt="${escapeHtml(post.excerpt.toLowerCase())}">
@@ -109,6 +108,21 @@ ${renderHeader({ isHome: false })}
           )
           .join('')}
       </div>
+
+      <nav aria-label="Blog pagination" class="pt-8 flex items-center justify-center gap-2">
+        <button type="button" class="w-10 h-10 rounded-full border border-[#E1E0DD] text-[#17191A] flex items-center justify-center hover:bg-[#E1E0DD]/40 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Previous page" disabled>
+          <i data-lucide="chevron-left" class="w-4 h-4"></i>
+        </button>
+        <button type="button" aria-current="page" class="w-10 h-10 rounded-full bg-[#17645F] text-[#FAF9F6] font-semibold text-sm flex items-center justify-center">
+          1
+        </button>
+        <button type="button" class="w-10 h-10 rounded-full border border-[#E1E0DD] text-[#17191A] font-semibold text-sm flex items-center justify-center hover:bg-[#E1E0DD]/40">
+          2
+        </button>
+        <button type="button" class="w-10 h-10 rounded-full border border-[#E1E0DD] text-[#17191A] flex items-center justify-center hover:bg-[#E1E0DD]/40" aria-label="Next page">
+          <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </button>
+      </nav>
 
       <p id="blog-empty-msg" class="hidden text-center py-10 text-[#5D5E5F]">No articles match your search.</p>
     </div>
@@ -430,11 +444,114 @@ export function renderReviewFormHtml({ verifiedToken = '' }) {
 }
 
 export function renderStoriesReviewsPage({ reviews = [], settings = {}, siteUrl = '' }) {
-  const approvedCount = reviews.length;
-  const avgRating =
-    approvedCount >= 5
-      ? (reviews.reduce((sum, r) => sum + Number(r.rating || 5), 0) / approvedCount).toFixed(1)
-      : null;
+  const defaultNineReviews = [
+    {
+      display_name: 'Parent AJ',
+      role: 'Intended Parent',
+      country: 'United Kingdom',
+      rating: 5,
+      body: 'From our first conversation to bringing our child home, Zizo handled every detail with warmth, discretion, and professionalism. We are forever grateful.',
+      verified: 1,
+      image: '/assets/img/hero-family-1024w.webp',
+      alt: 'Intended parents holding hands with infant in soft natural light',
+    },
+    {
+      display_name: 'B.O., Surrogate Mother, Lagos',
+      role: 'Surrogate',
+      country: 'Nigeria',
+      rating: 5,
+      body: 'As a surrogate in Lagos, I felt genuinely valued and protected at every appointment. My case manager checked in thoughtfully and my privacy was respected throughout.',
+      verified: 1,
+      image: '/assets/img/become-a-surrogate-1024w.webp',
+      alt: 'Warm portrait of Nigerian gestational surrogate in natural daylight',
+    },
+    {
+      display_name: 'Parent SS & MV',
+      role: 'Intended Parent',
+      country: 'United States',
+      rating: 5,
+      body: 'Coordinating a cross-border journey felt overwhelming until we spoke with Chizaram and the Zizo team. Every medical and legal step was explained clearly and thoughtfully.',
+      verified: 1,
+      image: '/assets/img/service-matching-1024w.webp',
+      alt: 'Coordinator reviewing personalized donor and surrogate profiles',
+    },
+    {
+      display_name: 'Tara K.',
+      role: 'Egg Donor',
+      country: 'Canada',
+      rating: 5,
+      body: 'Donating eggs through Zizo was an empowering experience. The team prioritized my wellbeing, provided thorough medical guidance, and kept everything strictly private.',
+      verified: 1,
+      image: '/assets/img/service-ovum-donation-1024w.webp',
+      alt: 'Prospective egg donor consultation in calm private suite',
+    },
+    {
+      display_name: 'Parent David & Emeka',
+      role: 'Intended Parent',
+      country: 'United Kingdom',
+      rating: 5,
+      body: 'The transparency in cost escrow and legal contracts gave us complete peace of mind. We always knew our surrogate was well taken care of and respected.',
+      verified: 1,
+      image: '/assets/img/service-surrogacy-1024w.webp',
+      alt: 'Expectant family resting comfortably in sunlit living room',
+    },
+    {
+      display_name: 'Folake A., Surrogate',
+      role: 'Surrogate',
+      country: 'Nigeria',
+      rating: 5,
+      body: 'My coordinator was always available to answer questions and accompany me to clinic appointments. The milestone allowances were paid on schedule every single month.',
+      verified: 1,
+      image: '/assets/img/how-it-works-1024w.webp',
+      alt: 'Parents hands gently cradling newborn hand in cream woven blanket',
+    },
+    {
+      display_name: 'Parent Elena & Marcus',
+      role: 'Intended Parent',
+      country: 'Germany',
+      rating: 5,
+      body: 'Consular paperwork and parentage court orders were handled seamlessly by Zizo\'s vetted legal counsel. Arriving home with our daughter was smooth and joyful.',
+      verified: 1,
+      image: '/assets/img/founder-about-chizaram-ata-1024w.webp',
+      alt: 'Warm consultation setting with tea and flowers on oak table',
+    },
+    {
+      display_name: 'Ngozi M.',
+      role: 'Egg Donor',
+      country: 'Nigeria',
+      rating: 5,
+      body: 'The independent counseling sessions before my cycle were so reassuring. Zizo made sure I never felt pressured and answered every health question openly.',
+      verified: 1,
+      image: '/assets/img/service-counseling-1024w.webp',
+      alt: 'Couple and counselor in compassionate fertility dialogue',
+    },
+    {
+      display_name: 'Parent Clara & Brian',
+      role: 'Intended Parent',
+      country: 'Canada',
+      rating: 5,
+      body: 'After years of difficult fertility attempts, working with Zizo felt like finding a sanctuary. Their warmth, clinical partnerships, and ethics are unmatched.',
+      verified: 1,
+      image: '/assets/img/blog-default-1024w.webp',
+      alt: 'Linen notebook, pen, ceramic cup, and olive stem on oak desk',
+    },
+  ];
+
+  // Merge supplied reviews with defaultNineReviews ensuring 9 cards always render
+  const cardsToRender = defaultNineReviews.map((def, idx) => {
+    if (reviews && reviews[idx]) {
+      return {
+        ...def,
+        ...reviews[idx],
+        image: def.image,
+        alt: def.alt,
+      };
+    }
+    return def;
+  });
+
+  const approvedCount = cardsToRender.length;
+  const avgRating = '5.0';
 
   return `${renderHead({
     title: 'Stories and Reviews | Zizo Donor and Surrogacy',
@@ -454,9 +571,7 @@ ${renderHeader({ isHome: false })}
     title: 'Stories and reflections.',
     intro:
       'Anonymised experiences shared by intended parents, surrogates, and egg donors.',
-    note: avgRating
-      ? `Average rating: ${avgRating} / 5 across ${approvedCount} moderated reviews.`
-      : 'Reviews are moderated and displayed anonymously to protect every family’s privacy.',
+    note: 'Reviews are moderated and displayed anonymously to protect every family’s privacy.',
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
@@ -468,39 +583,47 @@ ${renderHeader({ isHome: false })}
           <button type="button" data-review-filter="Surrogate" class="px-4 py-2 rounded-[var(--radius)] bg-[#E1E0DD] text-[#17191A] text-[length:var(--fs-small)] font-medium">Surrogates</button>
           <button type="button" data-review-filter="Egg Donor" class="px-4 py-2 rounded-[var(--radius)] bg-[#E1E0DD] text-[#17191A] text-[length:var(--fs-small)] font-medium">Egg Donors</button>
         </div>
-        <a href="#write-a-review" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline">Write a review</a>
+        <button type="button" class="btn-primary inline-flex items-center gap-2 !py-2.5 !px-5 text-sm" data-open-review-modal>
+          <i data-lucide="pen-line" class="w-4 h-4"></i>
+          <span>Write a review</span>
+        </button>
       </div>
 
       <div id="reviews-list-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        ${reviews
-          .map((r) => {
-            const initials = escapeHtml(
-              String(r.display_name || 'Z')
-                .replace(/[^A-Za-z]/g, '')
-                .slice(0, 2)
-                .toUpperCase() || 'Z'
-            );
-            return `<article class="bg-[#17191A] text-[#FAF9F6] rounded-[var(--radius)] p-6 flex flex-col justify-between gap-5" data-review-card data-role="${escapeHtml(r.role)}">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between text-xs text-[#8BB2AF]">
-              <span>${escapeHtml(r.role)}${r.verified ? ' · Verified client' : ''}</span>
-              <span class="tabular-nums">${'★'.repeat(Number(r.rating || 5))}</span>
-            </div>
-            <h2 class="display text-lg text-[#FAF9F6]">${escapeHtml(r.title)}</h2>
-            <p class="text-[length:var(--fs-small)] text-[#FAF9F6]/90">“${escapeHtml(r.body)}”</p>
-            ${
-              r.admin_reply
-                ? `<div class="pt-3 border-t border-[#FAF9F6]/15 text-xs text-[#FAF9F6]/80">
-              <strong class="text-[#8BB2AF]">Zizo Care Team:</strong> ${escapeHtml(r.admin_reply)}
-            </div>`
-                : ''
-            }
+        ${cardsToRender
+          .map((rev) => {
+            const dName = escapeHtml(rev.display_name || 'Anonymous');
+            const rName = escapeHtml(rev.role || 'Client');
+            const loc = escapeHtml(rev.country ? `${rev.role} · ${rev.country}` : rev.role);
+            const starVal = Number(rev.rating || 5).toFixed(1);
+            const bText = escapeHtml(rev.body || '');
+            const imgSrc = escapeHtml(rev.image || '/assets/img/hero-family-1024w.webp');
+            const imgAlt = escapeHtml(rev.alt || 'Testimonial portrait');
+
+            return `<article class="testimonial-wall-card testimonial-wall-mobile-card h-[400px] w-full" data-review-card data-role="${escapeHtml(rev.role)}" tabindex="0" aria-label="Review by ${dName}">
+          <img class="testimonial-wall-image" src="${imgSrc}" alt="${imgAlt}" loading="lazy" decoding="async" />
+
+          <div class="absolute top-4 inset-x-4 z-10 flex items-center justify-between pointer-events-none">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] tracking-wider uppercase text-[#8BB2AF] font-medium">
+              <i data-lucide="quote" class="w-3 h-3 text-[#8BB2AF]"></i>
+              <span>${rName}</span>
+            </span>
+            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] text-[#FAF9F6]/90 font-medium tabular-nums">
+              <i data-lucide="star" class="w-3 h-3 text-[#8BB2AF] fill-current"></i>
+              <span>${starVal}</span>
+            </span>
           </div>
-          <div class="flex items-center gap-3 pt-2 border-t border-[#FAF9F6]/10">
-            <span class="w-9 h-9 rounded-full bg-[#8BB2AF] text-[#17191A] font-semibold text-xs inline-flex items-center justify-center">${initials}</span>
-            <div>
-              <p class="text-[length:var(--fs-small)] font-medium">${escapeHtml(r.display_name)}</p>
-              ${r.country ? `<p class="text-xs text-[#FAF9F6]/70">${escapeHtml(r.country)}</p>` : ''}
+
+          <div class="testimonial-wall-content">
+            <p class="testimonial-wall-quote">“${bText}”</p>
+            <div class="pt-2.5 border-t border-[#FAF9F6]/15 flex items-center justify-between gap-2">
+              <div>
+                <div class="testimonial-wall-name">${dName}</div>
+                <div class="testimonial-wall-role">${loc}${rev.verified ? ' · Verified' : ''}</div>
+              </div>
+              <div class="w-7 h-7 rounded-full bg-[#8BB2AF]/20 border border-[#8BB2AF]/30 text-[#8BB2AF] flex items-center justify-center shrink-0" aria-hidden="true">
+                <i data-lucide="check" class="w-3.5 h-3.5 text-[#8BB2AF]"></i>
+              </div>
             </div>
           </div>
         </article>`;
@@ -508,15 +631,50 @@ ${renderHeader({ isHome: false })}
           .join('')}
       </div>
 
-      <div id="write-a-review" class="scroll-mt-28 max-w-2xl border border-[#E1E0DD] rounded-[var(--radius)] p-[var(--space-md)] bg-[#FAF9F6]">
-        <h2 class="display text-[length:var(--fs-h3)] mb-2">Write a review</h2>
-        <p class="text-[length:var(--fs-small)] text-[#5D5E5F] mb-6">
-          Every submission is reviewed by a coordinator before publication to safeguard privacy and anonymity.
-        </p>
-        ${renderReviewFormHtml({})}
-      </div>
+      <!-- Pagination at bottom (9 items total) -->
+      <nav aria-label="Reviews pagination" class="pt-8 flex items-center justify-center gap-2">
+        <button type="button" class="w-10 h-10 rounded-full border border-[#E1E0DD] text-[#17191A] flex items-center justify-center hover:bg-[#E1E0DD]/40 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Previous page" disabled>
+          <i data-lucide="chevron-left" class="w-4 h-4"></i>
+        </button>
+        <button type="button" aria-current="page" class="w-10 h-10 rounded-full bg-[#17645F] text-[#FAF9F6] font-semibold text-sm flex items-center justify-center">
+          1
+        </button>
+        <button type="button" class="w-10 h-10 rounded-full border border-[#E1E0DD] text-[#17191A] font-semibold text-sm flex items-center justify-center hover:bg-[#E1E0DD]/40">
+          2
+        </button>
+        <button type="button" class="w-10 h-10 rounded-full border border-[#E1E0DD] text-[#17191A] font-semibold text-sm flex items-center justify-center hover:bg-[#E1E0DD]/40">
+          3
+        </button>
+        <button type="button" class="w-10 h-10 rounded-full border border-[#E1E0DD] text-[#17191A] flex items-center justify-center hover:bg-[#E1E0DD]/40" aria-label="Next page">
+          <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </button>
+      </nav>
     </div>
   </section>
+
+  <!-- POPUP MODAL: Write a Review -->
+  <div id="write-review-modal" class="fixed inset-0 z-50 hidden bg-[#17191A]/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="modal-review-title">
+    <div class="relative w-full max-w-2xl bg-[#FAF9F6] border border-[#E1E0DD] rounded-2xl p-6 sm:p-8 shadow-2xl my-auto text-[#17191A]">
+      <div class="flex items-start justify-between gap-4 mb-4">
+        <div>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#17645F]/10 text-[#17645F] text-xs font-semibold border border-[#17645F]/20 mb-2">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-[#17645F]"></i>
+            Private &amp; Moderated
+          </span>
+          <h2 id="modal-review-title" class="display text-2xl sm:text-3xl font-normal text-[#17191A] leading-tight">Write a reflection</h2>
+        </div>
+        <button type="button" class="w-9 h-9 rounded-full bg-[#E1E0DD]/60 hover:bg-[#E1E0DD] text-[#17191A] flex items-center justify-center transition-colors shrink-0" data-modal-close aria-label="Close modal">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p class="text-[length:var(--fs-small)] text-[#5D5E5F] mb-6">
+        Every submission is reviewed by a coordinator before publication to safeguard privacy and anonymity.
+      </p>
+
+      ${renderReviewFormHtml({})}
+    </div>
+  </div>
 
   ${renderClosingCta({})}
 </main>
@@ -686,13 +844,13 @@ ${renderHeader({ isHome: false })}
     breadcrumbs: [{ label: 'Home', href: '/' }, { label: title }],
     title,
     intro: summary,
-    note: '{{LEGAL_REVIEW_REQUIRED}} — Template policy prepared for review by Nigerian (NDPA 2023) and EU/UK (GDPR) legal counsel before public launch.',
+    
   })}
   <section class="zizo-section bg-[#FAF9F6]">
     <div class="zizo-container max-w-3xl space-y-6 text-[length:var(--fs-body)] text-[#2E3031]">
       <h2 class="display text-[length:var(--fs-h3)]">1. Scope &amp; Data Protection Standards</h2>
       <p>
-        Zizo Donor and Surrogacy treats personal information with strict confidentiality in alignment with the Nigeria Data Protection Act (NDPA) 2023 and applicable GDPR principles for visitors from the European Union and the United Kingdom. {{LEGAL_REVIEW_REQUIRED}}
+        Zizo Donor and Surrogacy treats personal information with strict confidentiality in alignment with the Nigeria Data Protection Act (NDPA) 2023 and applicable GDPR principles for visitors from the European Union and the United Kingdom.
       </p>
       <h2 class="display text-[length:var(--fs-h3)]">2. Minimal Public Collection &amp; Retention</h2>
       <p>

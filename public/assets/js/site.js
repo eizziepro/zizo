@@ -867,6 +867,58 @@ function initHomeFaqInteractive() {
   });
 }
 
+
+function initWriteReviewModal() {
+  const modal = document.getElementById('write-review-modal');
+  if (!modal) return;
+
+  const openBtns = document.querySelectorAll('[data-open-review-modal]');
+  const closeBtns = modal.querySelectorAll('[data-modal-close]');
+  let lastFocused = null;
+
+  function openModal() {
+    lastFocused = document.activeElement;
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    const firstInput = modal.querySelector('input:not([type="hidden"]), select, textarea');
+    setTimeout(() => firstInput?.focus(), 60);
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+    if (lastFocused && typeof lastFocused.focus === 'function') {
+      lastFocused.focus();
+    }
+  }
+
+  openBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  });
+
+  closeBtns.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeModal();
+    });
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+}
+
 function initCostEstimateModal() {
   const modal = document.getElementById('cost-estimate-modal');
   if (!modal) return;
@@ -945,4 +997,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initForms();
   initCookies();
   initCostEstimateModal();
+  initWriteReviewModal();
 });

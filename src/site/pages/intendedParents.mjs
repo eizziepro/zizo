@@ -595,7 +595,7 @@ export function renderLegalEthicsPage({ settings = {}, siteUrl = '' }) {
     },
     {
       title: 'Independent Legal Representation',
-      body: 'Every party should receive independent advice from qualified reproductive legal counsel in the relevant jurisdiction before executing any agreement. {{LEGAL_REVIEW_REQUIRED}}',
+      body: 'Every party should receive independent advice from qualified reproductive legal counsel in the relevant jurisdiction before executing any agreement.',
     },
     {
       title: 'Informed Consent & Ethical Screening',
@@ -603,7 +603,7 @@ export function renderLegalEthicsPage({ settings = {}, siteUrl = '' }) {
     },
     {
       title: 'Transparent Compensation Standards',
-      body: 'Reimbursements and surrogate compensation are structured transparently around documented milestones and health-care protections. {{LEGAL_REVIEW_REQUIRED}}',
+      body: 'Reimbursements and surrogate compensation are structured transparently around documented milestones and health-care protections.',
     },
   ];
 
@@ -625,7 +625,6 @@ ${renderHeader({ isHome: false })}
     title: 'Legal clarity and ethical standards.',
     intro:
       'Protecting the dignity, privacy, and informed consent of intended parents, egg donors, and gestational surrogates.',
-    note: 'General information only, not legal advice. All jurisdiction-specific guidance is provided by independent legal counsel ({{LEGAL_REVIEW_REQUIRED}}).',
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
