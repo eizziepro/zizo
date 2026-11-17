@@ -131,10 +131,10 @@ export function renderHeader({ isHome = false }) {
           </button>
           <div class="nav-dropdown-panel absolute left-0 top-full pt-2 w-64 z-50">
             <ul class="bg-[#FAF9F6] text-[#17191A] border border-[#E1E0DD] rounded-[var(--radius)] p-2 shadow-sm">
-              <li><a href="/services/surrogacy/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Surrogacy</a></li>
-              <li><a href="/services/ovum-donation/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Ovum Donation</a></li>
-              <li><a href="/services/personalized-matching/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Personalized Matching</a></li>
-              <li><a href="/services/counseling-ivf-support/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Counseling and IVF Support</a></li>
+              <li><a href="/services/donor-surrogate-enquiry/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Donor &amp; Surrogate Enquiry</a></li>
+              <li><a href="/services/ivf-consultation-coordination/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">IVF Consultation &amp; Coordination</a></li>
+              <li><a href="/services/surrogacy-coordination/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Surrogacy Coordination</a></li>
+              <li><a href="/services/donor-profiling-screening/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Donor Profiling &amp; Screening</a></li>
             </ul>
           </div>
         </div>
@@ -205,10 +205,10 @@ export function renderHeader({ isHome = false }) {
         </button>
         <div class="hidden pb-3 pl-3 space-y-2 text-[length:var(--fs-small)]">
           <a href="/services/" class="block py-1.5 text-[#5D5E5F]">All Services</a>
-          <a href="/services/surrogacy/" class="block py-1.5">Surrogacy</a>
-          <a href="/services/ovum-donation/" class="block py-1.5">Ovum Donation</a>
-          <a href="/services/personalized-matching/" class="block py-1.5">Personalized Matching</a>
-          <a href="/services/counseling-ivf-support/" class="block py-1.5">Counseling and IVF Support</a>
+          <a href="/services/donor-surrogate-enquiry/" class="block py-1.5">Donor &amp; Surrogate Enquiry</a>
+          <a href="/services/ivf-consultation-coordination/" class="block py-1.5">IVF Consultation &amp; Coordination</a>
+          <a href="/services/surrogacy-coordination/" class="block py-1.5">Surrogacy Coordination</a>
+          <a href="/services/donor-profiling-screening/" class="block py-1.5">Donor Profiling &amp; Screening</a>
         </div>
       </div>
 
@@ -373,10 +373,10 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
       <div class="lg:col-span-3 space-y-3">
         <h3 class="text-[length:var(--fs-small)] font-semibold uppercase tracking-[0.1em] text-[#FAF9F6] font-sans">Services</h3>
         <ul class="space-y-2.5 text-[length:var(--fs-small)]">
-          <li><a href="/services/surrogacy/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Surrogacy</a></li>
-          <li><a href="/services/ovum-donation/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Donation</a></li>
-          <li><a href="/services/personalized-matching/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Matching</a></li>
-          <li><a href="/services/counseling-ivf-support/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">IVF Support</a></li>
+          <li><a href="/services/donor-surrogate-enquiry/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Donor &amp; Surrogate Enquiry</a></li>
+          <li><a href="/services/ivf-consultation-coordination/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">IVF Consultation &amp; Coordination</a></li>
+          <li><a href="/services/surrogacy-coordination/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Surrogacy Coordination</a></li>
+          <li><a href="/services/donor-profiling-screening/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Donor Profiling &amp; Screening</a></li>
         </ul>
       </div>
 

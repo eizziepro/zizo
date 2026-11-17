@@ -316,12 +316,12 @@ ${header}
         <a href="/services/" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline underline-offset-4">Explore all services</a>
       </div>
 
-      <!-- 01 / 04 Full width -->
-      <a href="/services/surrogacy/" class="group block relative aspect-[16/10] rounded-[var(--radius)] overflow-hidden bg-[#17191A] reveal">
+      <!-- 01 / 04 Full width: Surrogacy Coordination -->
+      <a href="/services/surrogacy-coordination/" class="group block relative aspect-[16/10] rounded-[var(--radius)] overflow-hidden bg-[#17191A] reveal">
         <div class="w-full h-full transition-transform duration-700 group-hover:scale-[1.03]">
           ${pictureTag({
             base: 'service-surrogacy',
-            alt: 'Expectant woman resting calmly in a sunlit Lagos home interior',
+            alt: 'Expectant woman resting calmly in a sunlit Lagos home interior with attentive care support',
             width: 1920,
             height: 1080,
           })}
@@ -329,25 +329,28 @@ ${header}
         <div class="card-charcoal-scrim absolute inset-0"></div>
         <div class="absolute inset-0 p-[var(--space-md)] flex flex-col justify-between text-[#FAF9F6]">
           <div class="flex items-start justify-between">
-            <span class="text-[length:var(--fs-small)] font-medium tabular-nums text-[#FAF9F6]/85">01 / 04</span>
+            <div class="flex items-center gap-2">
+              <span class="text-[length:var(--fs-small)] font-medium tabular-nums text-[#FAF9F6]/85">01 / 04</span>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#FAF9F6]/15 backdrop-blur-sm border border-[#FAF9F6]/20 text-[#8BB2AF]">₦50,000 · 60 min</span>
+            </div>
             <span class="w-11 h-11 rounded-full bg-[#FAF9F6] text-[#17191A] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
               <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
             </span>
           </div>
           <div class="max-w-xl">
-            <h3 class="display text-[#FAF9F6] mb-1.5">Surrogacy</h3>
-            <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/85">Surrogates are carefully selected through thorough psychological, medical, and background evaluations.</p>
+            <h3 class="display text-[#FAF9F6] mb-1.5">Surrogacy Coordination</h3>
+            <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/85">Structured gestational surrogacy pathway management from candidate matching through independent legal counsel, escrow safeguards, and hospital delivery.</p>
           </div>
         </div>
       </a>
 
-      <!-- Split 7 / 5 -->
+      <!-- Split 7 / 5: Donor Profiling & Screening + Donor & Surrogate Enquiry -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-[var(--space-md)]">
-        <a href="/services/ovum-donation/" class="lg:col-span-7 group block relative aspect-[4/3] rounded-[var(--radius)] overflow-hidden bg-[#17191A] reveal">
+        <a href="/services/donor-profiling-screening/" class="lg:col-span-7 group block relative aspect-[4/3] rounded-[var(--radius)] overflow-hidden bg-[#17191A] reveal">
           <div class="w-full h-full transition-transform duration-700 group-hover:scale-[1.03]">
             ${pictureTag({
               base: 'service-ovum-donation',
-              alt: 'Coordinator speaking privately with a prospective egg donor in natural morning light',
+              alt: 'Care coordinator reviewing verified non-identifying egg donor profiles in a confidential setting',
               width: 1920,
               height: 1440,
             })}
@@ -355,23 +358,26 @@ ${header}
           <div class="card-charcoal-scrim absolute inset-0"></div>
           <div class="absolute inset-0 p-[var(--space-md)] flex flex-col justify-between text-[#FAF9F6]">
             <div class="flex items-start justify-between">
-              <span class="text-[length:var(--fs-small)] font-medium tabular-nums text-[#FAF9F6]/85">02</span>
+              <div class="flex items-center gap-2">
+                <span class="text-[length:var(--fs-small)] font-medium tabular-nums text-[#FAF9F6]/85">02 / 04</span>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#FAF9F6]/15 backdrop-blur-sm border border-[#FAF9F6]/20 text-[#8BB2AF]">Free · 45 min</span>
+              </div>
               <span class="w-11 h-11 rounded-full bg-[#FAF9F6] text-[#17191A] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
                 <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
               </span>
             </div>
             <div class="max-w-md">
-              <h3 class="display text-[#FAF9F6] mb-1.5">Ovum Donation</h3>
-              <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/85">Egg donors are thoroughly screened and anonymously profiled with medical and emotional care.</p>
+              <h3 class="display text-[#FAF9F6] mb-1.5">Donor Profiling &amp; Screening</h3>
+              <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/85">Review vetted, non-identifying egg donor profiles with comprehensive genetic, infectious disease, and psychological screening verification at zero cost.</p>
             </div>
           </div>
         </a>
 
-        <a href="/services/personalized-matching/" class="lg:col-span-5 group block relative aspect-[4/3] lg:aspect-auto lg:min-h-full rounded-[var(--radius)] overflow-hidden bg-[#17191A] reveal">
+        <a href="/services/donor-surrogate-enquiry/" class="lg:col-span-5 group block relative aspect-[4/3] lg:aspect-auto lg:min-h-full rounded-[var(--radius)] overflow-hidden bg-[#17191A] reveal">
           <div class="w-full h-full transition-transform duration-700 group-hover:scale-[1.03]">
             ${pictureTag({
               base: 'service-matching',
-              alt: 'Care coordinator reviewing an anonymized matching folder with an African couple',
+              alt: 'Care coordinator reviewing matching options with intended parents in a calm consultation room',
               width: 1920,
               height: 1440,
             })}
@@ -379,25 +385,28 @@ ${header}
           <div class="card-charcoal-scrim absolute inset-0"></div>
           <div class="absolute inset-0 p-[var(--space-md)] flex flex-col justify-between text-[#FAF9F6]">
             <div class="flex items-start justify-between">
-              <span class="text-[length:var(--fs-small)] font-medium tabular-nums text-[#FAF9F6]/85">03</span>
+              <div class="flex items-center gap-2">
+                <span class="text-[length:var(--fs-small)] font-medium tabular-nums text-[#FAF9F6]/85">03 / 04</span>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#FAF9F6]/15 backdrop-blur-sm border border-[#FAF9F6]/20 text-[#8BB2AF]">₦10,000 · 45 min</span>
+              </div>
               <span class="w-11 h-11 rounded-full bg-[#FAF9F6] text-[#17191A] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
                 <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
               </span>
             </div>
             <div>
-              <h3 class="display text-[#FAF9F6] mb-1.5">Personalized Matching</h3>
-              <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/85">Bespoke matching guided by compatibility, cultural preferences, and medical history.</p>
+              <h3 class="display text-[#FAF9F6] mb-1.5">Donor &amp; Surrogate Enquiry</h3>
+              <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/85">A confidential, exploratory consultation to review surrogate and donor conception pathways, medical prerequisites, and legal frameworks.</p>
             </div>
           </div>
         </a>
       </div>
 
-      <!-- 04 Banner 21/9 -->
-      <a href="/services/counseling-ivf-support/" class="group block relative aspect-[16/10] md:aspect-[21/9] rounded-[var(--radius)] overflow-hidden bg-[#17191A] reveal">
+      <!-- 04 Banner 21/9: IVF Consultation & Coordination -->
+      <a href="/services/ivf-consultation-coordination/" class="group block relative aspect-[16/10] md:aspect-[21/9] rounded-[var(--radius)] overflow-hidden bg-[#17191A] reveal">
         <div class="w-full h-full transition-transform duration-700 group-hover:scale-[1.03]">
           ${pictureTag({
             base: 'service-counseling',
-            alt: 'Couple seated together in a private, warm counseling session',
+            alt: 'Intended parents seated in an unhurried clinical planning session with fertility specialists',
             width: 1920,
             height: 1080,
           })}
@@ -405,14 +414,17 @@ ${header}
         <div class="card-charcoal-scrim absolute inset-0"></div>
         <div class="absolute inset-0 p-[var(--space-md)] flex flex-col justify-between text-[#FAF9F6]">
           <div class="flex items-start justify-between">
-            <span class="text-[length:var(--fs-small)] font-medium tabular-nums text-[#FAF9F6]/85">04</span>
+            <div class="flex items-center gap-2">
+              <span class="text-[length:var(--fs-small)] font-medium tabular-nums text-[#FAF9F6]/85">04 / 04</span>
+              <span class="text-xs px-2.5 py-0.5 rounded-full bg-[#FAF9F6]/15 backdrop-blur-sm border border-[#FAF9F6]/20 text-[#8BB2AF]">₦60,000 · 60 min</span>
+            </div>
             <span class="w-11 h-11 rounded-full bg-[#FAF9F6] text-[#17191A] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
               <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
             </span>
           </div>
           <div class="max-w-2xl">
-            <h3 class="display text-[#FAF9F6] mb-1.5">Counseling and IVF Support</h3>
-            <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/85">Dedicated counseling and cycle coordination supporting intended parents, egg donors, and surrogates.</p>
+            <h3 class="display text-[#FAF9F6] mb-1.5">IVF Consultation &amp; Coordination</h3>
+            <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/85">In-depth clinical cycle coordination, medical protocol alignment with accredited partner fertility clinics, and seamless laboratory schedule oversight.</p>
           </div>
         </div>
       </a>

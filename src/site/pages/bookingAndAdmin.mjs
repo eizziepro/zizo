@@ -57,7 +57,10 @@ ${renderHeader({ isHome: false })}
                 (ct) => `<button type="button" data-select-type="${escapeHtml(ct.id)}" class="text-left border border-[#E1E0DD] hover:border-[#17645F] rounded-[var(--radius)] p-5 space-y-2.5 transition-colors focus-visible:outline-[#17645F]">
               <div class="flex items-center justify-between gap-2">
                 <span class="font-display text-xl text-[#17191A]">${escapeHtml(ct.name)}</span>
-                <span class="text-xs font-semibold text-[#17645F] tabular-nums shrink-0">${Number(ct.duration_min)} min</span>
+                <div class="text-right shrink-0">
+                  <span class="text-xs font-semibold text-[#17645F] tabular-nums block">${Number(ct.duration_min)} min</span>
+                  <span class="text-xs text-[#5D5E5F] font-medium">${ct.price_minor > 0 ? `₦${(ct.price_minor / 100).toLocaleString()}` : 'Free'}</span>
+                </div>
               </div>
               <p class="text-[length:var(--fs-small)] text-[#2E3031]">${escapeHtml(ct.intro)}</p>
               <p class="text-xs text-[#5D5E5F]">Channels: ${escapeHtml((Array.isArray(ct.channels) ? ct.channels : JSON.parse(ct.channels || '[]')).join(' · '))}</p>

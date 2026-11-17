@@ -260,97 +260,204 @@ ${renderFooter({ settings })}`;
 
 export const SERVICE_DEFINITIONS = [
   {
-    slug: 'surrogacy',
+    slug: 'donor-surrogate-enquiry',
+    legacySlug: 'personalized-matching',
     index: '01 / 04',
-    title: 'Surrogacy',
-    imageBase: 'service-surrogacy',
-    imageAlt: 'Expectant woman resting comfortably in a sunlit modern Lagos home',
-    summary:
-      'Surrogates are carefully selected through thorough psychological, medical, and background evaluations, supported by dedicated case management throughout pregnancy.',
-    intro:
-      'Structured gestational surrogacy coordination connecting intended parents with thoroughly screened carriers and independent legal and clinical teams.',
-    whoFor: [
-      'Individuals and couples seeking gestational surrogacy coordination in Nigeria or across international partner programmes',
-      'Single intended parents and diaspora families needing steady local and cross-border coordination',
-    ],
-    included: [
-      'Private initial consultation and programme pathway planning',
-      'Carefully vetted gestational surrogate selection and anonymized profile presentation',
-      'Coordination of medical and psychological screening appointments with partner clinics',
-      'Introductions to independent reproductive legal counsel prior to matching agreements',
-      'Dedicated case-manager support throughout pregnancy and birth planning',
-    ],
-    screening:
-      'Prospective gestational surrogates complete multi-stage health history checks, obstetric review, infectious disease screening, psychological assessment, and background verification before entering matching.',
-  },
-  {
-    slug: 'ovum-donation',
-    index: '02',
-    title: 'Ovum Donation',
-    imageBase: 'service-ovum-donation',
-    imageAlt: 'Care coordinator speaking softly with a prospective egg donor in a private consultation room',
-    summary:
-      'Egg donors are thoroughly screened and anonymously profiled, combining careful medical standards with warm donor care.',
-    intro:
-      'Confidential, anonymous ovum donation coordination centred on thorough clinical screening, informed consent, and donor wellbeing.',
-    whoFor: [
-      'Intended parents requiring donor eggs alongside IVF or surrogacy treatment',
-      'Healthy women considering anonymous egg donation with transparent medical care',
-    ],
-    included: [
-      'Curated, non-identifying donor profiles detailing health history and compatibility traits',
-      'Comprehensive ovarian reserve, genetic, and infectious disease screening at partner clinics',
-      'Independent counseling before and during the stimulation cycle',
-      'Synchronised cycle scheduling with your chosen fertility clinic',
-    ],
-    screening:
-      'Every prospective egg donor undergoes clinical fertility testing, family medical history review, psychological evaluation, and confidential counselor sign-off. Identifying details are never shared.',
-  },
-  {
-    slug: 'personalized-matching',
-    index: '03',
-    title: 'Personalized Matching',
+    title: 'Donor & Surrogate Enquiry',
+    price: '₦10,000',
+    duration: '45 minutes',
     imageBase: 'service-matching',
-    imageAlt: 'Care coordinator reviewing a matching folder with a couple across an oak table',
+    imageAlt: 'Care coordinator reviewing matching options with intended parents across a consultation table',
     summary:
-      'Bespoke matching grounded in compatibility, cultural preferences, and medical history—guided with complete discretion.',
+      'A confidential, exploratory consultation to review surrogate and donor conception pathways, medical prerequisites, and legal frameworks tailored to your family goals.',
     intro:
-      'Unhurried, human-led matching between intended parents, egg donors, and gestational surrogates with anonymity protected at every stage.',
+      'An unhurried introductory consultation designed to answer your questions, assess feasibility, and outline trusted surrogacy and egg donor coordination pathways.',
     whoFor: [
-      'Intended parents seeking thoughtful alignment on values, background, and communication preferences',
-      'Gestational surrogates who want clear expectations and mutual comfort before committing',
+      'Individuals and couples considering third-party reproduction in Nigeria or internationally',
+      'Intended parents seeking clarity on timelines, screening standards, legal parentage, and estimated costs',
+      'Families undecided between local domestic coordination and cross-border partner programmes',
     ],
     included: [
-      'In-depth preference intake covering medical criteria, cultural context, and communication style',
-      'Anonymized profile presentation without rushing or high-pressure timelines',
-      'Facilitated Q&A or mediated introduction calls where appropriate and mutually agreed',
-      'Structured transition into independent legal review once a match is confirmed',
+      'Comprehensive 45-minute private consultation with a senior care coordinator',
+      'Personalized review of your medical and family-building history',
+      'Clear breakdown of gestational surrogacy, egg donation, and combined pathways',
+      'Initial overview of legal safeguards, parentage court orders, and escrow security',
+      'Follow-up written pathway summary with transparent milestone pricing guidance',
     ],
     screening:
-      'Matching begins only after preliminary medical and psychological clearances are complete, ensuring every profile presented is clinically ready and mutually informed.',
+      'We discuss our multi-tier medical, obstetric, infectious disease, and psychological screening criteria so you understand exactly how candidates are vetted before matching.',
+    howItWorks: [
+      {
+        step: '01',
+        title: 'Private Intake & Goal Discovery',
+        desc: 'We review your family-building intentions, prior fertility treatments, preferred destination regions, and key questions in complete privacy.',
+      },
+      {
+        step: '02',
+        title: 'Pathway Feasibility & Legal Overview',
+        desc: 'Our team explains the legal protections, independent counsel protocols, and clinical partnerships available for domestic and diaspora parents.',
+      },
+      {
+        step: '03',
+        title: 'Matching Criteria & Timeline Planning',
+        desc: 'We define surrogate and donor preferences, clinical readiness criteria, and realistic milestones from initial onboarding to delivery.',
+      },
+      {
+        step: '04',
+        title: 'Written Coordination Blueprint',
+        desc: 'Following the session, you receive a tailored written summary detailing program recommendations, next steps, and itemized cost expectations.',
+      },
+    ],
   },
   {
-    slug: 'counseling-ivf-support',
-    index: '04',
-    title: 'Counseling and IVF Support',
+    slug: 'ivf-consultation-coordination',
+    legacySlug: 'counseling-ivf-support',
+    index: '02 / 04',
+    title: 'IVF Consultation & Coordination',
+    price: '₦60,000',
+    duration: '60 minutes',
     imageBase: 'service-counseling',
-    imageAlt: 'Couple holding hands during a calm counseling conversation in natural window light',
+    imageAlt: 'Intended parents seated in an unhurried clinical planning session with fertility specialists',
     summary:
-      'Dedicated emotional management and IVF cycle coordination for intended parents, donors, and surrogates.',
+      'In-depth clinical cycle coordination, medical protocol alignment with accredited partner fertility clinics, and seamless laboratory schedule oversight.',
     intro:
-      'Compassionate counseling and practical IVF cycle coordination supporting every participant emotionally and logistically.',
+      'Comprehensive IVF cycle planning and clinical synchronization connecting intended parents, donors, and surrogates with accredited fertility clinics in Nigeria and abroad.',
     whoFor: [
-      'Intended parents navigating emotional uncertainty, cross-border travel, or donor-conception decisions',
-      'Surrogates and egg donors preparing for screening, embryo transfer, pregnancy, or postpartum transitions',
+      'Intended parents preparing for IVF with own gametes, donor eggs, or gestational surrogacy',
+      'Families requiring synchronized multi-party clinical appointments, medication oversight, and embryology updates',
+      'Cross-border and diaspora parents coordinating gamete shipment, PGT-A testing, or embryo transfers',
     ],
     included: [
-      'Confidential pre-treatment and implications counseling referrals',
-      'Dedicated case-manager check-ins across stimulation, transfer, and pregnancy milestones',
-      'Clear appointment coordination between intended parents and partner fertility clinics',
-      'Post-birth emotional check-ins and continuity support',
+      'In-depth 60-minute clinical strategy and protocol synchronization consultation',
+      'Detailed medical record and fertility assessment review with our clinical liaison',
+      'Coordination with accredited partner fertility clinics and embryology laboratories',
+      'Stimulation, retrieval, and embryo transfer scheduling alignment',
+      'Continuous cycle monitoring updates and post-transfer clinical follow-up',
     ],
     screening:
-      'Qualified mental health and fertility counselors conduct private readiness sessions tailored to each role—supporting informed consent and calm communication.',
+      'All partner fertility clinics and labs are rigorously vetted for reproductive endocrinology accreditation, live birth success rates, embryology lab standards, and ethical compliance.',
+    howItWorks: [
+      {
+        step: '01',
+        title: 'Medical Records & Clinical Intake',
+        desc: 'Review of previous hormone panels, semen analyses, hysteroscopy results, or embryo frozen inventory with our clinical coordination team.',
+      },
+      {
+        step: '02',
+        title: 'Clinic & Laboratory Protocol Alignment',
+        desc: 'Direct synchronization with your fertility specialist to finalize stimulation protocols, medication procurement, and laboratory timelines.',
+      },
+      {
+        step: '03',
+        title: 'Active Cycle Monitoring & Case Management',
+        desc: 'Dedicated oversight across follicle scans, bloodwork tracking, egg retrieval, fertilization, PGT-A biopsy, and transfer scheduling.',
+      },
+      {
+        step: '04',
+        title: 'Post-Transfer Tracking & Continuity',
+        desc: 'Beta-hCG pregnancy blood test management, early obstetric ultrasound coordination, and transition to prenatal care.',
+      },
+    ],
+  },
+  {
+    slug: 'surrogacy-coordination',
+    legacySlug: 'surrogacy',
+    index: '03 / 04',
+    title: 'Surrogacy Coordination',
+    price: '₦50,000',
+    duration: '60 minutes',
+    imageBase: 'service-surrogacy',
+    imageAlt: 'Expectant woman resting calmly in a sunlit modern interior with attentive care support',
+    summary:
+      'Structured gestational surrogacy pathway management from candidate matching through independent legal counsel, escrow safeguards, prenatal care, and hospital delivery.',
+    intro:
+      'End-to-end gestational surrogacy coordination connecting intended parents with thoroughly screened carriers, independent legal counsel, and regulated milestone escrow.',
+    whoFor: [
+      'Individuals and couples requiring gestational surrogacy in Nigeria or via international pathways',
+      'Diaspora and international families needing steady local case management, embassy exit, and court parentage orders',
+      'Parents seeking transparent milestone-based financial escrow and uncompromised surrogate wellbeing',
+    ],
+    included: [
+      '60-minute comprehensive surrogacy pathway consultation and roadmap design',
+      'Curated presentation of medically, psychologically, and background-screened surrogates',
+      'Introductions to accredited independent reproductive lawyers for both parties',
+      'Dedicated third-party escrow account setup and milestone-based disbursement management',
+      'Complete case manager oversight through embryo transfer, pregnancy, delivery, and parentage orders',
+    ],
+    screening:
+      'Prospective gestational surrogates undergo rigorous obstetric history reviews, full infectious disease screening, clinical psychological assessments, and home environment visits before profile presentation.',
+    howItWorks: [
+      {
+        step: '01',
+        title: 'Roadmap & Surrogate Matching',
+        desc: 'We match you with thoroughly screened gestational carriers based on shared values, medical compatibility, and communication preferences.',
+      },
+      {
+        step: '02',
+        title: 'Independent Legal Contracts & Escrow',
+        desc: 'Independent reproductive solicitors draft and execute comprehensive agreements, while living stipends are deposited into protected escrow.',
+      },
+      {
+        step: '03',
+        title: 'Embryo Transfer & Prenatal Oversight',
+        desc: 'Clinical transfer coordination followed by dedicated case-manager visits, private obstetric care, nutritional support, and doula care.',
+      },
+      {
+        step: '04',
+        title: 'Delivery, Court Orders & Homecoming',
+        desc: 'Hospital delivery protocol management, Nigerian High Court parentage decrees, birth registration, and consular travel exit support.',
+      },
+    ],
+  },
+  {
+    slug: 'donor-profiling-screening',
+    legacySlug: 'ovum-donation',
+    index: '04 / 04',
+    title: 'Donor Profiling & Screening',
+    price: 'Free',
+    duration: '45 minutes',
+    imageBase: 'service-ovum-donation',
+    imageAlt: 'Care coordinator reviewing verified non-identifying egg donor profiles in a confidential setting',
+    summary:
+      'Review vetted, non-identifying egg donor profiles with comprehensive genetic, infectious disease, and psychological screening verification at zero cost.',
+    intro:
+      'Confidential, anonymous ovum donor profiling and intake screening grounded in clinical rigour, informed consent, and absolute donor and recipient privacy.',
+    whoFor: [
+      'Intended parents requiring donor eggs alongside IVF or gestational surrogacy',
+      'Families seeking specific physical traits, educational background, or cultural heritage alignment',
+      'Parents wanting verified medical and genetic screening reports before committing to an IVF cycle',
+    ],
+    included: [
+      'Free 45-minute donor profiling consultation and preference intake',
+      'Curated access to verified, non-identifying donor profiles with health and background traits',
+      'Comprehensive ovarian reserve (AMH/AFC), genetic carrier, and infectious disease screening records',
+      'Independent psychological counseling reports verifying voluntary, informed donation',
+      'Cycle synchronization with your chosen fertility clinic and embryologist',
+    ],
+    screening:
+      'Every prospective donor completes rigorous fertility hormone testing, infectious disease screening, three-generation family medical history review, and mental health clearance under NDPA 2023 privacy safeguards.',
+    howItWorks: [
+      {
+        step: '01',
+        title: 'Confidential Preference Intake',
+        desc: 'Share your preferences regarding physical traits, educational background, blood group, and cultural heritage with our donor coordinator.',
+      },
+      {
+        step: '02',
+        title: 'Curated Profile Review',
+        desc: 'Access verified, non-identifying donor profiles featuring detailed personal narratives, health histories, and compatibility traits.',
+      },
+      {
+        step: '03',
+        title: 'Clinical & Genetic Clearance',
+        desc: 'Review certified ovarian reserve metrics, carrier screening results, infectious disease clearances, and psychological assessments.',
+      },
+      {
+        step: '04',
+        title: 'Clinic Cycle Synchronization',
+        desc: 'Our team synchronizes your donor’s stimulation protocol with your clinic’s laboratory schedule for optimal retrieval and fertilization.',
+      },
+    ],
   },
 ];
 
@@ -367,7 +474,7 @@ export function renderServicesHub({ settings = {}, siteUrl = '' }) {
   return `${renderHead({
     title: 'Fertility & Surrogacy Services | Zizo Donor and Surrogacy',
     description:
-      'Explore Zizo services: Surrogacy, Ovum Donation, Personalized Matching, and Counseling and IVF Support.',
+      'Explore Zizo services: Donor & Surrogate Enquiry, IVF Consultation & Coordination, Surrogacy Coordination, and Donor Profiling & Screening.',
     canonicalPath: '/services/',
     jsonLd,
     siteUrl,
@@ -384,7 +491,7 @@ ${renderHeader({ isHome: false })}
   <section class="zizo-section bg-[#FAF9F6]">
     <div class="zizo-container grid grid-cols-1 md:grid-cols-2 gap-8">
       ${SERVICE_DEFINITIONS.map(
-        (svc) => `<a href="/services/${svc.slug}/" class="group block border border-[#E1E0DD] rounded-[var(--radius)] overflow-hidden bg-[#FAF9F6] reveal">
+        (svc) => `<a href="/services/${svc.slug}/" class="group block border border-[#E1E0DD] rounded-[var(--radius)] overflow-hidden bg-[#FAF9F6] shadow-sm hover:border-[#8BB2AF]/60 transition-colors reveal">
         <div class="aspect-[16/10] overflow-hidden bg-[#E1E0DD]">
           <div class="w-full h-full transition-transform duration-700 group-hover:scale-[1.03]">
             ${pictureTag({
@@ -400,8 +507,12 @@ ${renderHeader({ isHome: false })}
             <span>${svc.index}</span>
             <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
           </div>
-          <h2 class="display text-[length:var(--fs-h3)]">${escapeHtml(svc.title)}</h2>
-          <p class="text-[length:var(--fs-small)] text-[#2E3031]">${escapeHtml(svc.summary)}</p>
+          <h2 class="display text-[length:var(--fs-h3)] text-[#17191A]">${escapeHtml(svc.title)}</h2>
+          <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(svc.summary)}</p>
+          <div class="pt-3 border-t border-[#E1E0DD] flex items-center justify-between text-xs text-[#5D5E5F]">
+            <span>Consultation fee: <strong class="text-[#17645F] font-semibold">${escapeHtml(svc.price)}</strong></span>
+            <span>Typical duration: ${escapeHtml(svc.duration)}</span>
+          </div>
         </div>
       </a>`
       ).join('')}
@@ -437,6 +548,8 @@ export function renderServiceDetailPage({ service, settings = {}, faqs = [], pos
     },
   ];
 
+  const relatedServices = SERVICE_DEFINITIONS.filter((s) => s.slug !== service.slug);
+
   return `${renderHead({
     title: `${service.title} | Zizo Donor and Surrogacy`,
     description: service.summary,
@@ -457,7 +570,32 @@ ${renderHeader({ isHome: false })}
   })}
 
   <section class="zizo-section bg-[#FAF9F6]">
-    <div class="zizo-container space-y-[var(--space-lg)]">
+    <div class="zizo-container space-y-[var(--space-xl)]">
+
+      <!-- Consultation Fee & Duration Metadata Bar -->
+      <div class="p-6 bg-[#E1E0DD]/35 border border-[#E1E0DD] rounded-[var(--radius)] flex flex-col md:flex-row md:items-center justify-between gap-6 reveal">
+        <div class="flex flex-wrap items-center gap-6 sm:gap-10">
+          <div class="space-y-1">
+            <span class="text-xs uppercase tracking-wider text-[#5D5E5F] font-medium block">Consultation fee:</span>
+            <span class="display text-2xl text-[#17645F] font-semibold">${escapeHtml(service.price)}</span>
+          </div>
+          <div class="w-px h-10 bg-[#E1E0DD] hidden sm:block" aria-hidden="true"></div>
+          <div class="space-y-1">
+            <span class="text-xs uppercase tracking-wider text-[#5D5E5F] font-medium block">Typical duration:</span>
+            <span class="display text-2xl text-[#17191A] font-medium">${escapeHtml(service.duration)}</span>
+          </div>
+          <div class="w-px h-10 bg-[#E1E0DD] hidden sm:block" aria-hidden="true"></div>
+          <div class="space-y-1">
+            <span class="text-xs uppercase tracking-wider text-[#5D5E5F] font-medium block">Format:</span>
+            <span class="text-[length:var(--fs-small)] text-[#2E3031] font-medium">Google Meet, Phone or WhatsApp</span>
+          </div>
+        </div>
+        <div>
+          <a href="/book/" class="btn-primary w-full md:w-auto text-center justify-center">Book Consultation</a>
+        </div>
+      </div>
+
+      <!-- Featured Image -->
       <div class="aspect-[16/9] md:aspect-[21/9] rounded-[var(--radius)] overflow-hidden bg-[#E1E0DD] reveal">
         ${pictureTag({
           base: service.imageBase,
@@ -468,6 +606,7 @@ ${renderHeader({ isHome: false })}
         })}
       </div>
 
+      <!-- Overview: Who it is for & What is included -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-[var(--space-lg)]">
         <div class="lg:col-span-6 space-y-4 reveal">
           <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Overview</p>
@@ -498,6 +637,32 @@ ${renderHeader({ isHome: false })}
         </div>
       </div>
 
+      <!-- How it works? Section -->
+      <div class="space-y-6 reveal">
+        <div>
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Structured Process</p>
+          <h2 class="display text-[length:var(--fs-h2)] mt-1">How it works?</h2>
+          <p class="text-[length:var(--fs-body)] text-[#5D5E5F] mt-2">
+            A transparent, four-stage coordination pathway designed to protect your peace of mind and support your family journey.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          ${service.howItWorks
+            .map(
+              (step) => `<div class="border border-[#E1E0DD] rounded-xl p-6 bg-[#FAF9F6] shadow-sm hover:border-[#8BB2AF]/60 transition-colors flex flex-col justify-between space-y-4">
+            <div class="space-y-2.5">
+              <span class="display text-3xl font-light text-[#17645F]/40">${escapeHtml(step.step)}</span>
+              <h3 class="display text-[length:var(--fs-h4)] text-[#17191A]">${escapeHtml(step.title)}</h3>
+              <p class="text-[length:var(--fs-small)] text-[#5D5E5F] leading-relaxed">${escapeHtml(step.desc)}</p>
+            </div>
+          </div>`
+            )
+            .join('')}
+        </div>
+      </div>
+
+      <!-- How screening works -->
       <div class="bg-[#E1E0DD]/45 border border-[#E1E0DD] rounded-[var(--radius)] p-[var(--space-md)] grid grid-cols-1 lg:grid-cols-12 gap-6 items-center reveal">
         <div class="lg:col-span-8 space-y-2">
           <h2 class="display text-[length:var(--fs-h3)]">How screening works</h2>
@@ -508,6 +673,7 @@ ${renderHeader({ isHome: false })}
         </div>
       </div>
 
+      <!-- Parent and surrogate reflections -->
       ${(() => {
         const defaultReviews = [
           {
@@ -598,6 +764,50 @@ ${renderHeader({ isHome: false })}
       </div>`;
       })()}
 
+      <!-- Related Services (Typical Cards with Image and Text) -->
+      <div class="space-y-6 reveal">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Complementary Pathways</p>
+            <h2 class="display text-[length:var(--fs-h2)] mt-1">Related Services</h2>
+          </div>
+          <a href="/services/" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline underline-offset-4">Explore all services</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          ${relatedServices
+            .slice(0, 3)
+            .map(
+              (svc) => `<a href="/services/${svc.slug}/" class="group block border border-[#E1E0DD] rounded-[var(--radius)] overflow-hidden bg-[#FAF9F6] shadow-sm hover:border-[#8BB2AF]/60 transition-colors reveal">
+            <div class="aspect-[16/10] overflow-hidden bg-[#E1E0DD]">
+              <div class="w-full h-full transition-transform duration-700 group-hover:scale-[1.03]">
+                ${pictureTag({
+                  base: svc.imageBase,
+                  alt: svc.imageAlt,
+                  width: 1920,
+                  height: 1080,
+                })}
+              </div>
+            </div>
+            <div class="p-6 space-y-3">
+              <div class="flex items-center justify-between text-xs text-[#5D5E5F] tabular-nums">
+                <span>${svc.index}</span>
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
+              </div>
+              <h3 class="display text-[length:var(--fs-h3)] text-[#17191A]">${escapeHtml(svc.title)}</h3>
+              <p class="text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(svc.summary)}</p>
+              <div class="pt-3 border-t border-[#E1E0DD] flex items-center justify-between text-xs text-[#5D5E5F]">
+                <span>Consultation fee: <strong class="text-[#17645F] font-semibold">${escapeHtml(svc.price)}</strong></span>
+                <span>Typical duration: ${escapeHtml(svc.duration)}</span>
+              </div>
+            </div>
+          </a>`
+            )
+            .join('')}
+        </div>
+      </div>
+
+      <!-- Related questions -->
       ${
         faqs.length > 0
           ? `<div class="space-y-5 reveal">
@@ -609,10 +819,10 @@ ${renderHeader({ isHome: false })}
               const pid = `svc-faq-${service.slug}-${idx}`;
               return `<div class="faq-item py-4" data-open="false">
             <button type="button" class="w-full flex items-center justify-between gap-4 text-left min-h-[44px]" aria-expanded="false" aria-controls="${pid}" data-faq-trigger>
-              <span class="font-display text-lg">${escapeHtml(faq.question)}</span>
+              <span class="font-display text-lg text-[#17191A]">${escapeHtml(faq.question)}</span>
               <span class="faq-plus shrink-0 w-8 h-8 rounded-full border border-[#E1E0DD] inline-flex items-center justify-center"><i data-lucide="plus" class="w-4 h-4"></i></span>
             </button>
-            <div id="${pid}" class="faq-panel"><div class="faq-panel-inner"><p class="pt-3 text-[length:var(--fs-small)] text-[#2E3031]">${escapeHtml(faq.answer)}</p></div></div>
+            <div id="${pid}" class="faq-panel"><div class="faq-panel-inner"><p class="pt-3 text-[length:var(--fs-small)] text-[#2E3031] leading-relaxed">${escapeHtml(faq.answer)}</p></div></div>
           </div>`;
             })
             .join('')}

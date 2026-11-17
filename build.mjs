@@ -424,6 +424,20 @@ export function buildStaticSite() {
         siteUrl: SITE_URL,
       })
     );
+    if (svc.legacySlug) {
+      staticPaths.push(`/services/${svc.legacySlug}/`);
+      writeHtml(
+        `services/${svc.legacySlug}/index.html`,
+        renderServiceDetailPage({
+          service: svc,
+          settings,
+          faqs: faqs.slice(0, 4),
+          posts: posts.slice(0, 3),
+          reviews: reviews.slice(0, 3),
+          siteUrl: SITE_URL,
+        })
+      );
+    }
   }
 
   // Intended Parents
