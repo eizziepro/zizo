@@ -305,54 +305,30 @@ ${header}
     </div>
   </section>
 
-  <!-- SECTION 3: COSTS AND PACKAGES (BENTO GRID) -->
+  <!-- SECTION 3: SERVICES (BENTO GRID) -->
   <section class="zizo-section bg-[#FAF9F6]">
     <div class="zizo-container space-y-[var(--space-md)]">
       <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 reveal">
         <div>
           <span class="inline-flex items-center px-3 py-1 rounded-full bg-[#17191A] text-[#FAF9F6] text-xs font-semibold tracking-wider uppercase mb-3">
-            Costs and Packages
+            Services
           </span>
           <h2 class="display text-3xl sm:text-4xl text-[#17191A]">Thoughtful fertility coordination</h2>
         </div>
-        <a href="/intended-parents/packages/" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline underline-offset-4">Explore all packages</a>
+        <a href="/services/" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline underline-offset-4">Explore all services</a>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        <!-- Card 1: Wide (8 of 12) - Surrogacy Coordination -->
-        <a href="/services/surrogacy-coordination/" class="lg:col-span-8 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[300px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
+        <!-- Card 1: Donor Profiling & Screening (Row 1 Left - 7 of 12) -->
+        <a href="/services/donor-profiling-screening/" class="lg:col-span-7 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
           <div class="flex items-start justify-between gap-4">
             <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
               <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
             </span>
             <div class="flex items-center gap-2">
               <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#E1E0DD] text-xs font-semibold text-[#17191A] shadow-sm">
-                <strong class="text-[#17645F] font-bold">₦50,000</strong>
-                <span class="text-[#8BB2AF]">·</span>
-                <span class="text-[#2E3031]">60 min</span>
-              </span>
-              <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
-                <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
-              </span>
-            </div>
-          </div>
-          <div class="max-w-xl space-y-1.5 pt-8">
-            <h3 class="display text-2xl sm:text-3xl text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors">Surrogacy Coordination</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Complete gestational surrogacy coordination from matching to delivery.</p>
-          </div>
-        </a>
-
-        <!-- Card 2: Narrow (4 of 12) - Donor Profiling & Screening -->
-        <a href="/services/donor-profiling-screening/" class="lg:col-span-4 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[300px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
-          <div class="flex items-start justify-between gap-4">
-            <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
-              <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
-            </span>
-            <div class="flex items-center gap-2">
-              <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#E1E0DD] text-xs font-semibold text-[#17191A] shadow-sm">
-                <strong class="text-[#17645F] font-bold">Free</strong>
-                <span class="text-[#8BB2AF]">·</span>
-                <span class="text-[#2E3031]">45 min</span>
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-[#17645F]"></i>
+                <span>45 min</span>
               </span>
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
                 <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
@@ -360,22 +336,21 @@ ${header}
             </div>
           </div>
           <div class="space-y-1.5 pt-8">
-            <h3 class="display text-2xl sm:text-3xl text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors">Donor Profiling &amp; Screening</h3>
+            <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">Donor Profiling &amp; Screening</h3>
             <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Confidential egg donor matching with verified medical screening.</p>
           </div>
         </a>
 
-        <!-- Card 3: Narrow (4 of 12) - Donor & Surrogate Enquiry -->
-        <a href="/services/donor-surrogate-enquiry/" class="lg:col-span-4 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[300px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
+        <!-- Card 2: Surrogacy Coordination (Row 1 Right - 5 of 12) -->
+        <a href="/services/surrogacy-coordination/" class="lg:col-span-5 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
           <div class="flex items-start justify-between gap-4">
             <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
               <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
             </span>
             <div class="flex items-center gap-2">
               <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#E1E0DD] text-xs font-semibold text-[#17191A] shadow-sm">
-                <strong class="text-[#17645F] font-bold">₦10,000</strong>
-                <span class="text-[#8BB2AF]">·</span>
-                <span class="text-[#2E3031]">45 min</span>
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-[#17645F]"></i>
+                <span>60 min</span>
               </span>
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
                 <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
@@ -383,30 +358,51 @@ ${header}
             </div>
           </div>
           <div class="space-y-1.5 pt-8">
-            <h3 class="display text-2xl sm:text-3xl text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors">Donor &amp; Surrogate Enquiry</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Private introductory consultation exploring your family building options.</p>
+            <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">Surrogacy Coordination</h3>
+            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Complete gestational surrogacy coordination from matching to delivery.</p>
           </div>
         </a>
 
-        <!-- Card 4: Wide (8 of 12) - IVF Consultation & Coordination -->
-        <a href="/services/ivf-consultation-coordination/" class="lg:col-span-8 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[300px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
+        <!-- Card 3: Donor & Surrogate Enquiry (Row 2 Left - 5 of 12) -->
+        <a href="/services/donor-surrogate-enquiry/" class="lg:col-span-5 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
           <div class="flex items-start justify-between gap-4">
             <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
               <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
             </span>
             <div class="flex items-center gap-2">
               <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#E1E0DD] text-xs font-semibold text-[#17191A] shadow-sm">
-                <strong class="text-[#17645F] font-bold">₦60,000</strong>
-                <span class="text-[#8BB2AF]">·</span>
-                <span class="text-[#2E3031]">60 min</span>
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-[#17645F]"></i>
+                <span>45 min</span>
               </span>
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
                 <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
               </span>
             </div>
           </div>
-          <div class="max-w-xl space-y-1.5 pt-8">
-            <h3 class="display text-2xl sm:text-3xl text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors">IVF Consultation &amp; Coordination</h3>
+          <div class="space-y-1.5 pt-8">
+            <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">Donor &amp; Surrogate Enquiry</h3>
+            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Private introductory consultation exploring your family building options.</p>
+          </div>
+        </a>
+
+        <!-- Card 4: IVF Consultation & Coordination (Row 2 Right - 7 of 12) -->
+        <a href="/services/ivf-consultation-coordination/" class="lg:col-span-7 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
+          <div class="flex items-start justify-between gap-4">
+            <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
+              <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
+            </span>
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#E1E0DD] text-xs font-semibold text-[#17191A] shadow-sm">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-[#17645F]"></i>
+                <span>60 min</span>
+              </span>
+              <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
+                <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
+              </span>
+            </div>
+          </div>
+          <div class="space-y-1.5 pt-8">
+            <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">IVF Consultation &amp; Coordination</h3>
             <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Comprehensive clinical IVF coordination with accredited partner clinics.</p>
           </div>
         </a>
