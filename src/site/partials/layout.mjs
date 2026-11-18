@@ -147,9 +147,8 @@ export function renderHeader({ isHome = false }) {
           <div class="nav-dropdown-panel absolute left-0 top-full pt-2 w-64 z-50">
             <ul class="bg-[#FAF9F6] text-[#17191A] border border-[#E1E0DD] rounded-[var(--radius)] p-2 shadow-sm">
               <li><a href="/intended-parents/how-it-works/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">How It Works</a></li>
-              <li><a href="/intended-parents/programs-by-country/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Programs by Country</a></li>
+              <li><a href="/intended-parents/international/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">International</a></li>
               <li><a href="/intended-parents/costs-and-packages/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Costs and Packages</a></li>
-              <li><a href="/intended-parents/legal-and-ethics/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Legal and Ethics</a></li>
             </ul>
           </div>
         </div>
@@ -163,7 +162,6 @@ export function renderHeader({ isHome = false }) {
             <ul class="bg-[#FAF9F6] text-[#17191A] border border-[#E1E0DD] rounded-[var(--radius)] p-2 shadow-sm">
               <li><a href="/surrogates-donors/become-a-surrogate/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Become a Surrogate</a></li>
               <li><a href="/surrogates-donors/become-an-egg-donor/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Become an Egg Donor</a></li>
-              <li><a href="/surrogates-donors/compensation-and-support/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Compensation and Support</a></li>
             </ul>
           </div>
         </div>
@@ -219,9 +217,8 @@ export function renderHeader({ isHome = false }) {
         </button>
         <div class="hidden pb-3 pl-3 space-y-2 text-[length:var(--fs-small)]">
           <a href="/intended-parents/how-it-works/" class="block py-1.5">How It Works</a>
-          <a href="/intended-parents/programs-by-country/" class="block py-1.5">Programs by Country</a>
+          <a href="/intended-parents/international/" class="block py-1.5">International</a>
           <a href="/intended-parents/costs-and-packages/" class="block py-1.5">Costs and Packages</a>
-          <a href="/intended-parents/legal-and-ethics/" class="block py-1.5">Legal and Ethics</a>
         </div>
       </div>
 
@@ -233,7 +230,6 @@ export function renderHeader({ isHome = false }) {
         <div class="hidden pb-3 pl-3 space-y-2 text-[length:var(--fs-small)]">
           <a href="/surrogates-donors/become-a-surrogate/" class="block py-1.5">Become a Surrogate</a>
           <a href="/surrogates-donors/become-an-egg-donor/" class="block py-1.5">Become an Egg Donor</a>
-          <a href="/surrogates-donors/compensation-and-support/" class="block py-1.5">Compensation and Support</a>
         </div>
       </div>
 

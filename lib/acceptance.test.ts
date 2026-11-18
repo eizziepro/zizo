@@ -102,7 +102,7 @@ test('ACCEPTANCE 4: Typography and fonts strictly Fraunces and Hanken Grotesk', 
   }
 });
 
-test('ACCEPTANCE 5: All 31 pages exist and contain SEO tags and JSON-LD', () => {
+test('ACCEPTANCE 5: All expected core pages exist and contain SEO tags and JSON-LD', () => {
   const expectedRoutes = [
     'index.html',
     'about/index.html',
@@ -112,12 +112,10 @@ test('ACCEPTANCE 5: All 31 pages exist and contain SEO tags and JSON-LD', () => 
     'services/personalized-matching/index.html',
     'services/counseling-ivf-support/index.html',
     'intended-parents/how-it-works/index.html',
-    'intended-parents/programs-by-country/index.html',
+    'intended-parents/international/index.html',
     'intended-parents/costs-and-packages/index.html',
-    'intended-parents/legal-and-ethics/index.html',
     'surrogates-donors/become-a-surrogate/index.html',
     'surrogates-donors/become-an-egg-donor/index.html',
-    'surrogates-donors/compensation-and-support/index.html',
     'resources/blog/index.html',
     'resources/faq/index.html',
     'resources/stories-and-reviews/index.html',

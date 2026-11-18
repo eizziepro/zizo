@@ -165,9 +165,7 @@ ${renderHeader({ isHome: false })}
             <li>Undergo clinical medical, obstetric, and independent psychological screening.</li>
             <li>Review independent legal terms and milestone compensation before any match begins.</li>
           </ol>
-          <p class="text-[length:var(--fs-small)] text-[#5D5E5F]">
-            See full details on <a href="/surrogates-donors/compensation-and-support/" class="text-[#17645F] underline">Compensation and Support</a>.
-          </p>
+          <p class="text-[length:var(--fs-small)] text-[#5D5E5F]">All medical appointments, health screenings, and legal representation are fully coordinated for participating surrogates.</p>
 
           ${
             faqs.length > 0

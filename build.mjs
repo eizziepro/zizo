@@ -388,12 +388,10 @@ export function buildStaticSite() {
     '/about/',
     '/services/',
     '/intended-parents/how-it-works/',
-    '/intended-parents/programs-by-country/',
+    '/intended-parents/international/',
     '/intended-parents/costs-and-packages/',
-    '/intended-parents/legal-and-ethics/',
     '/surrogates-donors/become-a-surrogate/',
     '/surrogates-donors/become-an-egg-donor/',
-    '/surrogates-donors/compensation-and-support/',
     '/resources/blog/',
     '/resources/faq/',
     '/resources/stories-and-reviews/',
@@ -446,16 +444,12 @@ export function buildStaticSite() {
     renderHowItWorksPage({ settings, faqs, siteUrl: SITE_URL })
   );
   writeHtml(
-    'intended-parents/programs-by-country/index.html',
+    'intended-parents/international/index.html',
     renderProgramsByCountryPage({ settings, siteUrl: SITE_URL })
   );
   writeHtml(
     'intended-parents/costs-and-packages/index.html',
     renderCostsPage({ settings, faqs: faqs.filter((f) => f.audience === 'Legal and Costs'), siteUrl: SITE_URL })
-  );
-  writeHtml(
-    'intended-parents/legal-and-ethics/index.html',
-    renderLegalEthicsPage({ settings, siteUrl: SITE_URL })
   );
 
   // Surrogates & Donors
@@ -474,10 +468,6 @@ export function buildStaticSite() {
       faqs: faqs.filter((f) => f.audience === 'Donors'),
       siteUrl: SITE_URL,
     })
-  );
-  writeHtml(
-    'surrogates-donors/compensation-and-support/index.html',
-    renderCompensationSupportPage({ settings, siteUrl: SITE_URL })
   );
 
   // Blog index, categories, and posts

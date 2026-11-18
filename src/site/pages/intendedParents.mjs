@@ -201,10 +201,10 @@ export function renderProgramsByCountryPage({ settings = {}, siteUrl = '' }) {
   ];
 
   return `${renderHead({
-    title: 'Programs by Country | Zizo Donor and Surrogacy',
+    title: 'International | Zizo Donor and Surrogacy',
     description:
       'Cross-border fertility, donor, and surrogacy coordination across Nigeria, Europe, Asia, Canada, and the United States.',
-    canonicalPath: '/intended-parents/programs-by-country/',
+    canonicalPath: '/intended-parents/international/',
     siteUrl,
   })}
 ${renderHeader({ isHome: false })}
@@ -213,7 +213,7 @@ ${renderHeader({ isHome: false })}
     breadcrumbs: [
       { label: 'Home', href: '/' },
       { label: 'Intended Parents' },
-      { label: 'Programs by Country' },
+      { label: 'International' },
     ],
     title: 'Programs across five global regions.',
     intro:
@@ -1202,3 +1202,5 @@ ${renderHeader({ isHome: false })}
 </main>
 ${renderFooter({ settings })}`;
 }
+
+export const renderInternationalPage = renderProgramsByCountryPage;

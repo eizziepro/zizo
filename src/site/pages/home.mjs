@@ -111,12 +111,12 @@ export function renderHomePage({ settings = {}, homeFaqs = [], reviews = [], pos
   const header = renderHeader({ isHome: true });
 
   const sectors = [
-    { label: 'Nigeria', href: '/intended-parents/programs-by-country/#nigeria' },
-    { label: 'Europe', href: '/intended-parents/programs-by-country/#europe' },
-    { label: 'Asia', href: '/intended-parents/programs-by-country/#asia' },
-    { label: 'Canada', href: '/intended-parents/programs-by-country/#canada' },
-    { label: 'United States', href: '/intended-parents/programs-by-country/#united-states' },
-    { label: 'Cross-border', href: '/intended-parents/programs-by-country/#cross-border' },
+    { label: 'Nigeria', href: '/intended-parents/international/#nigeria' },
+    { label: 'Europe', href: '/intended-parents/international/#europe' },
+    { label: 'Asia', href: '/intended-parents/international/#asia' },
+    { label: 'Canada', href: '/intended-parents/international/#canada' },
+    { label: 'United States', href: '/intended-parents/international/#united-states' },
+    { label: 'Cross-border', href: '/intended-parents/international/#cross-border' },
   ];
 
   const whyRows = [
@@ -124,13 +124,13 @@ export function renderHomePage({ settings = {}, homeFaqs = [], reviews = [], pos
       num: '01',
       title: 'Global Reach, Local Care',
       desc: 'Grounded in Lagos with coordinated pathways across Nigeria, Europe, Asia, Canada, and the United States, tailored to where your family is growing.',
-      href: '/intended-parents/programs-by-country/',
+      href: '/intended-parents/international/',
     },
     {
       num: '02',
       title: 'Expert Legal and Medical Coordination',
       desc: 'Every clinical milestone and independent legal agreement is structured in sequence so intended parents and surrogates move forward with clarity.',
-      href: '/intended-parents/legal-and-ethics/',
+      href: '/intended-parents/how-it-works/',
     },
     {
       num: '03',
@@ -142,13 +142,13 @@ export function renderHomePage({ settings = {}, homeFaqs = [], reviews = [], pos
       num: '04',
       title: 'Ethical, Transparent Practices',
       desc: 'Strict anonymity standards, clear compensation structures, and thorough screening protect the dignity of donors, surrogates, and intended parents.',
-      href: '/intended-parents/legal-and-ethics/',
+      href: '/intended-parents/how-it-works/',
     },
     {
       num: '05',
       title: 'Emotional Management',
       desc: 'Confidential counseling support accompanies intended parents, egg donors, and gestational carriers before, during, and after each stage.',
-      href: '/services/counseling-ivf-support/',
+      href: '/services/ivf-consultation-coordination/',
     },
   ];
 
