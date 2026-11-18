@@ -240,6 +240,13 @@ VALUES ('private-docs', 'private-docs', false)
 ON CONFLICT (id) DO NOTHING;
 
 -- Scheduled Publishing via pg_cron (every 5 minutes)
+DO $$
+BEGIN
+  PERFORM cron.unschedule('zizo-publish-scheduled-posts');
+EXCEPTION WHEN OTHERS THEN
+  NULL;
+END $$;
+
 SELECT cron.schedule(
   'zizo-publish-scheduled-posts',
   '*/5 * * * *',
