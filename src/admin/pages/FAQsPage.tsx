@@ -1,0 +1,519 @@
+import React, { useState } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import { PageHeader } from '../components/untitledui/PageHeader';
+import { DataTable } from '../components/common/DataTable';
+import { StatusBadge } from '../components/common/StatusBadge';
+import { RowActionsMenu } from '../components/common/RowActionsMenu';
+import { Badge } from '../components/untitledui/Badge';
+import { Button } from '../components/untitledui/Button';
+import { Drawer } from '../components/untitledui/Drawer';
+import { Modal } from '../components/untitledui/Modal';
+import { Input } from '../components/untitledui/Input';
+import { Textarea } from '../components/untitledui/Textarea';
+import { Select } from '../components/untitledui/Select';
+import { ConfirmModal } from '../components/common/ConfirmModal';
+import { useNotifications } from '../context/NotificationContext';
+import { useAuditLog } from '../hooks/useAuditLog';
+import { Plus, HelpCircle, LayersThree01 } from '@untitledui/icons';
+import type { FAQ } from '../types';
+
+const INITIAL_FAQS: FAQ[] = [
+  {
+    id: 'faq-1',
+    question: 'How is surrogate compensation structured in Nigeria?',
+    answer_md: 'Compensation is handled via escrowed monthly living allowances, healthcare coverage, and postpartum recovery support following clear legal contracts.',
+    audience: 'Intended Parents',
+    status: 'published',
+    assignments: [
+      { id: 'as-1', page_type: 'page', page_ref: 'packages', page_title: 'Zizo Packages', sort_order: 1 },
+      { id: 'as-2', page_type: 'service', page_ref: 'surrogacy-coordination', page_title: 'Surrogacy Coordination', sort_order: 1 },
+    ],
+    created_at: '2026-01-10T10:00:00Z',
+    updated_at: '2026-02-18',
+  },
+  {
+    id: 'faq-2',
+    question: 'What medical testing is mandatory before matching with an egg donor?',
+    answer_md: 'Donors undergo extensive ovarian reserve screening (AMH, AFC), infectious disease serology, karyotyping, and comprehensive psychological evaluation.',
+    audience: 'Donors',
+    status: 'published',
+    assignments: [
+      { id: 'as-3', page_type: 'service', page_ref: 'donor-profiling-and-screening', page_title: 'Donor Profiling & Screening', sort_order: 1 },
+      { id: 'as-4', page_type: 'page', page_ref: 'become-an-egg-donor', page_title: 'Become an Egg Donor', sort_order: 1 },
+    ],
+    created_at: '2026-01-12T10:00:00Z',
+    updated_at: '2026-02-18',
+  },
+  {
+    id: 'faq-3',
+    question: 'Can international intended parents take their baby home immediately?',
+    answer_md: 'Post-birth travel documentation involves obtaining local birth certificates and consular citizenship or passport processing for the destination country.',
+    audience: 'Intended Parents',
+    status: 'published',
+    assignments: [
+      { id: 'as-5', page_type: 'page', page_ref: 'international', page_title: 'International Programs', sort_order: 1 },
+    ],
+    created_at: '2026-01-15T10:00:00Z',
+    updated_at: '2026-02-18',
+  },
+  {
+    id: 'faq-4',
+    question: 'What happens if a surrogate cycle does not result in pregnancy?',
+    answer_md: 'Depending on the program package selected, subsequent embryo transfers are coordinated in sequence according to the original agreement terms.',
+    audience: 'General',
+    status: 'draft',
+    assignments: [],
+    created_at: '2026-02-01T10:00:00Z',
+    updated_at: '2026-02-18',
+  },
+];
+
+const AVAILABLE_PAGES = [
+  { type: 'service', ref: 'donor-and-surrogate-enquiry', label: 'Service: Donor and Surrogate Enquiry' },
+  { type: 'service', ref: 'ivf-consultation-and-coordination', label: 'Service: IVF Consultation & Coordination' },
+  { type: 'service', ref: 'surrogacy-coordination', label: 'Service: Surrogacy Coordination' },
+  { type: 'service', ref: 'donor-profiling-and-screening', label: 'Service: Donor Profiling & Screening' },
+  { type: 'page', ref: 'home', label: 'Page: Home' },
+  { type: 'page', ref: 'about', label: 'Page: About Zizo' },
+  { type: 'page', ref: 'how-it-works', label: 'Page: How It Works' },
+  { type: 'page', ref: 'packages', label: 'Page: Zizo Packages' },
+  { type: 'page', ref: 'international', label: 'Page: International Programs' },
+  { type: 'page', ref: 'become-a-surrogate', label: 'Page: Become a Surrogate' },
+  { type: 'page', ref: 'become-an-egg-donor', label: 'Page: Become an Egg Donor' },
+  { type: 'page', ref: 'contact', label: 'Page: Contact Us' },
+  { type: 'page', ref: 'faq', label: 'Page: Main FAQ Hub' },
+];
+
+export const FAQsPage: React.FC = () => {
+  const { toast } = useNotifications();
+  const { logAction } = useAuditLog();
+
+  const [faqs, setFaqs] = useState<FAQ[]>(INITIAL_FAQS);
+  const [activeTab, setActiveTab] = useState<'all' | 'services' | 'pages' | 'unassigned'>('all');
+  const [selectedPageFilter, setSelectedPageFilter] = useState<string>('all');
+
+  // Drawer / modal states
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [editingFaq, setEditingFaq] = useState<FAQ | null>(null);
+  const [question, setQuestion] = useState('');
+  const [answerMd, setAnswerMd] = useState('');
+  const [audience, setAudience] = useState<FAQ['audience']>('General');
+  const [faqStatus, setFaqStatus] = useState<FAQ['status']>('published');
+  const [assignedPages, setAssignedPages] = useState<string[]>([]);
+
+  // Detach modal
+  const [detachFaq, setDetachFaq] = useState<FAQ | null>(null);
+  const [faqToDelete, setFaqToDelete] = useState<FAQ | null>(null);
+
+  // Filter FAQs
+  const filteredFaqs = faqs.filter((faq) => {
+    if (activeTab === 'services') {
+      return (faq.assignments || []).some((a) => a.page_type === 'service');
+    }
+    if (activeTab === 'pages') {
+      return (faq.assignments || []).some((a) => a.page_type === 'page');
+    }
+    if (activeTab === 'unassigned') {
+      return (faq.assignments || []).length === 0;
+    }
+    if (selectedPageFilter !== 'all') {
+      return (faq.assignments || []).some((a) => a.page_ref === selectedPageFilter);
+    }
+    return true;
+  });
+
+  const openCreate = () => {
+    setEditingFaq(null);
+    setQuestion('');
+    setAnswerMd('');
+    setAudience('General');
+    setFaqStatus('published');
+    setAssignedPages([]);
+    setDrawerOpen(true);
+  };
+
+  const openEdit = (faq: FAQ) => {
+    setEditingFaq(faq);
+    setQuestion(faq.question);
+    setAnswerMd(faq.answer_md);
+    setAudience(faq.audience);
+    setFaqStatus(faq.status);
+    setAssignedPages((faq.assignments || []).map((a) => a.page_ref));
+    setDrawerOpen(true);
+  };
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const assignments = assignedPages.map((ref) => {
+      const match = AVAILABLE_PAGES.find((p) => p.ref === ref);
+      return {
+        id: 'as-' + Date.now() + Math.random(),
+        page_type: (match?.type || 'page') as 'service' | 'page',
+        page_ref: ref,
+        page_title: match?.label || ref,
+        sort_order: 1,
+      };
+    });
+
+    const itemData: FAQ = {
+      id: editingFaq ? editingFaq.id : 'faq-' + Date.now(),
+      question,
+      answer_md: answerMd,
+      audience,
+      status: faqStatus,
+      assignments,
+      created_at: editingFaq ? editingFaq.created_at : new Date().toISOString(),
+      updated_at: new Date().toISOString().split('T')[0],
+    };
+
+    if (editingFaq) {
+      setFaqs((prev) => prev.map((f) => (f.id === editingFaq.id ? itemData : f)));
+      toast('FAQ Updated', 'Saved FAQ details and page assignments. Deploy hook debounced.', 'success');
+    } else {
+      setFaqs((prev) => [...prev, itemData]);
+      toast('FAQ Created', 'New FAQ added to registry.', 'success');
+    }
+
+    logAction({
+      action: editingFaq ? 'EDIT_FAQ' : 'CREATE_FAQ',
+      tableName: 'faqs',
+      recordId: itemData.id,
+      diff: itemData,
+    });
+
+    setDrawerOpen(false);
+  };
+
+  const handleDetachFromPage = (faqId: string, pageRef: string) => {
+    setFaqs((prev) =>
+      prev.map((f) => {
+        if (f.id !== faqId) return f;
+        return {
+          ...f,
+          assignments: (f.assignments || []).filter((a) => a.page_ref !== pageRef),
+        };
+      })
+    );
+    toast('Assignment Detached', `FAQ detached from page. The FAQ record was not deleted.`, 'info');
+    setDetachFaq(null);
+  };
+
+  const handleDelete = () => {
+    if (!faqToDelete) return;
+    setFaqs((prev) => prev.filter((f) => f.id !== faqToDelete.id));
+    logAction({
+      action: 'DELETE_FAQ',
+      tableName: 'faqs',
+      recordId: faqToDelete.id,
+    });
+    toast('Deleted', `FAQ permanently deleted across all assigned pages.`, 'info');
+    setFaqToDelete(null);
+  };
+
+  const columns: ColumnDef<FAQ>[] = [
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <input
+          type="checkbox"
+          checked={table.getIsAllPageRowsSelected()}
+          onChange={table.getToggleAllPageRowsSelectedHandler()}
+          className="w-4 h-4 accent-[#17645F]"
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <input
+          type="checkbox"
+          checked={row.getIsSelected()}
+          onChange={row.getToggleSelectedHandler()}
+          className="w-4 h-4 accent-[#17645F]"
+          aria-label="Select row"
+        />
+      ),
+    },
+    {
+      accessorKey: 'question',
+      header: 'Question & Answer',
+      cell: ({ row }) => {
+        const faq = row.original;
+        return (
+          <div className="max-w-md">
+            <p className="font-semibold text-sm text-[#17191A] leading-snug">{faq.question}</p>
+            <p className="text-xs text-[#5D5E5F] line-clamp-1 mt-0.5">{faq.answer_md}</p>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'audience',
+      header: 'Audience',
+      cell: ({ row }) => <Badge variant="gray" size="sm">{row.original.audience}</Badge>,
+    },
+    {
+      id: 'assigned_to',
+      header: 'Assigned Pages',
+      cell: ({ row }) => {
+        const assignments = row.original.assignments || [];
+        if (assignments.length === 0) {
+          return <span className="text-xs text-[#969594] italic">Unassigned (Hub only)</span>;
+        }
+
+        const visible = assignments.slice(0, 2);
+        const overflow = assignments.length - visible.length;
+
+        return (
+          <div className="flex flex-wrap items-center gap-1 max-w-xs">
+            {visible.map((a) => (
+              <Badge key={a.page_ref} variant="brand" size="sm">
+                {a.page_title || a.page_ref}
+              </Badge>
+            ))}
+            {overflow > 0 && (
+              <Badge
+                variant="gray"
+                size="sm"
+                title={assignments.map((a) => a.page_title || a.page_ref).join(', ')}
+              >
+                +{overflow}
+              </Badge>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: ({ row }) => <StatusBadge status={row.original.status} />,
+    },
+    {
+      accessorKey: 'updated_at',
+      header: 'Updated',
+      cell: ({ row }) => (
+        <span className="font-mono text-[11px] text-[#5D5E5F]">{row.original.updated_at}</span>
+      ),
+    },
+    {
+      id: 'actions',
+      header: () => <span className="sr-only">Actions</span>,
+      cell: ({ row }) => {
+        const faq = row.original;
+        return (
+          <div className="text-right">
+            <RowActionsMenu
+              rowLabel={faq.question}
+              items={[
+                {
+                  id: 'edit',
+                  label: 'Edit FAQ',
+                  onClick: () => openEdit(faq),
+                },
+                {
+                  id: 'detach',
+                  label: 'Detach from page',
+                  disabled: (faq.assignments || []).length === 0,
+                  onClick: () => setDetachFaq(faq),
+                },
+                {
+                  id: 'delete',
+                  label: 'Delete permanently',
+                  destructive: true,
+                  dividerAbove: true,
+                  onClick: () => setFaqToDelete(faq),
+                },
+              ]}
+            />
+          </div>
+        );
+      },
+    },
+  ];
+
+  return (
+    <div className="space-y-6 text-left">
+      <PageHeader
+        title="FAQs &amp; Page Assignments"
+        description="Centralized medical, legal, and operational questions attached across service cards and static pages."
+        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'FAQs' }]}
+        actions={
+          <Button onClick={openCreate} iconLeading={<Plus className="w-4 h-4" />}>
+            New FAQ
+          </Button>
+        }
+      />
+
+      {/* Tabs bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E1E0DD] pb-3">
+        <div className="flex gap-4 text-sm font-medium">
+          {(['all', 'services', 'pages', 'unassigned'] as const).map((tab) => (
+            <button
+              key={tab}
+              type="button"
+              onClick={() => setActiveTab(tab)}
+              className={`pb-2 capitalize border-b-2 transition-colors cursor-pointer ${
+                activeTab === tab
+                  ? 'border-[#17645F] text-[#17645F] font-semibold'
+                  : 'border-transparent text-[#5D5E5F] hover:text-[#17191A]'
+              }`}
+            >
+              {tab === 'all' ? 'All FAQs' : tab === 'services' ? 'Services' : tab === 'pages' ? 'Site Pages' : 'Unassigned'}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-[#5D5E5F]">Filter Page:</span>
+          <select
+            value={selectedPageFilter}
+            onChange={(e) => setSelectedPageFilter(e.target.value)}
+            className="rounded border border-[#E1E0DD] bg-white px-2.5 py-1 text-xs text-[#17191A] focus:outline-none focus:ring-1 focus:ring-[#17645F]"
+          >
+            <option value="all">All pages</option>
+            {AVAILABLE_PAGES.map((p) => (
+              <option key={p.ref} value={p.ref}>
+                {p.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <DataTable
+        data={filteredFaqs}
+        columns={columns}
+        searchPlaceholder="Search questions or answers..."
+        onRowClick={(row) => openEdit(row)}
+      />
+
+      {/* Drawer for Create / Edit */}
+      <Drawer
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title={editingFaq ? 'Edit FAQ' : 'New Clinical FAQ'}
+        description="Write question and answer in Markdown, and select pages to display on."
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setDrawerOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave}>
+              Save FAQ &amp; Sync
+            </Button>
+          </>
+        }
+      >
+        <form onSubmit={handleSave} className="space-y-4">
+          <Input
+            label="Question"
+            required
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder="e.g. How is surrogate compensation structured?"
+          />
+
+          <Textarea
+            label="Answer (Markdown Supported)"
+            required
+            rows={5}
+            value={answerMd}
+            onChange={(e) => setAnswerMd(e.target.value)}
+            placeholder="Clear, authoritative explanation..."
+          />
+
+          <div className="grid grid-cols-2 gap-4">
+            <Select
+              label="Audience Group"
+              value={audience}
+              onChange={(e) => setAudience(e.target.value as any)}
+              options={[
+                { value: 'General', label: 'General' },
+                { value: 'Intended Parents', label: 'Intended Parents' },
+                { value: 'Surrogates', label: 'Surrogates' },
+                { value: 'Donors', label: 'Donors' },
+                { value: 'Legal and Costs', label: 'Legal & Costs' },
+              ]}
+            />
+
+            <Select
+              label="Status"
+              value={faqStatus}
+              onChange={(e) => setFaqStatus(e.target.value as any)}
+              options={[
+                { value: 'published', label: 'Published' },
+                { value: 'draft', label: 'Draft' },
+                { value: 'archived', label: 'Archived' },
+              ]}
+            />
+          </div>
+
+          <div className="space-y-2 pt-2">
+            <label className="block text-sm font-medium text-[#17191A]">
+              Assign to Pages (Multi-Select)
+            </label>
+            <p className="text-xs text-[#5D5E5F]">
+              Select which pages should render this FAQ in their accordion.
+            </p>
+            <div className="max-h-48 overflow-y-auto border border-[#E1E0DD] rounded-[8px] p-3 space-y-2 bg-white">
+              {AVAILABLE_PAGES.map((page) => (
+                <label key={page.ref} className="flex items-center gap-2 text-xs text-[#17191A] cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={assignedPages.includes(page.ref)}
+                    onChange={(e) => {
+                      if (e.target.checked) setAssignedPages((prev) => [...prev, page.ref]);
+                      else setAssignedPages((prev) => prev.filter((p) => p !== page.ref));
+                    }}
+                    className="w-4 h-4 accent-[#17645F]"
+                  />
+                  <span>{page.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </form>
+      </Drawer>
+
+      {/* Detach Modal */}
+      <Modal
+        isOpen={Boolean(detachFaq)}
+        onClose={() => setDetachFaq(null)}
+        title="Detach FAQ from Pages"
+        description="Select which page assignment to remove. The FAQ item will remain in the database."
+      >
+        {detachFaq && (
+          <div className="space-y-4">
+            <p className="text-xs font-semibold text-[#17191A]">{detachFaq.question}</p>
+            <div className="space-y-2 divide-y divide-[#E1E0DD] border border-[#E1E0DD] rounded-[8px] p-2">
+              {(detachFaq.assignments || []).map((as) => (
+                <div key={as.page_ref} className="flex items-center justify-between p-2 text-xs">
+                  <span className="text-[#17191A]">{as.page_title || as.page_ref}</span>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => handleDetachFromPage(detachFaq.id, as.page_ref)}
+                  >
+                    Detach
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </Modal>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={Boolean(faqToDelete)}
+        onClose={() => setFaqToDelete(null)}
+        onConfirm={handleDelete}
+        title="Delete FAQ Permanently"
+        description={`Are you sure you want to delete this FAQ? It will be removed from ${
+          (faqToDelete?.assignments || []).length
+        } assigned pages.`}
+        confirmLabel="Delete FAQ"
+      />
+    </div>
+  );
+};

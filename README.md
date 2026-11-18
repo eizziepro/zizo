@@ -53,12 +53,14 @@ Multi-page static HTML + Tailwind CSS + Vanilla JavaScript ES modules applicatio
 
 Navigate to `/admin/` to access the Staff Portal:
 
+- Upgraded to a production-grade single-page application built with **React 19**, **TypeScript**, **Vite**, **Tailwind CSS v4.3**, and **Untitled UI** design system components (`@untitledui/icons`, `react-aria-components`).
 - In production, staff users authenticate via **Supabase Auth** with mandatory TOTP enrollment and challenge verification before session creation.
-- Staff roles strictly define access boundaries:
-  - `owner`: Full platform management (settings, staff, subscribers, audit logs).
-  - `coordinator`: Intended parent and surrogate pipelines (bookings, availability, inquiries, applications).
-  - `editor`: Journal and educational resources (blog posts, FAQs, reviews).
-- Inactivity timeout locks staff sessions automatically after 30 minutes.
+- Staff roles strictly define access boundaries enforced both in the UI and via Postgres Row Level Security (RLS):
+  - `owner`: Full platform management (site settings, team management, audit log, services, blog, FAQs, reviews, inquiries, applications, bookings, subscribers).
+  - `coordinator`: Intended parent and surrogate pipelines (bookings, availability, consultation types, inquiries, applications, subscribers).
+  - `editor`: Journal, services, and educational resources (services, blog posts, FAQs, reviews moderation).
+- PII protection: Emails and phone numbers in list tables are masked by default (`a***@gmail.com`, `+234 *** *** 1234`), with a "Reveal" action that logs every unmasking event to the immutable `audit_log`.
+- Inactivity security: Sessions automatically lock after 30 minutes of inactivity, with a 2-minute modal countdown.
 
 ---
 
@@ -68,6 +70,8 @@ Navigate to `/admin/` to access the Staff Portal:
    - `SUPABASE_URL`
    - `SUPABASE_ANON_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY`
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
    - `RESEND_API_KEY`
    - `TURNSTILE_SITE_KEY`
    - `TURNSTILE_SECRET`
@@ -77,6 +81,7 @@ Navigate to `/admin/` to access the Staff Portal:
    - `supabase/migrations/001_schema.sql` (Schema, `btree_gist` exclusion constraints, storage buckets, `pg_cron` jobs)
    - `supabase/migrations/002_rls.sql` (Row Level Security across all tables, denying anonymous reads on sensitive tables)
    - `supabase/migrations/003_seed.sql` (Initial site settings, consultation types, legacy testimonials, categories)
+   - `supabase/migrations/004_admin_upgrade.sql` (Services table, site_pages registry, faq_assignments table, staff profile fields, avatars storage bucket, RLS policies)
 
 3. Deploy Supabase Edge Functions:
    ```bash

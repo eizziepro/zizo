@@ -1,0 +1,62 @@
+@import "tailwindcss";
+@import "../../styles/tokens.css";
+
+@theme {
+  /* Brand Teal Scale */
+  --color-brand-50: #F3F7F7;
+  --color-brand-100: #E2ECEB;
+  --color-brand-200: #C5D8D7;
+  --color-brand-300: #8BB2AF;
+  --color-brand-400: #5D928F;
+  --color-brand-500: #2E746F;
+  --color-brand-600: #17645F;
+  --color-brand-700: #155A56;
+  --color-brand-800: #12504C;
+  --color-brand-900: #0E3C39;
+  --color-brand-950: #0C3230;
+
+  /* Warm Gray Scale (Zizo Brand Neutrals) */
+  --color-gray-50: #FAF9F6;
+  --color-gray-100: #F0EFEC;
+  --color-gray-200: #E1E0DD;
+  --color-gray-300: #C8C7C5;
+  --color-gray-400: #969594;
+  --color-gray-500: #747576;
+  --color-gray-600: #5D5E5F;
+  --color-gray-700: #454748;
+  --color-gray-800: #2E3031;
+  --color-gray-900: #17191A;
+  --color-gray-950: #0E0F10;
+
+  /* Fonts */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  --bg-app: #FAF9F6;
+  --sidebar-bg: #17191A;
+}
+
+body {
+  background-color: var(--bg-app);
+  color: #17191A;
+  font-family: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  padding: 0;
+}
+
+/* Page titles (H1 in page headers) and Overview greeting in Fraunces */
+h1.page-title,
+.font-heading,
+.greeting-title {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 500;
+}
+
+/* Accessible focus ring in Deep Teal */
+:focus-visible {
+  outline: 2px solid #17645F;
+  outline-offset: 2px;
+}

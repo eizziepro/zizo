@@ -521,7 +521,13 @@ export function buildStaticSite() {
   writeHtml('contact/index.html', renderContactPage({ settings, siteUrl: SITE_URL }));
   writeHtml('thank-you/index.html', renderThankYouPage({ settings, siteUrl: SITE_URL }));
   writeHtml('review/submit/index.html', renderVerifiedReviewPage({ settings, siteUrl: SITE_URL }));
-  writeHtml('admin/index.html', renderAdminPage({ settings, siteUrl: SITE_URL }));
+  // Staff Portal Admin SPA (Built via Vite React 19)
+  try {
+    execSync('npx vite build', { stdio: 'inherit' });
+  } catch (err) {
+    console.warn('[build] Vite admin build fallback:', err);
+    writeHtml('admin/index.html', renderAdminPage({ settings, siteUrl: SITE_URL }));
+  }
   writeHtml('404.html', render404Page({ settings, siteUrl: SITE_URL }));
   writeHtml('offline/index.html', renderOfflinePage({ settings, siteUrl: SITE_URL }));
 

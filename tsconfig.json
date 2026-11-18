@@ -14,13 +14,15 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "allowJs": true,
+    "jsx": "react-jsx",
     "paths": {
       "@/*": [
-        "./*"
+        "./src/admin/*"
       ]
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
   },
-  "exclude": ["dist", "supabase"]
+  "include": ["src/**/*", "lib/**/*", "server.ts", "vite.config.ts"],
+  "exclude": ["dist", "supabase", "node_modules"]
 }
