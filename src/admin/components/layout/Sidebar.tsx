@@ -30,17 +30,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
   const { canAccess, isCoordinator, isEditor } = usePermissions();
 
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
-    `flex items-center justify-between px-3.5 py-2.5 rounded-[8px] text-sm font-medium transition-colors ${
+    `flex items-center justify-between px-3 py-2 rounded-[8px] text-sm font-medium transition-colors ${
       isActive
         ? 'bg-[#17645F] text-[#FAF9F6] font-semibold shadow-xs'
         : 'text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:bg-white/10'
     }`;
 
   return (
-    <aside className="w-64 bg-[#17191A] text-[#FAF9F6] flex flex-col justify-between p-4 h-full border-r border-white/10 shrink-0 select-none">
-      <div className="space-y-6 flex-1 overflow-y-auto pr-1">
+    <aside className="w-64 bg-[#17191A] text-[#FAF9F6] flex flex-col justify-between p-4 h-full border-r border-white/10 shrink-0 select-none overflow-hidden">
+      <div className="space-y-4 flex-1 overflow-y-auto no-scrollbar">
         {/* Brand header */}
-        <div className="flex items-center justify-between px-2 pt-2">
+        <div className="flex items-center justify-between px-2 pt-1 pb-1">
           <Link
             to="/"
             onClick={onCloseMobile}
@@ -61,7 +61,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
         </div>
 
         {/* Navigation list */}
-        <nav className="space-y-5 text-left" aria-label="Staff navigation">
+        <nav className="space-y-3.5 text-left" aria-label="Staff navigation">
           {/* Overview */}
           <div>
             <NavLink to="/" end className={navItemClass} onClick={onCloseMobile}>
@@ -105,7 +105,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
 
                 {/* Cases: Phase 2 disabled */}
                 <div
-                  className="flex items-center justify-between px-3.5 py-2.5 rounded-[8px] text-sm text-[#FAF9F6]/40 cursor-not-allowed"
+                  className="flex items-center justify-between px-3 py-2 rounded-[8px] text-sm text-[#FAF9F6]/40 cursor-not-allowed"
                   title="Cases module coming in Phase 2"
                 >
                   <span className="inline-flex items-center gap-3">
