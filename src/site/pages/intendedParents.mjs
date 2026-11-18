@@ -215,7 +215,7 @@ ${renderHeader({ isHome: false })}
       { label: 'Intended Parents' },
       { label: 'International' },
     ],
-    title: 'Programs across five global regions.',
+    title: 'International',
     intro:
       'Thoughtful cross-border coordination tailored to Nigeria, Europe, Asia, Canada, and the United States for seamless, trusted family building.',
   })}
