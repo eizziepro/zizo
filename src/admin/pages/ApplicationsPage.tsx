@@ -5,6 +5,7 @@ import { DataTable } from '../components/common/DataTable';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { MaskedValue } from '../components/common/MaskedValue';
 import { RowActionsMenu } from '../components/common/RowActionsMenu';
+import { Avatar } from '../components/untitledui/Avatar';
 import { Badge } from '../components/untitledui/Badge';
 import { Button } from '../components/untitledui/Button';
 import { Drawer } from '../components/untitledui/Drawer';
@@ -21,6 +22,7 @@ const INITIAL_APPLICATIONS: Application[] = [
     name: 'Faith M.',
     email: 'faith.m@example.com',
     phone: '+2348123456789',
+    avatar_url: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=160&q=80',
     age_range: '26 - 30',
     country: 'Nigeria',
     city: 'Lagos',
@@ -43,6 +45,7 @@ const INITIAL_APPLICATIONS: Application[] = [
     name: 'Kemi B.',
     email: 'kemi.b@example.com',
     phone: '+2348056781234',
+    avatar_url: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=160&q=80',
     age_range: '21 - 25',
     country: 'Nigeria',
     city: 'Ibadan',
@@ -65,6 +68,7 @@ const INITIAL_APPLICATIONS: Application[] = [
     name: 'Ngozi D.',
     email: 'ngozi.d@example.com',
     phone: '+2348077665544',
+    avatar_url: 'https://images.unsplash.com/photo-1589156280159-27698a70f29e?auto=format&fit=crop&w=160&q=80',
     age_range: '31 - 35',
     country: 'Nigeria',
     city: 'Enugu',
@@ -152,15 +156,11 @@ export const ApplicationsPage: React.FC = () => {
       header: 'Applicant',
       cell: ({ row }) => {
         const app = row.original;
-        // Never show photo or full identity in list views
-        const initials = app.name.slice(0, 2).toUpperCase();
         return (
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-[#17645F] text-[#FAF9F6] text-[11px] font-semibold flex items-center justify-center shrink-0">
-              {initials}
-            </div>
-            <div>
-              <p className="font-semibold text-sm text-[#17191A]">{app.name}</p>
+          <div className="flex items-center gap-2.5 min-w-[160px]">
+            <Avatar src={app.avatar_url} name={app.name} size="sm" />
+            <div className="truncate max-w-[160px]">
+              <p className="font-semibold text-sm text-[#17191A] truncate">{app.name}</p>
               <MaskedValue value={app.email} type="email" tableName="applications" recordId={app.id} />
             </div>
           </div>
@@ -179,13 +179,13 @@ export const ApplicationsPage: React.FC = () => {
     {
       accessorKey: 'age_range',
       header: 'Age Range',
-      cell: ({ row }) => <span className="text-xs text-[#17191A]">{row.original.age_range}</span>,
+      cell: ({ row }) => <span className="text-xs text-[#17191A] whitespace-nowrap">{row.original.age_range}</span>,
     },
     {
       id: 'location',
       header: 'Location',
       cell: ({ row }) => (
-        <span className="text-xs text-[#5D5E5F]">
+        <span className="text-xs text-[#5D5E5F] whitespace-nowrap">
           {row.original.city}, {row.original.country}
         </span>
       ),
@@ -199,7 +199,7 @@ export const ApplicationsPage: React.FC = () => {
       accessorKey: 'assigned_staff',
       header: 'Assigned To',
       cell: ({ row }) => (
-        <span className="text-xs text-[#5D5E5F]">
+        <span className="text-xs text-[#5D5E5F] whitespace-nowrap">
           {row.original.assigned_staff?.full_name || 'Unassigned'}
         </span>
       ),
@@ -208,7 +208,7 @@ export const ApplicationsPage: React.FC = () => {
       accessorKey: 'created_at',
       header: 'Applied',
       cell: ({ row }) => (
-        <span className="font-mono text-[11px] text-[#5D5E5F]">
+        <span className="font-mono text-[11px] text-[#5D5E5F] whitespace-nowrap">
           {new Date(row.original.created_at).toLocaleDateString('en-GB')}
         </span>
       ),
@@ -268,7 +268,6 @@ export const ApplicationsPage: React.FC = () => {
       <PageHeader
         title="Surrogate &amp; Donor Applications"
         description="Confidential initial screening questionnaires submitted by prospective gestational carriers and donors."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Applications' }]}
       />
 
       {/* Tabs & Status filters */}

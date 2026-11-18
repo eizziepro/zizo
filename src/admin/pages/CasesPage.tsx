@@ -8,7 +8,6 @@ export const CasesPage: React.FC = () => {
       <PageHeader
         title="Cases Management"
         description="Cross-border case lifecycle coordination, matching milestones, and timeline tracking."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Cases' }]}
       />
 
       <div className="rounded-[10px] border border-[#E1E0DD] bg-white p-12 text-center space-y-4 max-w-lg mx-auto shadow-xs">

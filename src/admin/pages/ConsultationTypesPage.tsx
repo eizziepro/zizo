@@ -192,7 +192,6 @@ export const ConsultationTypesPage: React.FC = () => {
       <PageHeader
         title="Consultation Types"
         description="Manage the conversation offerings available to intended parents, surrogates, and donors."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Consultation Types' }]}
         actions={
           <Button onClick={openCreateDrawer} iconLeading={<Plus className="w-4 h-4" />}>
             New Consultation Type
@@ -205,56 +204,53 @@ export const ConsultationTypesPage: React.FC = () => {
           <table className="w-full text-left text-sm text-[#2E3031]">
             <thead className="bg-[#FAF9F6] text-xs font-semibold text-[#5D5E5F] uppercase tracking-wider border-b border-[#E1E0DD]">
               <tr>
-                <th className="px-4 py-3.5">Name</th>
-                <th className="px-4 py-3.5">Duration</th>
-                <th className="px-4 py-3.5">Buffer</th>
-                <th className="px-4 py-3.5">Channels</th>
-                <th className="px-4 py-3.5">Price</th>
-                <th className="px-4 py-3.5">Active</th>
-                <th className="px-4 py-3.5">Bookings</th>
-                <th className="px-4 py-3.5">Updated</th>
-                <th className="px-4 py-3.5 text-right">Actions</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Name</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Duration</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Channels</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Price</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Active</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Bookings</th>
+                <th className="px-4 py-3.5 text-right whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E1E0DD] bg-white">
               {types.map((t) => (
                 <tr key={t.id} className="hover:bg-[#FAF9F6]/50 transition-colors">
                   <td className="px-4 py-3.5">
-                    <div>
-                      <p className="font-semibold text-sm text-[#17191A]">{t.name}</p>
-                      <p className="text-xs text-[#5D5E5F] line-clamp-1">{t.intro}</p>
+                    <div className="max-w-xs">
+                      <p className="font-semibold text-sm text-[#17191A] truncate">{t.name}</p>
+                      <p className="text-xs text-[#5D5E5F] truncate">{t.intro}</p>
                     </div>
                   </td>
-                  <td className="px-4 py-3.5 font-mono text-xs text-[#17645F] font-semibold">
+                  <td className="px-4 py-3.5 font-mono text-xs text-[#17645F] font-semibold whitespace-nowrap">
                     {t.duration_min} min
                   </td>
-                  <td className="px-4 py-3.5 font-mono text-xs text-[#5D5E5F]">
-                    {t.buffer_min} min
-                  </td>
-                  <td className="px-4 py-3.5">
-                    <div className="flex flex-wrap gap-1">
-                      {t.channels.map((ch) => (
-                        <Badge key={ch} variant="gray" size="sm">
-                          {ch}
-                        </Badge>
-                      ))}
+                  <td className="px-4 py-3.5 whitespace-nowrap">
+                    <div className="flex items-center gap-1">
+                      <Badge variant="gray" size="sm">
+                        {t.channels[0]}
+                      </Badge>
+                      {t.channels.length > 1 && (
+                        <span className="text-[11px] text-[#5D5E5F]">
+                          +{t.channels.length - 1} more
+                        </span>
+                      )}
                     </div>
                   </td>
-                  <td className="px-4 py-3.5 font-semibold text-xs text-[#17191A]">
+                  <td className="px-4 py-3.5 font-semibold text-xs text-[#17191A] whitespace-nowrap">
                     {t.price_minor === 0 ? 'Free' : `₦${(t.price_minor / 100).toLocaleString()}`}
                   </td>
-                  <td className="px-4 py-3.5">
+                  <td className="px-4 py-3.5 whitespace-nowrap">
                     <Toggle
                       size="sm"
                       checked={t.active}
                       onChange={() => handleToggleActive(t.id, t.active)}
                     />
                   </td>
-                  <td className="px-4 py-3.5 font-mono text-xs text-[#5D5E5F]">
+                  <td className="px-4 py-3.5 font-mono text-xs text-[#5D5E5F] whitespace-nowrap">
                     {t.bookings_count || 0}
                   </td>
-                  <td className="px-4 py-3.5 font-mono text-xs text-[#5D5E5F]">{t.updated_at}</td>
-                  <td className="px-4 py-3.5 text-right">
+                  <td className="px-4 py-3.5 text-right whitespace-nowrap">
                     <RowActionsMenu
                       rowLabel={t.name}
                       items={[

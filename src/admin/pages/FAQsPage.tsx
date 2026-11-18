@@ -240,8 +240,8 @@ export const FAQsPage: React.FC = () => {
         const faq = row.original;
         return (
           <div className="max-w-md">
-            <p className="font-semibold text-sm text-[#17191A] leading-snug">{faq.question}</p>
-            <p className="text-xs text-[#5D5E5F] line-clamp-1 mt-0.5">{faq.answer_md}</p>
+            <p className="font-semibold text-sm text-[#17191A] truncate">{faq.question}</p>
+            <p className="text-xs text-[#5D5E5F] truncate mt-0.5">{faq.answer_md}</p>
           </div>
         );
       },
@@ -257,14 +257,14 @@ export const FAQsPage: React.FC = () => {
       cell: ({ row }) => {
         const assignments = row.original.assignments || [];
         if (assignments.length === 0) {
-          return <span className="text-xs text-[#969594] italic">Unassigned (Hub only)</span>;
+          return <span className="text-xs text-[#969594] italic whitespace-nowrap">Unassigned (Hub only)</span>;
         }
 
         const visible = assignments.slice(0, 2);
         const overflow = assignments.length - visible.length;
 
         return (
-          <div className="flex flex-wrap items-center gap-1 max-w-xs">
+          <div className="flex items-center gap-1 whitespace-nowrap">
             {visible.map((a) => (
               <Badge key={a.page_ref} variant="brand" size="sm">
                 {a.page_title || a.page_ref}
@@ -292,7 +292,7 @@ export const FAQsPage: React.FC = () => {
       accessorKey: 'updated_at',
       header: 'Updated',
       cell: ({ row }) => (
-        <span className="font-mono text-[11px] text-[#5D5E5F]">{row.original.updated_at}</span>
+        <span className="font-mono text-[11px] text-[#5D5E5F] whitespace-nowrap">{row.original.updated_at}</span>
       ),
     },
     {
@@ -336,7 +336,6 @@ export const FAQsPage: React.FC = () => {
       <PageHeader
         title="FAQs &amp; Page Assignments"
         description="Centralized medical, legal, and operational questions attached across service cards and static pages."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'FAQs' }]}
         actions={
           <Button onClick={openCreate} iconLeading={<Plus className="w-4 h-4" />}>
             New FAQ

@@ -58,7 +58,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, className = ''
   }
 
   return (
-    <Badge variant={variant} dot className={`capitalize ${className}`}>
+    <Badge variant={variant} dot className={`capitalize whitespace-nowrap shrink-0 ${className}`}>
       {label}
     </Badge>
   );

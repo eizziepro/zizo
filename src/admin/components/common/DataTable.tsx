@@ -133,11 +133,11 @@ export function DataTable<TData>({
                             : undefined
                         }
                         onClick={header.column.getToggleSortingHandler()}
-                        className={`px-4 py-3.5 select-none ${
+                        className={`px-4 py-3.5 select-none whitespace-nowrap ${
                           isSortable ? 'cursor-pointer hover:bg-[#F0EFEC]' : ''
                         }`}
                       >
-                        <div className="inline-flex items-center gap-1.5">
+                        <div className="inline-flex items-center gap-1.5 whitespace-nowrap">
                           {flexRender(header.column.columnDef.header, header.getContext())}
                           {isSortable && (
                             <span className="text-[#5D5E5F]">

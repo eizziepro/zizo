@@ -137,7 +137,7 @@ export const SubscribersPage: React.FC = () => {
       accessorKey: 'name',
       header: 'Name',
       cell: ({ row }) => (
-        <span className="text-xs text-[#17191A]">{row.original.name || <em className="text-[#969594]">None</em>}</span>
+        <span className="text-xs text-[#17191A] whitespace-nowrap">{row.original.name || <em className="text-[#969594]">None</em>}</span>
       ),
     },
     {
@@ -148,13 +148,13 @@ export const SubscribersPage: React.FC = () => {
     {
       accessorKey: 'source',
       header: 'Source',
-      cell: ({ row }) => <span className="text-xs text-[#5D5E5F]">{row.original.source || 'Website'}</span>,
+      cell: ({ row }) => <span className="text-xs text-[#5D5E5F] whitespace-nowrap">{row.original.source || 'Website'}</span>,
     },
     {
       accessorKey: 'created_at',
       header: 'Subscribed Date',
       cell: ({ row }) => (
-        <span className="font-mono text-[11px] text-[#5D5E5F]">
+        <span className="font-mono text-[11px] text-[#5D5E5F] whitespace-nowrap">
           {new Date(row.original.created_at).toLocaleDateString('en-GB')}
         </span>
       ),
@@ -201,7 +201,6 @@ export const SubscribersPage: React.FC = () => {
       <PageHeader
         title="Newsletter Subscribers"
         description="Audience members subscribed to clinical newsletters and fertility updates."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Subscribers' }]}
         actions={
           (isOwner || isCoordinator) && (
             <Button

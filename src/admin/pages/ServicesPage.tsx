@@ -239,13 +239,13 @@ export const ServicesPage: React.FC = () => {
       cell: ({ row }) => {
         const s = row.original;
         return (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-[160px]">
             <div className="w-8 h-8 rounded-[6px] bg-[#E2ECEB] text-[#17645F] flex items-center justify-center shrink-0">
               <LayersThree01 className="w-4 h-4" />
             </div>
-            <div>
-              <p className="font-semibold text-sm text-[#17191A]">{s.title}</p>
-              <p className="text-xs font-mono text-[#5D5E5F]">/{s.slug}/</p>
+            <div className="truncate max-w-[180px]">
+              <p className="font-semibold text-sm text-[#17191A] truncate">{s.title}</p>
+              <p className="text-xs font-mono text-[#5D5E5F] truncate">/{s.slug}/</p>
             </div>
           </div>
         );
@@ -255,7 +255,7 @@ export const ServicesPage: React.FC = () => {
       accessorKey: 'short_description',
       header: 'Short Description',
       cell: ({ row }) => (
-        <p className="text-xs text-[#5D5E5F] line-clamp-1 max-w-xs">{row.original.short_description}</p>
+        <p className="text-xs text-[#5D5E5F] truncate max-w-xs">{row.original.short_description}</p>
       ),
     },
     {
@@ -264,7 +264,7 @@ export const ServicesPage: React.FC = () => {
       cell: ({ row }) => {
         const s = row.original;
         return (
-          <div className="text-xs">
+          <div className="text-xs whitespace-nowrap">
             <span className="font-semibold text-[#17191A]">
               {s.price_amount === 0 ? 'Free' : `₦${s.price_amount.toLocaleString()}`}
             </span>
@@ -302,7 +302,7 @@ export const ServicesPage: React.FC = () => {
       accessorKey: 'updated_at',
       header: 'Updated',
       cell: ({ row }) => (
-        <span className="font-mono text-[11px] text-[#5D5E5F]">{row.original.updated_at}</span>
+        <span className="font-mono text-[11px] text-[#5D5E5F] whitespace-nowrap">{row.original.updated_at}</span>
       ),
     },
     {
@@ -367,7 +367,6 @@ export const ServicesPage: React.FC = () => {
       <PageHeader
         title="Services Management"
         description="Clinical packages, consultation programs, and public pricing tiers."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Services' }]}
         actions={
           <Button onClick={openCreate} iconLeading={<Plus className="w-4 h-4" />}>
             New Service

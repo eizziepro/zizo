@@ -5,6 +5,7 @@ import { DataTable } from '../components/common/DataTable';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { MaskedValue } from '../components/common/MaskedValue';
 import { RowActionsMenu } from '../components/common/RowActionsMenu';
+import { Avatar } from '../components/untitledui/Avatar';
 import { Button } from '../components/untitledui/Button';
 import { Modal } from '../components/untitledui/Modal';
 import { Drawer } from '../components/untitledui/Drawer';
@@ -29,6 +30,7 @@ const INITIAL_BOOKINGS: Booking[] = [
     name: 'Parent AJ',
     email: 'parent.aj@example.com',
     phone: '+2348012345678',
+    avatar_url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=160&q=80',
     country: 'United Kingdom',
     audience: 'Intended Parent',
     channel: 'Google Meet',
@@ -48,6 +50,7 @@ const INITIAL_BOOKINGS: Booking[] = [
     name: 'Blessing O.',
     email: 'blessing.o@example.com',
     phone: '+2348098765432',
+    avatar_url: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=160&q=80',
     country: 'Nigeria',
     audience: 'Surrogate',
     channel: 'WhatsApp call',
@@ -67,6 +70,7 @@ const INITIAL_BOOKINGS: Booking[] = [
     name: 'Parent SS & MV',
     email: 'parents.ss.mv@example.com',
     phone: '+14155552671',
+    avatar_url: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=160&q=80',
     country: 'United States',
     audience: 'Intended Parent',
     channel: 'Google Meet',
@@ -86,6 +90,7 @@ const INITIAL_BOOKINGS: Booking[] = [
     name: 'Chioma E.',
     email: 'chioma.e@example.com',
     phone: '+2347031112233',
+    avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=160&q=80',
     country: 'Nigeria',
     audience: 'Egg Donor',
     channel: 'Phone call',
@@ -201,11 +206,13 @@ export const BookingsPage: React.FC = () => {
       cell: ({ row }) => {
         const b = row.original;
         return (
-          <div>
-            <p className="font-semibold text-sm text-[#17191A]">{b.name}</p>
-            <div className="space-y-0.5">
-              <MaskedValue value={b.email} type="email" tableName="bookings" recordId={b.id} />
-              <MaskedValue value={b.phone} type="phone" tableName="bookings" recordId={b.id} />
+          <div className="flex items-center gap-2.5 min-w-[170px]">
+            <Avatar src={b.avatar_url} name={b.name} size="sm" />
+            <div className="truncate max-w-[170px]">
+              <p className="font-semibold text-sm text-[#17191A] truncate">{b.name}</p>
+              <div className="space-y-0.5 whitespace-nowrap">
+                <MaskedValue value={b.email} type="email" tableName="bookings" recordId={b.id} />
+              </div>
             </div>
           </div>
         );
@@ -215,11 +222,11 @@ export const BookingsPage: React.FC = () => {
       accessorKey: 'consultation_type',
       header: 'Consultation Type',
       cell: ({ row }) => (
-        <div>
-          <span className="font-medium text-xs text-[#17191A]">
+        <div className="whitespace-nowrap">
+          <span className="font-medium text-xs text-[#17191A] block">
             {row.original.consultation_type?.name || 'General Consultation'}
           </span>
-          <span className="block text-[11px] text-[#17645F] font-semibold">
+          <span className="text-[11px] text-[#17645F] font-semibold">
             {row.original.consultation_type?.duration_min || 30} mins
           </span>
         </div>
@@ -231,7 +238,7 @@ export const BookingsPage: React.FC = () => {
       cell: ({ row }) => {
         const d = new Date(row.original.start_at);
         return (
-          <div title="Time calculated in Africa/Lagos (WAT, UTC+1)">
+          <div className="whitespace-nowrap" title="Time calculated in Africa/Lagos (WAT, UTC+1)">
             <p className="font-medium text-xs text-[#17191A]">
               {d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
             </p>
@@ -256,7 +263,7 @@ export const BookingsPage: React.FC = () => {
       accessorKey: 'assigned_staff',
       header: 'Assigned To',
       cell: ({ row }) => (
-        <span className="text-xs text-[#5D5E5F]">
+        <span className="text-xs text-[#5D5E5F] whitespace-nowrap">
           {row.original.assigned_staff?.full_name || 'Unassigned'}
         </span>
       ),
@@ -337,7 +344,6 @@ export const BookingsPage: React.FC = () => {
       <PageHeader
         title="Consultation Bookings"
         description="Review scheduled parent, surrogate, and donor conversations across global timezones."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Bookings' }]}
         actions={
           <div className="flex items-center gap-3">
             <div className="flex items-center rounded-[8px] border border-[#E1E0DD] bg-white p-0.5 shadow-xs">

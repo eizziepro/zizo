@@ -73,7 +73,7 @@ export const AuditLogPage: React.FC = () => {
       accessorKey: 'created_at',
       header: 'Timestamp',
       cell: ({ row }) => (
-        <span className="font-mono text-xs text-[#5D5E5F]">
+        <span className="font-mono text-xs text-[#5D5E5F] whitespace-nowrap">
           {new Date(row.original.created_at).toLocaleString('en-GB')}
         </span>
       ),
@@ -82,7 +82,7 @@ export const AuditLogPage: React.FC = () => {
       accessorKey: 'actor',
       header: 'Staff Actor',
       cell: ({ row }) => (
-        <span className="font-semibold text-xs text-[#17191A]">{row.original.actor}</span>
+        <span className="font-semibold text-xs text-[#17191A] whitespace-nowrap">{row.original.actor}</span>
       ),
     },
     {
@@ -105,14 +105,14 @@ export const AuditLogPage: React.FC = () => {
       accessorKey: 'table_name',
       header: 'Object / Entity',
       cell: ({ row }) => (
-        <span className="font-mono text-xs text-[#17191A]">{row.original.table_name}</span>
+        <span className="font-mono text-xs text-[#17191A] whitespace-nowrap">{row.original.table_name}</span>
       ),
     },
     {
       accessorKey: 'ip_address',
       header: 'IP Address',
       cell: ({ row }) => (
-        <span className="font-mono text-[11px] text-[#5D5E5F]">
+        <span className="font-mono text-[11px] text-[#5D5E5F] whitespace-nowrap">
           {row.original.ip_address || '102.89.23.14'}
         </span>
       ),
@@ -142,7 +142,6 @@ export const AuditLogPage: React.FC = () => {
       <PageHeader
         title="Audit Log &amp; Activity Trail"
         description="Immutable compliance audit trail tracking all clinical staff modifications, exports, and PII reveals."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Audit Log' }]}
       />
 
       <DataTable

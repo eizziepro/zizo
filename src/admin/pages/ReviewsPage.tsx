@@ -4,6 +4,7 @@ import { PageHeader } from '../components/untitledui/PageHeader';
 import { DataTable } from '../components/common/DataTable';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { RowActionsMenu } from '../components/common/RowActionsMenu';
+import { Avatar } from '../components/untitledui/Avatar';
 import { Badge } from '../components/untitledui/Badge';
 import { Button } from '../components/untitledui/Button';
 import { Drawer } from '../components/untitledui/Drawer';
@@ -23,6 +24,7 @@ const INITIAL_REVIEWS: Review[] = [
     title: 'Peace of mind across continents',
     body: 'The coordination between Lagos and our local clinic in London was seamless. Every legal contract and ultrasound milestone was shared promptly.',
     country: 'United Kingdom',
+    avatar_url: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=160&q=80',
     status: 'approved',
     featured: true,
     verified: true,
@@ -38,6 +40,7 @@ const INITIAL_REVIEWS: Review[] = [
     title: 'Treated with dignity and medical excellence',
     body: 'The coordinator accompanied me to every hospital visit. Housing allowances and post-birth nutrition were handled with immense care.',
     country: 'Nigeria',
+    avatar_url: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=160&q=80',
     status: 'approved',
     featured: true,
     verified: true,
@@ -53,6 +56,7 @@ const INITIAL_REVIEWS: Review[] = [
     title: 'Transparent compensation and gentle care',
     body: 'Dr. Chizaram explained each medication cycle clearly. My privacy and confidentiality were completely respected throughout.',
     country: 'Nigeria',
+    avatar_url: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=160&q=80',
     status: 'pending',
     featured: false,
     verified: false,
@@ -155,9 +159,12 @@ export const ReviewsPage: React.FC = () => {
       cell: ({ row }) => {
         const r = row.original;
         return (
-          <div>
-            <p className="font-semibold text-sm text-[#17191A]">{r.display_name}</p>
-            <p className="text-xs text-[#5D5E5F]">{r.role} · {r.country || 'Global'}</p>
+          <div className="flex items-center gap-2.5 min-w-[150px]">
+            <Avatar src={r.avatar_url} name={r.display_name} size="sm" />
+            <div className="truncate max-w-[160px]">
+              <p className="font-semibold text-sm text-[#17191A] truncate">{r.display_name}</p>
+              <p className="text-xs text-[#5D5E5F] truncate">{r.role} · {r.country || 'Global'}</p>
+            </div>
           </div>
         );
       },
@@ -166,7 +173,7 @@ export const ReviewsPage: React.FC = () => {
       accessorKey: 'rating',
       header: 'Rating',
       cell: ({ row }) => (
-        <div className="space-y-1">
+        <div className="space-y-0.5 whitespace-nowrap">
           {renderStars(row.original.rating)}
           <span className="text-[11px] font-mono text-[#5D5E5F]">{row.original.rating} / 5.0</span>
         </div>
@@ -178,9 +185,9 @@ export const ReviewsPage: React.FC = () => {
       cell: ({ row }) => {
         const r = row.original;
         return (
-          <div className="max-w-md">
-            <p className="font-semibold text-xs text-[#17191A]">{r.title}</p>
-            <p className="text-xs text-[#5D5E5F] line-clamp-1">{r.body}</p>
+          <div className="max-w-xs">
+            <p className="font-semibold text-xs text-[#17191A] truncate">{r.title}</p>
+            <p className="text-xs text-[#5D5E5F] truncate">{r.body}</p>
           </div>
         );
       },
@@ -196,11 +203,9 @@ export const ReviewsPage: React.FC = () => {
       cell: ({ row }) => {
         const r = row.original;
         return (
-          <div className="space-y-1">
-            <Badge variant={r.verified ? 'success' : 'gray'} size="sm">
-              {r.verified ? 'Verified Invite' : r.source === 'legacy' ? 'Legacy Testimonial' : 'Public Web Form'}
-            </Badge>
-          </div>
+          <Badge variant={r.verified ? 'success' : 'gray'} size="sm">
+            {r.verified ? 'Verified' : r.source === 'legacy' ? 'Legacy' : 'Public'}
+          </Badge>
         );
       },
     },
@@ -208,7 +213,7 @@ export const ReviewsPage: React.FC = () => {
       accessorKey: 'created_at',
       header: 'Submitted',
       cell: ({ row }) => (
-        <span className="font-mono text-[11px] text-[#5D5E5F]">
+        <span className="font-mono text-[11px] text-[#5D5E5F] whitespace-nowrap">
           {new Date(row.original.created_at).toLocaleDateString('en-GB')}
         </span>
       ),
@@ -266,7 +271,6 @@ export const ReviewsPage: React.FC = () => {
       <PageHeader
         title="Reviews &amp; Client Feedback"
         description="Moderate anonymous parent stories, surrogate testimonials, and verified donor reflections."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Reviews' }]}
       />
 
       {/* Tabs bar */}

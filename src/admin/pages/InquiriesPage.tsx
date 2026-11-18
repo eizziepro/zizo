@@ -5,6 +5,7 @@ import { DataTable } from '../components/common/DataTable';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { MaskedValue } from '../components/common/MaskedValue';
 import { RowActionsMenu } from '../components/common/RowActionsMenu';
+import { Avatar } from '../components/untitledui/Avatar';
 import { Button } from '../components/untitledui/Button';
 import { Drawer } from '../components/untitledui/Drawer';
 import { Select } from '../components/untitledui/Select';
@@ -22,6 +23,7 @@ const INITIAL_INQUIRIES: Inquiry[] = [
     name: 'Olumide & Sarah A.',
     email: 'olumide.a@example.com',
     phone: '+2348039988776',
+    avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=160&q=80',
     country: 'Nigeria',
     source: 'Website form',
     message: 'We are looking for full surrogacy package breakdown including clinic coordination and legal contracts.',
@@ -37,6 +39,7 @@ const INITIAL_INQUIRIES: Inquiry[] = [
     name: 'Claire T.',
     email: 'claire.t@example.com',
     phone: '+447911123456',
+    avatar_url: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=160&q=80',
     country: 'United Kingdom',
     source: 'Google search',
     message: 'Interested in matching with a Nigerian egg donor of Yoruba heritage. Traveling to Lagos in January.',
@@ -52,6 +55,7 @@ const INITIAL_INQUIRIES: Inquiry[] = [
     name: 'David K.',
     email: 'david.k@example.com',
     phone: '+14155559876',
+    avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=160&q=80',
     country: 'Canada',
     source: 'Referral',
     message: 'Can the consultation be conducted over WhatsApp call due to low bandwidth at my current location?',
@@ -131,13 +135,17 @@ export const InquiriesPage: React.FC = () => {
       header: 'Name',
       cell: ({ row }) => {
         const inq = row.original;
-        const initials = inq.name.slice(0, 2).toUpperCase();
         return (
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-[#17645F] text-[#FAF9F6] text-[11px] font-semibold flex items-center justify-center shrink-0">
-              {initials}
+          <div className="flex items-center gap-2.5 min-w-[150px]">
+            <Avatar src={inq.avatar_url} name={inq.name} size="sm" />
+            <div className="truncate max-w-[170px]">
+              <span className="font-semibold text-sm text-[#17191A] block truncate" title={inq.name}>
+                {inq.name}
+              </span>
+              <span className="text-[11px] text-[#5D5E5F] block truncate" title={inq.message}>
+                {inq.message}
+              </span>
             </div>
-            <span className="font-semibold text-sm text-[#17191A]">{inq.name}</span>
           </div>
         );
       },
@@ -148,27 +156,35 @@ export const InquiriesPage: React.FC = () => {
       cell: ({ row }) => {
         const inq = row.original;
         return (
-          <div className="space-y-0.5">
-            <MaskedValue value={inq.email} type="email" tableName="inquiries" recordId={inq.id} />
-            <MaskedValue value={inq.phone} type="phone" tableName="inquiries" recordId={inq.id} />
+          <div className="space-y-0.5 whitespace-nowrap">
+            <div className="flex items-center">
+              <MaskedValue value={inq.email} type="email" tableName="inquiries" recordId={inq.id} />
+            </div>
+            <div className="flex items-center">
+              <MaskedValue value={inq.phone} type="phone" tableName="inquiries" recordId={inq.id} />
+            </div>
           </div>
         );
       },
     },
     {
       accessorKey: 'type',
-      header: 'Type',
-      cell: ({ row }) => <span className="text-xs text-[#17191A]">{row.original.type}</span>,
+      header: 'Inquiry Type',
+      cell: ({ row }) => (
+        <span className="text-xs text-[#17191A] whitespace-nowrap block truncate max-w-[160px]" title={row.original.type}>
+          {row.original.type}
+        </span>
+      ),
     },
     {
       accessorKey: 'country',
       header: 'Country',
-      cell: ({ row }) => <span className="text-xs text-[#5D5E5F]">{row.original.country}</span>,
+      cell: ({ row }) => <span className="text-xs text-[#5D5E5F] whitespace-nowrap">{row.original.country}</span>,
     },
     {
       accessorKey: 'source',
       header: 'Source',
-      cell: ({ row }) => <span className="text-xs text-[#5D5E5F]">{row.original.source || 'Website'}</span>,
+      cell: ({ row }) => <span className="text-xs text-[#5D5E5F] whitespace-nowrap">{row.original.source || 'Website'}</span>,
     },
     {
       accessorKey: 'status',
@@ -176,19 +192,10 @@ export const InquiriesPage: React.FC = () => {
       cell: ({ row }) => <StatusBadge status={row.original.status} />,
     },
     {
-      accessorKey: 'assigned_staff',
-      header: 'Assigned To',
-      cell: ({ row }) => (
-        <span className="text-xs text-[#5D5E5F]">
-          {row.original.assigned_staff?.full_name || 'Unassigned'}
-        </span>
-      ),
-    },
-    {
       accessorKey: 'created_at',
       header: 'Received',
       cell: ({ row }) => (
-        <span className="font-mono text-[11px] text-[#5D5E5F]">
+        <span className="font-mono text-[11px] text-[#5D5E5F] whitespace-nowrap">
           {new Date(row.original.created_at).toLocaleDateString('en-GB')}
         </span>
       ),
@@ -243,7 +250,6 @@ export const InquiriesPage: React.FC = () => {
       <PageHeader
         title="Client Inquiries"
         description="Prospective intended parents and fertility inquiries submitted across public touchpoints."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Inquiries' }]}
       />
 
       {/* Status tabs */}

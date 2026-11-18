@@ -43,6 +43,7 @@ export interface Inquiry {
   name: string;
   email: string;
   phone?: string | null;
+  avatar_url?: string | null;
   country?: string | null;
   source?: string | null;
   message: string;
@@ -63,6 +64,7 @@ export interface Application {
   name: string;
   email: string;
   phone: string;
+  avatar_url?: string | null;
   age_range: string;
   country: string;
   city: string;
@@ -89,6 +91,7 @@ export interface Booking {
   name: string;
   email: string;
   phone: string;
+  avatar_url?: string | null;
   country: string;
   audience: string;
   channel: string;
@@ -165,6 +168,7 @@ export interface Review {
   id: string;
   booking_id?: string | null;
   display_name: string;
+  avatar_url?: string | null;
   role: 'Intended Parent' | 'Surrogate' | 'Egg Donor';
   rating: number;
   title: string;

@@ -18,7 +18,6 @@ export const SettingsLayout: React.FC = () => {
       <PageHeader
         title="Settings &amp; Preferences"
         description="Manage your staff profile, credentials, organization configurations, and clinic availability."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Settings' }]}
       />
 
       {/* Tabs navigation */}

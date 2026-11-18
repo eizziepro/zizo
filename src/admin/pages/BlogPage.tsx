@@ -190,13 +190,13 @@ export const BlogPage: React.FC = () => {
       cell: ({ row }) => {
         const p = row.original;
         return (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-[160px]">
             <div className="w-8 h-8 rounded-[6px] bg-[#E2ECEB] text-[#17645F] flex items-center justify-center shrink-0">
               <BookOpen01 className="w-4 h-4" />
             </div>
-            <div className="max-w-md">
-              <p className="font-semibold text-sm text-[#17191A] line-clamp-1">{p.title}</p>
-              <p className="text-xs font-mono text-[#5D5E5F]">/{p.slug}/</p>
+            <div className="truncate max-w-[200px]">
+              <p className="font-semibold text-sm text-[#17191A] truncate">{p.title}</p>
+              <p className="text-xs font-mono text-[#5D5E5F] truncate">/{p.slug}/</p>
             </div>
           </div>
         );
@@ -210,7 +210,7 @@ export const BlogPage: React.FC = () => {
     {
       accessorKey: 'author',
       header: 'Author',
-      cell: ({ row }) => <span className="text-xs text-[#5D5E5F]">{row.original.author}</span>,
+      cell: ({ row }) => <span className="text-xs text-[#5D5E5F] whitespace-nowrap">{row.original.author}</span>,
     },
     {
       accessorKey: 'status',
@@ -221,7 +221,7 @@ export const BlogPage: React.FC = () => {
       accessorKey: 'updated_at',
       header: 'Updated',
       cell: ({ row }) => (
-        <span className="font-mono text-[11px] text-[#5D5E5F]">{row.original.updated_at}</span>
+        <span className="font-mono text-[11px] text-[#5D5E5F] whitespace-nowrap">{row.original.updated_at}</span>
       ),
     },
     {
@@ -273,7 +273,6 @@ export const BlogPage: React.FC = () => {
       <PageHeader
         title="Blog &amp; Clinical Insights"
         description="Publish educational articles, legal guidance, and medical fertility insights."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Blog' }]}
         actions={
           <Button onClick={openCreate} iconLeading={<Plus className="w-4 h-4" />}>
             New Post

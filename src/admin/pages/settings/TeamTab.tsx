@@ -9,6 +9,7 @@ import { Badge } from '../../components/untitledui/Badge';
 import { Modal } from '../../components/untitledui/Modal';
 import { RowActionsMenu } from '../../components/common/RowActionsMenu';
 import { ConfirmModal } from '../../components/common/ConfirmModal';
+import { Avatar } from '../../components/untitledui/Avatar';
 import { Plus, User01 } from '@untitledui/icons';
 import type { StaffProfile, StaffRole } from '../../types';
 
@@ -19,6 +20,7 @@ const INITIAL_TEAM: StaffProfile[] = [
     email: 'owner@zizodonorandsurrogacy.com',
     full_name: 'Dr. Chizaram Ata',
     display_name: 'Dr. Chizaram',
+    avatar_path: '/assets/img/founder-about-chizaram-ata-640w.webp',
     role: 'owner',
     active: true,
     job_title: 'Clinical Director & Founder',
@@ -35,6 +37,7 @@ const INITIAL_TEAM: StaffProfile[] = [
     email: 'coordinator@zizodonorandsurrogacy.com',
     full_name: 'Amara Okafor',
     display_name: 'Amara',
+    avatar_path: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=160&q=80',
     role: 'coordinator',
     active: true,
     job_title: 'Senior Surrogacy Coordinator',
@@ -51,6 +54,7 @@ const INITIAL_TEAM: StaffProfile[] = [
     email: 'editor@zizodonorandsurrogacy.com',
     full_name: 'Tunde Bakare',
     display_name: 'Tunde',
+    avatar_path: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80',
     role: 'editor',
     active: true,
     job_title: 'Medical Content Specialist',
@@ -156,12 +160,12 @@ export const TeamTab: React.FC = () => {
           <table className="w-full text-left text-sm text-[#2E3031]">
             <thead className="bg-[#FAF9F6] text-xs font-semibold text-[#5D5E5F] uppercase tracking-wider border-b border-[#E1E0DD]">
               <tr>
-                <th className="px-4 py-3.5">Staff Member</th>
-                <th className="px-4 py-3.5">Role</th>
-                <th className="px-4 py-3.5">2FA Status</th>
-                <th className="px-4 py-3.5">Last Active</th>
-                <th className="px-4 py-3.5">Status</th>
-                <th className="px-4 py-3.5 text-right">Actions</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Staff Member</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Role</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">2FA Status</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Last Active</th>
+                <th className="px-4 py-3.5 whitespace-nowrap">Status</th>
+                <th className="px-4 py-3.5 text-right whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#E1E0DD] bg-white">
@@ -169,32 +173,30 @@ export const TeamTab: React.FC = () => {
                 <tr key={member.id} className="hover:bg-[#FAF9F6]/50 transition-colors">
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#17645F] text-[#FAF9F6] font-semibold text-xs flex items-center justify-center shrink-0">
-                        {member.full_name.slice(0, 2).toUpperCase()}
-                      </div>
+                      <Avatar src={member.avatar_path} name={member.full_name} size="sm" />
                       <div>
-                        <p className="font-semibold text-sm text-[#17191A]">{member.full_name}</p>
-                        <p className="text-xs text-[#5D5E5F]">{member.email}</p>
+                        <p className="font-semibold text-sm text-[#17191A] whitespace-nowrap">{member.full_name}</p>
+                        <p className="text-xs text-[#5D5E5F] whitespace-nowrap">{member.email}</p>
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3.5">
+                  <td className="px-4 py-3.5 whitespace-nowrap">
                     <Badge variant={member.role === 'owner' ? 'brand' : 'gray'} size="sm">
                       {member.role.toUpperCase()}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3.5">
+                  <td className="px-4 py-3.5 whitespace-nowrap">
                     <Badge variant={member.totp_enabled ? 'success' : 'warning'} size="sm">
                       {member.totp_enabled ? 'Enrolled' : 'Pending'}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3.5 text-xs text-[#5D5E5F]">{member.last_active}</td>
-                  <td className="px-4 py-3.5">
+                  <td className="px-4 py-3.5 text-xs text-[#5D5E5F] whitespace-nowrap">{member.last_active}</td>
+                  <td className="px-4 py-3.5 whitespace-nowrap">
                     <Badge variant={member.active ? 'success' : 'error'} size="sm">
                       {member.active ? 'Active' : 'Inactive'}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3.5 text-right">
+                  <td className="px-4 py-3.5 text-right whitespace-nowrap">
                     <RowActionsMenu
                       rowLabel={member.full_name}
                       items={[

@@ -39,7 +39,7 @@ export const MaskedValue: React.FC<MaskedValueProps> = ({
       return '***@***';
     }
 
-    // Phone masking (e.g. +234 *** *** 1234 or *** 1234)
+    // Phone masking (e.g. +234 *** 1234 or *** 1234)
     const cleaned = val.trim();
     if (cleaned.length > 4) {
       const lastFour = cleaned.slice(-4);
@@ -69,15 +69,15 @@ export const MaskedValue: React.FC<MaskedValueProps> = ({
   };
 
   return (
-    <span className={`inline-flex items-center gap-1.5 font-mono text-xs ${className}`}>
-      <span className="text-[#2E3031]">{revealed ? value : maskValue(value, type)}</span>
+    <span className={`inline-flex items-center gap-1.5 font-mono text-xs whitespace-nowrap shrink-0 ${className}`}>
+      <span className="text-[#2E3031] tracking-tight">{revealed ? value : maskValue(value, type)}</span>
       <button
         type="button"
         onClick={handleToggleReveal}
         disabled={isLogging}
         title={revealed ? 'Hide sensitive data' : 'Reveal sensitive data (logged in audit)'}
         aria-label={revealed ? 'Hide' : 'Reveal'}
-        className="p-1 rounded text-[#5D5E5F] hover:text-[#17645F] hover:bg-[#F0EFEC] transition-colors cursor-pointer"
+        className="p-0.5 rounded text-[#5D5E5F] hover:text-[#17645F] hover:bg-[#F0EFEC] transition-colors cursor-pointer shrink-0"
       >
         {revealed ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
       </button>
