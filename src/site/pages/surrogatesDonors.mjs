@@ -118,7 +118,7 @@ ${renderHeader({ isHome: false })}
       { label: 'Surrogates & Donors' },
       { label: 'Become a Surrogate' },
     ],
-    title: 'Interested in becoming a surrogate?',
+    title: 'Become a surrogate',
     intro:
       'At Zizo, gestational surrogates are valued, deeply respected, transparently compensated, and supported with attentive personal and medical care.',
   })}
@@ -218,7 +218,7 @@ ${renderHeader({ isHome: false })}
       { label: 'Surrogates & Donors' },
       { label: 'Become an Egg Donor' },
     ],
-    title: 'Become an anonymous egg donor.',
+    title: 'Become an egg donor',
     intro:
       'Compassionate clinical care, independent counseling, and strict anonymity for women considering ovum donation.',
   })}

@@ -817,8 +817,8 @@ ${header}
 
       <!-- Footer navigation links -->
       <div class="flex flex-wrap items-center justify-between gap-4 pt-10 mt-6 border-t border-[#FAF9F6]/10 reveal">
-        <a href="/resources/stories-and-reviews/" class="text-[length:var(--fs-small)] text-[#8BB2AF] hover:text-[#FAF9F6] underline underline-offset-4 transition-colors">Read all stories and reviews</a>
-        <a href="/resources/stories-and-reviews/#write-a-review" class="text-[length:var(--fs-small)] text-[#8BB2AF] hover:text-[#FAF9F6] underline underline-offset-4 transition-colors">Share your experience</a>
+        <a href="/resources/reviews/" class="text-[length:var(--fs-small)] text-[#8BB2AF] hover:text-[#FAF9F6] underline underline-offset-4 transition-colors">Read all stories and reviews</a>
+        <a href="/resources/reviews/#write-a-review" class="text-[length:var(--fs-small)] text-[#8BB2AF] hover:text-[#FAF9F6] underline underline-offset-4 transition-colors">Share your experience</a>
       </div>
     </div>
   </section>

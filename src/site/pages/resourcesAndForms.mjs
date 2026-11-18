@@ -336,7 +336,7 @@ ${renderHeader({ isHome: false })}
 <main id="main-content">
   ${renderInteriorHero({
     breadcrumbs: [{ label: 'Home', href: '/' }, { label: 'Resources' }, { label: 'FAQ' }],
-    title: 'Frequently asked questions.',
+    title: 'FAQs',
     intro:
       'Clear answers grouped for intended parents, gestational surrogates, egg donors, and legal planning to guide your fertility journey with complete confidence.',
   })}
@@ -565,10 +565,10 @@ export function renderStoriesReviewsPage({ reviews = [], settings = {}, siteUrl 
   const avgRating = '5.0';
 
   return `${renderHead({
-    title: 'Stories and Reviews | Zizo Donor and Surrogacy',
+    title: 'Reviews | Zizo Donor and Surrogacy',
     description:
       'Anonymised reflections from intended parents, surrogates, and egg donors who have worked with Zizo Donor and Surrogacy.',
-    canonicalPath: '/resources/stories-and-reviews/',
+    canonicalPath: '/resources/reviews/',
     siteUrl,
   })}
 ${renderHeader({ isHome: false })}
@@ -577,9 +577,9 @@ ${renderHeader({ isHome: false })}
     breadcrumbs: [
       { label: 'Home', href: '/' },
       { label: 'Resources' },
-      { label: 'Stories and Reviews' },
+      { label: 'Reviews' },
     ],
-    title: 'Stories and reflections.',
+    title: 'Reviews',
     intro:
       'Anonymised experiences shared by intended parents, surrogates, and egg donors.',
     note: 'Reviews are moderated and displayed anonymously to protect every family’s privacy.',
@@ -736,7 +736,7 @@ ${renderHeader({ isHome: false })}
 <main id="main-content">
   ${renderInteriorHero({
     breadcrumbs: [{ label: 'Home', href: '/' }, { label: 'Contact' }],
-    title: 'Speak with our care team privately.',
+    title: 'Contact Us',
     intro:
       'Whether you are exploring parenthood, surrogacy, egg donation, or a privacy request, we respond discreetly.',
   })}
@@ -918,3 +918,5 @@ ${renderHeader({ isHome: false })}
 </main>
 ${renderFooter({ settings })}`;
 }
+
+export const renderReviewsPage = renderStoriesReviewsPage;

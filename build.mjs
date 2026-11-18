@@ -389,12 +389,12 @@ export function buildStaticSite() {
     '/services/',
     '/intended-parents/how-it-works/',
     '/intended-parents/international/',
-    '/intended-parents/costs-and-packages/',
+    '/intended-parents/packages/',
     '/surrogates-donors/become-a-surrogate/',
     '/surrogates-donors/become-an-egg-donor/',
     '/resources/blog/',
     '/resources/faq/',
-    '/resources/stories-and-reviews/',
+    '/resources/reviews/',
     '/book/',
     '/contact/',
     '/privacy-policy/',
@@ -448,7 +448,7 @@ export function buildStaticSite() {
     renderProgramsByCountryPage({ settings, siteUrl: SITE_URL })
   );
   writeHtml(
-    'intended-parents/costs-and-packages/index.html',
+    'intended-parents/packages/index.html',
     renderCostsPage({ settings, faqs: faqs.filter((f) => f.audience === 'Legal and Costs'), siteUrl: SITE_URL })
   );
 
@@ -510,7 +510,7 @@ export function buildStaticSite() {
   // Resources: FAQ & Stories
   writeHtml('resources/faq/index.html', renderFaqPage({ faqs, settings, siteUrl: SITE_URL }));
   writeHtml(
-    'resources/stories-and-reviews/index.html',
+    'resources/reviews/index.html',
     renderStoriesReviewsPage({ reviews, settings, siteUrl: SITE_URL })
   );
 

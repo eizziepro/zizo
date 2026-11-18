@@ -29,7 +29,7 @@ export function renderAboutPage({ settings = {}, siteUrl = '' }) {
   };
 
   return `${renderHead({
-    title: 'About Zizo Donor and Surrogacy | Lagos & Cross-Border Care',
+    title: 'About Zizo | Zizo Donor and Surrogacy',
     description:
       'Founded by Chizaram Ata with 12+ years in reproductive and women’s health, Zizo creates families across borders with compassion, privacy, and ethical coordination.',
     canonicalPath: '/about/',
@@ -40,7 +40,7 @@ ${renderHeader({ isHome: false })}
 <main id="main-content">
   ${renderInteriorHero({
     breadcrumbs: [{ label: 'Home', href: '/' }, { label: 'About' }],
-    title: 'Safe fertility care, built on trust.',
+    title: 'About Zizo',
     intro:
       'Zizo Donor and Surrogacy guides intended parents, gestational surrogates, and egg donors across borders with calm, personal coordination from Lagos, Nigeria.',
   })}
@@ -718,7 +718,7 @@ ${renderHeader({ isHome: false })}
         return `<div class="space-y-6 reveal">
         <div class="flex items-center justify-between">
           <h2 class="display text-[length:var(--fs-h3)]">Parent and surrogate reflections</h2>
-          <a href="/resources/stories-and-reviews/" class="text-[length:var(--fs-small)] text-[#17645F] font-semibold hover:underline underline-offset-4">Read all stories</a>
+          <a href="/resources/reviews/" class="text-[length:var(--fs-small)] text-[#17645F] font-semibold hover:underline underline-offset-4">Read all stories</a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           ${cardsToRender

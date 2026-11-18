@@ -64,7 +64,7 @@ ${renderHeader({ isHome: false })}
       { label: 'Intended Parents' },
       { label: 'How It Works' },
     ],
-    title: 'A clear route to parenthood.',
+    title: 'How it works',
     intro:
       'Step-by-step coordination designed to keep medical, legal, and emotional milestones calm and predictable.',
   })}
@@ -422,10 +422,10 @@ export function renderCostsPage({ settings = {}, faqs = [], siteUrl = '' }) {
   const displayedFaqs = faqs && faqs.length >= 5 ? faqs : defaultFaqs;
 
   return `${renderHead({
-    title: 'Costs and Packages | Zizo Donor and Surrogacy',
+    title: 'Zizo Packages | Zizo Donor and Surrogacy',
     description:
       'Transparent breakdown of what is included in Zizo surrogacy and donor coordination packages, plus personalised cost-estimate requests.',
-    canonicalPath: '/intended-parents/costs-and-packages/',
+    canonicalPath: '/intended-parents/packages/',
     siteUrl,
   })}
 ${renderHeader({ isHome: false })}
@@ -434,9 +434,9 @@ ${renderHeader({ isHome: false })}
     breadcrumbs: [
       { label: 'Home', href: '/' },
       { label: 'Intended Parents' },
-      { label: 'Costs and Packages' },
+      { label: 'Packages' },
     ],
-    title: 'Clear, transparent cost planning.',
+    title: 'Costs and packages',
     intro:
       'We outline every agency, clinical, legal, and compensation component upfront so there are no unexpected surprises.',
   })}
@@ -1204,3 +1204,5 @@ ${renderFooter({ settings })}`;
 }
 
 export const renderInternationalPage = renderProgramsByCountryPage;
+
+export const renderPackagesPage = renderCostsPage;

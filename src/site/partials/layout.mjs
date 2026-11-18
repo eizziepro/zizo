@@ -148,7 +148,7 @@ export function renderHeader({ isHome = false }) {
             <ul class="bg-[#FAF9F6] text-[#17191A] border border-[#E1E0DD] rounded-[var(--radius)] p-2 shadow-sm">
               <li><a href="/intended-parents/how-it-works/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">How It Works</a></li>
               <li><a href="/intended-parents/international/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">International</a></li>
-              <li><a href="/intended-parents/costs-and-packages/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Costs and Packages</a></li>
+              <li><a href="/intended-parents/packages/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Packages</a></li>
             </ul>
           </div>
         </div>
@@ -175,7 +175,7 @@ export function renderHeader({ isHome = false }) {
             <ul class="bg-[#FAF9F6] text-[#17191A] border border-[#E1E0DD] rounded-[var(--radius)] p-2 shadow-sm">
               <li><a href="/resources/blog/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Blog</a></li>
               <li><a href="/resources/faq/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">FAQ</a></li>
-              <li><a href="/resources/stories-and-reviews/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Stories and Reviews</a></li>
+              <li><a href="/resources/reviews/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Reviews</a></li>
             </ul>
           </div>
         </div>
@@ -218,7 +218,7 @@ export function renderHeader({ isHome = false }) {
         <div class="hidden pb-3 pl-3 space-y-2 text-[length:var(--fs-small)]">
           <a href="/intended-parents/how-it-works/" class="block py-1.5">How It Works</a>
           <a href="/intended-parents/international/" class="block py-1.5">International</a>
-          <a href="/intended-parents/costs-and-packages/" class="block py-1.5">Costs and Packages</a>
+          <a href="/intended-parents/packages/" class="block py-1.5">Packages</a>
         </div>
       </div>
 
@@ -241,7 +241,7 @@ export function renderHeader({ isHome = false }) {
         <div class="hidden pb-3 pl-3 space-y-2 text-[length:var(--fs-small)]">
           <a href="/resources/blog/" class="block py-1.5">Blog</a>
           <a href="/resources/faq/" class="block py-1.5">FAQ</a>
-          <a href="/resources/stories-and-reviews/" class="block py-1.5">Stories and Reviews</a>
+          <a href="/resources/reviews/" class="block py-1.5">Reviews</a>
         </div>
       </div>
 
@@ -361,7 +361,7 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
         <ul class="space-y-2.5 text-[length:var(--fs-small)]">
           <li><a href="/about/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">About Us</a></li>
           <li><a href="/intended-parents/how-it-works/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">How It Works</a></li>
-          <li><a href="/resources/stories-and-reviews/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Stories</a></li>
+          <li><a href="/resources/reviews/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Reviews</a></li>
           <li><a href="/contact/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Contact Us</a></li>
         </ul>
       </div>
