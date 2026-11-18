@@ -179,9 +179,10 @@ export const BookingsPage: React.FC = () => {
     setSelectedBooking(null);
   };
 
-  const columns: ColumnDef<Booking>[] = [
-    {
-      id: 'select',
+  const columns = React.useMemo<ColumnDef<Booking>[]>(
+    () => [
+      {
+        id: 'select',
       header: ({ table }) => (
         <input
           type="checkbox"
@@ -338,7 +339,7 @@ export const BookingsPage: React.FC = () => {
         );
       },
     },
-  ];
+  ], [isOwner]);
 
   return (
     <div className="space-y-6 text-left">

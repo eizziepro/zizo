@@ -129,9 +129,10 @@ export const ApplicationsPage: React.FC = () => {
     setAppToDelete(null);
   };
 
-  const columns: ColumnDef<Application>[] = [
-    {
-      id: 'select',
+  const columns = React.useMemo<ColumnDef<Application>[]>(
+    () => [
+      {
+        id: 'select',
       header: ({ table }) => (
         <input
           type="checkbox"
@@ -261,7 +262,7 @@ export const ApplicationsPage: React.FC = () => {
         );
       },
     },
-  ];
+  ], []);
 
   return (
     <div className="space-y-6 text-left">

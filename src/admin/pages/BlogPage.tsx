@@ -172,9 +172,10 @@ export const BlogPage: React.FC = () => {
     setPostToDelete(null);
   };
 
-  const columns: ColumnDef<BlogPost>[] = [
-    {
-      id: 'select',
+  const columns = React.useMemo<ColumnDef<BlogPost>[]>(
+    () => [
+      {
+        id: 'select',
       header: ({ table }) => (
         <input
           type="checkbox"
@@ -276,7 +277,7 @@ export const BlogPage: React.FC = () => {
         );
       },
     },
-  ];
+  ], []);
 
   return (
     <div className="space-y-6 text-left">

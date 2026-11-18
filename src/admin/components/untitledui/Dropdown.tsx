@@ -19,6 +19,13 @@ interface DropdownProps {
   className?: string;
 }
 
+interface Coords {
+  top: number;
+  left?: number;
+  right?: number;
+  openUpwards: boolean;
+}
+
 export const Dropdown: React.FC<DropdownProps> = ({
   trigger,
   items,
@@ -29,13 +36,10 @@ export const Dropdown: React.FC<DropdownProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const [coords, setCoords] = useState<{ top: number; left?: number; right?: number; openUpwards: boolean }>({
-    top: 0,
-    openUpwards: false,
-  });
+  const [coords, setCoords] = useState<Coords | null>(null);
 
-  const updatePosition = () => {
-    if (!containerRef.current) return;
+  const calculatePosition = (): Coords | null => {
+    if (!containerRef.current) return null;
     const rect = containerRef.current.getBoundingClientRect();
     const estimatedHeight = items.length * 38 + (header ? 44 : 0) + 16;
     const menuHeight = menuRef.current?.offsetHeight || estimatedHeight;
@@ -44,32 +48,39 @@ export const Dropdown: React.FC<DropdownProps> = ({
     const shouldOpenUpwards = placement.startsWith('top') || (spaceBelow < menuHeight && spaceAbove > spaceBelow);
 
     const top = shouldOpenUpwards
-      ? Math.max(8, rect.top - menuHeight - 6)
-      : Math.min(window.innerHeight - menuHeight - 8, rect.bottom + 6);
+      ? Math.max(8, rect.top - menuHeight - 4)
+      : Math.min(window.innerHeight - menuHeight - 8, rect.bottom + 4);
 
     const isLeftAligned = placement.endsWith('left');
-    if (isLeftAligned) {
-      setCoords({
-        top,
-        left: Math.max(8, rect.left),
-        openUpwards: shouldOpenUpwards,
-      });
+    return {
+      top: Math.round(top),
+      ...(isLeftAligned
+        ? { left: Math.round(Math.max(8, rect.left)) }
+        : { right: Math.round(Math.max(8, window.innerWidth - rect.right)) }),
+      openUpwards: shouldOpenUpwards,
+    };
+  };
+
+  const handleToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isOpen) {
+      setIsOpen(false);
+      setCoords(null);
     } else {
-      setCoords({
-        top,
-        right: Math.max(8, window.innerWidth - rect.right),
-        openUpwards: shouldOpenUpwards,
-      });
+      // Calculate coordinates synchronously before setting open so it renders directly in place
+      const initialCoords = calculatePosition();
+      setCoords(initialCoords);
+      setIsOpen(true);
     }
   };
 
   useLayoutEffect(() => {
     if (isOpen) {
-      updatePosition();
-      const raf = requestAnimationFrame(() => {
-        updatePosition();
-      });
-      return () => cancelAnimationFrame(raf);
+      // Recalibrate with real DOM height if needed
+      const actualCoords = calculatePosition();
+      if (actualCoords) {
+        setCoords(actualCoords);
+      }
     }
   }, [isOpen]);
 
@@ -83,18 +94,23 @@ export const Dropdown: React.FC<DropdownProps> = ({
         !menuRef.current.contains(target)
       ) {
         setIsOpen(false);
+        setCoords(null);
       }
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
         setIsOpen(false);
+        setCoords(null);
       }
     };
 
     const handleScrollOrResize = () => {
       if (isOpen) {
-        updatePosition();
+        const updated = calculatePosition();
+        if (updated) {
+          setCoords(updated);
+        }
       }
     };
 
@@ -112,7 +128,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
     };
   }, [isOpen]);
 
-  const menuContent = isOpen && typeof document !== 'undefined' ? (
+  const menuContent = isOpen && coords && typeof document !== 'undefined' ? (
     createPortal(
       <div
         ref={menuRef}
@@ -122,9 +138,10 @@ export const Dropdown: React.FC<DropdownProps> = ({
           ...(coords.left !== undefined ? { left: `${coords.left}px` } : {}),
           ...(coords.right !== undefined ? { right: `${coords.right}px` } : {}),
           zIndex: 9999,
+          transformOrigin: coords.openUpwards ? 'bottom right' : 'top right',
         }}
         onClick={(e) => e.stopPropagation()}
-        className="min-w-[200px] rounded-[10px] bg-white border border-[#E1E0DD] shadow-xl py-1 focus:outline-none animate-in fade-in zoom-in-95 duration-100"
+        className="min-w-[200px] rounded-[10px] bg-white border border-[#E1E0DD] shadow-xl py-1 focus:outline-none transition-opacity duration-75 opacity-100"
         role="menu"
       >
         {header && <div className="px-3.5 py-2.5 border-b border-[#E1E0DD]">{header}</div>}
@@ -142,6 +159,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
                   if (!item.disabled) {
                     item.onClick?.();
                     setIsOpen(false);
+                    setCoords(null);
                   }
                 }}
                 className={`w-full flex items-center gap-2.5 px-3.5 py-2 text-sm text-left transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed ${
@@ -163,13 +181,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
 
   return (
     <div className={`relative inline-block text-left ${className}`} ref={containerRef}>
-      <div
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsOpen((prev) => !prev);
-        }}
-        className="cursor-pointer"
-      >
+      <div onClick={handleToggle} className="cursor-pointer">
         {trigger(isOpen)}
       </div>
 

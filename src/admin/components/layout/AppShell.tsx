@@ -6,11 +6,13 @@ import { CommandMenu } from '../untitledui/CommandMenu';
 import { Modal } from '../untitledui/Modal';
 import { Button } from '../untitledui/Button';
 import { useAuth } from '../../context/AuthContext';
+import { useIdleTimer } from '../../context/IdleTimerContext';
 
 export const AppShell: React.FC = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [commandMenuOpen, setCommandMenuOpen] = useState(false);
-  const { showIdleWarning, dismissIdleWarning, idleSecondsLeft, signOut } = useAuth();
+  const { signOut } = useAuth();
+  const { showIdleWarning, dismissIdleWarning, idleSecondsLeft } = useIdleTimer();
 
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-[#17191A] flex flex-col md:flex-row antialiased">

@@ -1330,6 +1330,12 @@ setInterval(() => {
   }
 }, 60_000);
 
+// Serve static admin assets explicitly
+app.use('/admin/assets', express.static(path.join(DIST_DIR, 'admin', 'assets'), {
+  immutable: true,
+  maxAge: '1y',
+}));
+
 // Static files from dist/
 app.use(express.static(DIST_DIR, { extensions: ['html'] }));
 
@@ -1339,9 +1345,14 @@ app.get('/admin/admin*', (req, res) => {
 });
 
 // Admin Staff Portal SPA fallback (all /admin/* client-side routes serve dist/admin/index.html)
-app.get('/admin*', (_req, res) => {
+app.get('/admin*', (req, res, next) => {
+  // If requesting a static asset (e.g. .css, .js, .svg, .png), do not serve index.html fallback
+  if (req.path.startsWith('/admin/assets/') || path.extname(req.path)) {
+    return next();
+  }
   const adminIndex = path.join(DIST_DIR, 'admin', 'index.html');
   if (fs.existsSync(adminIndex)) {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.sendFile(adminIndex);
   } else {
     res.status(404).send('Admin SPA not built. Run npm run build.');

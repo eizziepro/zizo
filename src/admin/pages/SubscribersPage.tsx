@@ -104,9 +104,10 @@ export const SubscribersPage: React.FC = () => {
     setSubToDelete(null);
   };
 
-  const columns: ColumnDef<Subscriber>[] = [
-    {
-      id: 'select',
+  const columns = React.useMemo<ColumnDef<Subscriber>[]>(
+    () => [
+      {
+        id: 'select',
       header: ({ table }) => (
         <input
           type="checkbox"
@@ -194,7 +195,7 @@ export const SubscribersPage: React.FC = () => {
         );
       },
     },
-  ];
+  ], []);
 
   return (
     <div className="space-y-6 text-left">

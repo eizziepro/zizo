@@ -68,9 +68,10 @@ export const AuditLogPage: React.FC = () => {
     return <ForbiddenPage />;
   }
 
-  const columns: ColumnDef<AuditLogEntry>[] = [
-    {
-      accessorKey: 'created_at',
+  const columns = React.useMemo<ColumnDef<AuditLogEntry>[]>(
+    () => [
+      {
+        accessorKey: 'created_at',
       header: 'Timestamp',
       cell: ({ row }) => (
         <span className="font-mono text-xs text-[#5D5E5F] whitespace-nowrap">
@@ -135,7 +136,7 @@ export const AuditLogPage: React.FC = () => {
         </div>
       ),
     },
-  ];
+  ], []);
 
   return (
     <div className="space-y-6 text-left">

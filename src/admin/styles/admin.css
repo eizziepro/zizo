@@ -61,12 +61,19 @@ h1.page-title,
   outline-offset: 2px;
 }
 
-/* Custom scrollbar utility: completely hides default scrollbar while retaining mouse wheel / touchpad scroll */
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Custom scrollbar utility & total sidebar scrollbar suppression across all browsers & Windows themes */
+aside,
+aside *,
+.no-scrollbar,
+[data-no-scrollbar] {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
-.no-scrollbar::-webkit-scrollbar {
+
+aside::-webkit-scrollbar,
+aside *::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar,
+[data-no-scrollbar]::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
   height: 0 !important;

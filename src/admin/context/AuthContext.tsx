@@ -13,15 +13,9 @@ interface AuthContextType {
   verifyMfa: (code: string) => Promise<{ error?: string }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<StaffProfile>) => Promise<{ error?: string }>;
-  idleSecondsLeft: number;
-  showIdleWarning: boolean;
-  dismissIdleWarning: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-const IDLE_TIMEOUT_SECONDS = 30 * 60; // 30 minutes
-const IDLE_WARNING_SECONDS = 2 * 60;  // 2-minute warning
 
 // Mock staff users for offline/local development when Supabase isn't reachable
 const LOCAL_STAFF_USERS: Record<string, StaffProfile> = {
@@ -84,20 +78,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [needsMfa, setNeedsMfa] = useState(false);
   const [mfaFactorId, setMfaFactorId] = useState<string | null>(null);
   const [mfaChallengeId, setMfaChallengeId] = useState<string | null>(null);
-  const [idleSecondsLeft, setIdleSecondsLeft] = useState(IDLE_TIMEOUT_SECONDS);
-  const [showIdleWarning, setShowIdleWarning] = useState(false);
 
   // Rate limiting tracker (5 failed attempts locks for 15 mins)
   const failedAttemptsRef = useRef<{ count: number; lockUntil: number }>({ count: 0, lockUntil: 0 });
-
-  const resetIdleTimer = useCallback(() => {
-    setIdleSecondsLeft(IDLE_TIMEOUT_SECONDS);
-    setShowIdleWarning(false);
-  }, []);
-
-  const dismissIdleWarning = useCallback(() => {
-    resetIdleTimer();
-  }, [resetIdleTimer]);
 
   const signOut = useCallback(async () => {
     if (isSupabaseConfigured) {
@@ -109,40 +92,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setMfaFactorId(null);
     setMfaChallengeId(null);
   }, []);
-
-  // Idle Timer Effect
-  useEffect(() => {
-    if (!user) return;
-
-    const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'];
-    const handleActivity = () => {
-      // Only reset if not already in warning modal
-      if (!showIdleWarning) {
-        setIdleSecondsLeft(IDLE_TIMEOUT_SECONDS);
-      }
-    };
-
-    events.forEach((ev) => window.addEventListener(ev, handleActivity, { passive: true }));
-
-    const timer = setInterval(() => {
-      setIdleSecondsLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          signOut();
-          return 0;
-        }
-        if (prev <= IDLE_WARNING_SECONDS) {
-          setShowIdleWarning(true);
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => {
-      events.forEach((ev) => window.removeEventListener(ev, handleActivity));
-      clearInterval(timer);
-    };
-  }, [user, showIdleWarning, signOut]);
 
   // Initial Auth Check
   useEffect(() => {
@@ -200,7 +149,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.setItem('zizo_local_staff', JSON.stringify(localStaff));
         setUser(localStaff);
         setNeedsMfa(false);
-        resetIdleTimer();
         return {};
       }
     }
@@ -244,7 +192,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         };
         setUser(profile);
         setNeedsMfa(false);
-        resetIdleTimer();
       }
 
       return {};
@@ -268,7 +215,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setNeedsMfa(false);
       setMfaFactorId(null);
       setMfaChallengeId(null);
-      resetIdleTimer();
       return {};
     }
 
@@ -301,7 +247,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setNeedsMfa(false);
       setMfaFactorId(null);
       setMfaChallengeId(null);
-      resetIdleTimer();
       return {};
     } catch (err: any) {
       return { error: err.message || 'Failed to verify 2FA code.' };
@@ -344,9 +289,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         verifyMfa,
         signOut,
         updateProfile,
-        idleSecondsLeft,
-        showIdleWarning,
-        dismissIdleWarning,
       }}
     >
       {children}

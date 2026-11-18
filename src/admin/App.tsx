@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { IdleTimerProvider } from './context/IdleTimerContext';
 import { NotificationProvider } from './context/NotificationContext';
 import { AppShell } from './components/layout/AppShell';
 
@@ -73,7 +74,8 @@ export const AdminApp: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <NotificationProvider>
-          <BrowserRouter basename="/admin">
+          <IdleTimerProvider>
+            <BrowserRouter basename="/admin">
             <Routes>
               {/* Public Staff Login Route */}
               <Route path="/login" element={<LoginPage />} />
@@ -221,6 +223,7 @@ export const AdminApp: React.FC = () => {
               </Route>
             </Routes>
           </BrowserRouter>
+          </IdleTimerProvider>
         </NotificationProvider>
       </AuthProvider>
     </QueryClientProvider>

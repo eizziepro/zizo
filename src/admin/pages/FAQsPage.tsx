@@ -212,9 +212,10 @@ export const FAQsPage: React.FC = () => {
     setFaqToDelete(null);
   };
 
-  const columns: ColumnDef<FAQ>[] = [
-    {
-      id: 'select',
+  const columns = React.useMemo<ColumnDef<FAQ>[]>(
+    () => [
+      {
+        id: 'select',
       header: ({ table }) => (
         <input
           type="checkbox"
@@ -303,7 +304,7 @@ export const FAQsPage: React.FC = () => {
         );
       },
     },
-  ];
+  ], []);
 
   return (
     <div className="space-y-6 text-left">

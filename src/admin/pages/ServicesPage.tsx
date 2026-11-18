@@ -212,9 +212,10 @@ export const ServicesPage: React.FC = () => {
     setServiceToDelete(null);
   };
 
-  const columns: ColumnDef<ServiceItem>[] = [
-    {
-      id: 'select',
+  const columns = React.useMemo<ColumnDef<ServiceItem>[]>(
+    () => [
+      {
+        id: 'select',
       header: ({ table }) => (
         <input
           type="checkbox"
@@ -359,7 +360,7 @@ export const ServicesPage: React.FC = () => {
         );
       },
     },
-  ];
+  ], []);
 
   return (
     <div className="space-y-6 text-left">

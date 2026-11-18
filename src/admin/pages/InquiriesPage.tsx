@@ -108,9 +108,10 @@ export const InquiriesPage: React.FC = () => {
     setInquiryToDelete(null);
   };
 
-  const columns: ColumnDef<Inquiry>[] = [
-    {
-      id: 'select',
+  const columns = React.useMemo<ColumnDef<Inquiry>[]>(
+    () => [
+      {
+        id: 'select',
       header: ({ table }) => (
         <input
           type="checkbox"
@@ -243,7 +244,7 @@ export const InquiriesPage: React.FC = () => {
         );
       },
     },
-  ];
+  ], []);
 
   return (
     <div className="space-y-6 text-left">

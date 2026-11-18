@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Bell01, SearchLg, Menu01 } from '@untitledui/icons';
-import { useAuth } from '../../context/AuthContext';
+import { useIdleTimer } from '../../context/IdleTimerContext';
 import { Dropdown } from '../untitledui/Dropdown';
 
 interface TopBarProps {
@@ -16,7 +16,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   notificationsCount = 0,
 }) => {
   const location = useLocation();
-  const { idleSecondsLeft } = useAuth();
+  const { idleSecondsLeft } = useIdleTimer();
 
   // Generate dynamic breadcrumbs based on pathname
   const pathSegments = location.pathname

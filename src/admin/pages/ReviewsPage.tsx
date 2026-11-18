@@ -131,9 +131,10 @@ export const ReviewsPage: React.FC = () => {
     );
   };
 
-  const columns: ColumnDef<Review>[] = [
-    {
-      id: 'select',
+  const columns = React.useMemo<ColumnDef<Review>[]>(
+    () => [
+      {
+        id: 'select',
       header: ({ table }) => (
         <input
           type="checkbox"
@@ -264,7 +265,7 @@ export const ReviewsPage: React.FC = () => {
         );
       },
     },
-  ];
+  ], []);
 
   return (
     <div className="space-y-6 text-left">
