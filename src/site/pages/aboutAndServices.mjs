@@ -483,7 +483,7 @@ ${renderHeader({ isHome: false })}
 <main id="main-content">
   ${renderInteriorHero({
     breadcrumbs: [{ label: 'Home', href: '/' }, { label: 'Services' }],
-    title: 'Fertility, donor, and surrogacy coordination.',
+    title: 'Our Services',
     intro:
       'Four integrated services designed around clinical rigour, legal clarity, anonymity, and steady personal care.',
   })}
