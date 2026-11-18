@@ -194,12 +194,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!isSupabaseConfigured || LOCAL_STAFF_USERS[trimmedEmail]) {
       const localStaff = LOCAL_STAFF_USERS[trimmedEmail];
       if (localStaff) {
-        // Enforce TOTP MFA flow for all staff
-        setNeedsMfa(true);
-        setMfaFactorId('local-totp');
-        setMfaChallengeId('challenge-' + Date.now());
-        sessionStorage.setItem('zizo_pending_staff', JSON.stringify(localStaff));
-        return { requiresMfa: true };
+        localStorage.setItem('zizo_local_staff', JSON.stringify(localStaff));
+        setUser(localStaff);
+        setNeedsMfa(false);
+        resetIdleTimer();
+        return {};
       }
     }
 
@@ -223,24 +222,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       failedAttemptsRef.current.count = 0;
 
-      // Check MFA requirement
-      const { data: mfaData, error: mfaError } = await supabase.auth.mfa.listFactors();
-      if (!mfaError && mfaData?.totp?.length) {
-        const verifiedFactor = mfaData.totp.find((f) => f.status === 'verified');
-        if (verifiedFactor) {
-          const { data: challenge, error: challengeError } = await supabase.auth.mfa.challenge({
-            factorId: verifiedFactor.id,
-          });
-          if (challengeError) return { error: challengeError.message };
-
-          setNeedsMfa(true);
-          setMfaFactorId(verifiedFactor.id);
-          setMfaChallengeId(challenge.id);
-          return { requiresMfa: true };
-        }
-      }
-
-      // No MFA enrolled yet or MFA disabled: load profile
+      // Load staff profile directly without 6-digit MFA requirement
       if (data.user) {
         const { data: staffData } = await supabase
           .from('staff')
@@ -258,6 +240,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           email: data.user.email || staffData.email,
         };
         setUser(profile);
+        setNeedsMfa(false);
         resetIdleTimer();
       }
 
