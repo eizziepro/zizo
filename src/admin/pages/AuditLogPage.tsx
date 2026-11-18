@@ -142,7 +142,7 @@ export const AuditLogPage: React.FC = () => {
       <PageHeader
         title="Audit Log &amp; Activity Trail"
         description="Immutable compliance audit trail tracking all clinical staff modifications, exports, and PII reveals."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'Audit Log' }]}
+        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Audit Log' }]}
       />
 
       <DataTable

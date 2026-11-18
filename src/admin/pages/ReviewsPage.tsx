@@ -266,7 +266,7 @@ export const ReviewsPage: React.FC = () => {
       <PageHeader
         title="Reviews &amp; Client Feedback"
         description="Moderate anonymous parent stories, surrogate testimonials, and verified donor reflections."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'Reviews' }]}
+        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Reviews' }]}
       />
 
       {/* Tabs bar */}

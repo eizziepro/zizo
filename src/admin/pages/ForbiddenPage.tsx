@@ -15,7 +15,7 @@ export const ForbiddenPage: React.FC = () => {
         are strictly enforced via Supabase Row Level Security.
       </p>
       <div className="pt-2">
-        <Link to="/admin/">
+        <Link to="/">
           <Button variant="primary">Return to Overview</Button>
         </Link>
       </div>

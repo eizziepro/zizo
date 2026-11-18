@@ -17,13 +17,13 @@ export const AvatarMenu: React.FC = () => {
       id: 'profile',
       label: 'Profile',
       icon: <User01 className="w-4 h-4" />,
-      onClick: () => navigate('/admin/settings/profile'),
+      onClick: () => navigate('/settings/profile'),
     },
     {
       id: 'site-settings',
       label: 'Site Settings',
       icon: <Settings01 className="w-4 h-4" />,
-      onClick: () => navigate('/admin/settings/site'),
+      onClick: () => navigate('/settings/site'),
       disabled: !isOwner,
     },
   ];
@@ -33,7 +33,7 @@ export const AvatarMenu: React.FC = () => {
       id: 'audit-log',
       label: 'Audit Log',
       icon: <FileCheck02 className="w-4 h-4" />,
-      onClick: () => navigate('/admin/audit-log'),
+      onClick: () => navigate('/audit-log'),
     });
   }
 
@@ -45,7 +45,7 @@ export const AvatarMenu: React.FC = () => {
     dividerAbove: true,
     onClick: async () => {
       await signOut();
-      navigate('/admin/login');
+      navigate('/login');
     },
   });
 

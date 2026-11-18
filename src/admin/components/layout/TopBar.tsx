@@ -20,7 +20,6 @@ export const TopBar: React.FC<TopBarProps> = ({
 
   // Generate dynamic breadcrumbs based on pathname
   const pathSegments = location.pathname
-    .replace(/^\/admin\/?/, '')
     .split('/')
     .filter(Boolean);
 
@@ -49,12 +48,12 @@ export const TopBar: React.FC<TopBarProps> = ({
 
         {/* Breadcrumbs */}
         <nav aria-label="Breadcrumbs" className="flex items-center gap-2 text-xs font-medium">
-          <Link to="/admin/" className="text-[#5D5E5F] hover:text-[#17645F] transition-colors">
+          <Link to="/" className="text-[#5D5E5F] hover:text-[#17645F] transition-colors">
             Staff Portal
           </Link>
           {pathSegments.length > 0 &&
             pathSegments.map((segment, idx) => {
-              const href = '/admin/' + pathSegments.slice(0, idx + 1).join('/');
+              const href = '/' + pathSegments.slice(0, idx + 1).join('/');
               const isLast = idx === pathSegments.length - 1;
 
               return (

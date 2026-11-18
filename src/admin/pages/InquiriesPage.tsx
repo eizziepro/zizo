@@ -243,7 +243,7 @@ export const InquiriesPage: React.FC = () => {
       <PageHeader
         title="Client Inquiries"
         description="Prospective intended parents and fertility inquiries submitted across public touchpoints."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'Inquiries' }]}
+        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Inquiries' }]}
       />
 
       {/* Status tabs */}

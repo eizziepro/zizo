@@ -27,7 +27,7 @@ export const LoginPage: React.FC = () => {
       if (res.error) {
         setError(res.error);
       } else if (!res.requiresMfa) {
-        navigate('/admin/');
+        navigate('/');
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred during sign in.');
@@ -46,7 +46,7 @@ export const LoginPage: React.FC = () => {
       if (res.error) {
         setError(res.error);
       } else {
-        navigate('/admin/');
+        navigate('/');
       }
     } catch (err: any) {
       setError(err.message || 'Verification failed.');

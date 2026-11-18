@@ -58,7 +58,7 @@ const ProtectedRoute: React.FC<{
   }
 
   if (!user) {
-    return <Navigate to="/admin/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   if (allowedRoles && !allowedRoles.includes(user.role)) {
@@ -217,7 +217,7 @@ export const AdminApp: React.FC = () => {
                 <Route path="403" element={<ForbiddenPage />} />
 
                 {/* Catch-all */}
-                <Route path="*" element={<Navigate to="/admin/" replace />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Route>
             </Routes>
           </BrowserRouter>

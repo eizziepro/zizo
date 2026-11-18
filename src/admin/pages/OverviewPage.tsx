@@ -51,7 +51,7 @@ export const OverviewPage: React.FC = () => {
         {/* Metric 1: Inquiries */}
         {!isEditor && (
           <Link
-            to="/admin/inquiries"
+            to="/inquiries"
             className="p-5 rounded-[10px] border border-[#E1E0DD] bg-white hover:border-[#17645F] transition-all shadow-xs space-y-3 block"
           >
             <div className="flex items-center justify-between">
@@ -74,7 +74,7 @@ export const OverviewPage: React.FC = () => {
         {/* Metric 2: Applications */}
         {!isEditor && (
           <Link
-            to="/admin/applications"
+            to="/applications"
             className="p-5 rounded-[10px] border border-[#E1E0DD] bg-white hover:border-[#17645F] transition-all shadow-xs space-y-3 block"
           >
             <div className="flex items-center justify-between">
@@ -97,7 +97,7 @@ export const OverviewPage: React.FC = () => {
         {/* Metric 3: Bookings */}
         {!isEditor && (
           <Link
-            to="/admin/bookings"
+            to="/bookings"
             className="p-5 rounded-[10px] border border-[#E1E0DD] bg-white hover:border-[#17645F] transition-all shadow-xs space-y-3 block"
           >
             <div className="flex items-center justify-between">
@@ -118,7 +118,7 @@ export const OverviewPage: React.FC = () => {
         {/* Metric 4: Reviews */}
         {!isCoordinator && (
           <Link
-            to="/admin/reviews"
+            to="/reviews"
             className="p-5 rounded-[10px] border border-[#E1E0DD] bg-white hover:border-[#17645F] transition-all shadow-xs space-y-3 block"
           >
             <div className="flex items-center justify-between">
@@ -211,7 +211,7 @@ export const OverviewPage: React.FC = () => {
               <Clock className="w-4 h-4 text-[#17645F]" />
               <h3 className="font-semibold text-base text-[#17191A]">Today&apos;s Appointments</h3>
             </div>
-            <Link to="/admin/bookings" className="text-xs text-[#17645F] font-semibold hover:underline">
+            <Link to="/bookings" className="text-xs text-[#17645F] font-semibold hover:underline">
               View all
             </Link>
           </div>

@@ -201,7 +201,7 @@ export const SubscribersPage: React.FC = () => {
       <PageHeader
         title="Newsletter Subscribers"
         description="Audience members subscribed to clinical newsletters and fertility updates."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'Subscribers' }]}
+        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Subscribers' }]}
         actions={
           (isOwner || isCoordinator) && (
             <Button

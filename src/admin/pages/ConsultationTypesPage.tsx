@@ -192,7 +192,7 @@ export const ConsultationTypesPage: React.FC = () => {
       <PageHeader
         title="Consultation Types"
         description="Manage the conversation offerings available to intended parents, surrogates, and donors."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'Consultation Types' }]}
+        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Consultation Types' }]}
         actions={
           <Button onClick={openCreateDrawer} iconLeading={<Plus className="w-4 h-4" />}>
             New Consultation Type

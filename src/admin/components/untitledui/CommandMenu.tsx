@@ -47,34 +47,34 @@ export const CommandMenu: React.FC<CommandMenuProps> = ({ isOpen, onClose }) => 
   if (!isOpen) return null;
 
   const commands = [
-    { id: 'overview', title: 'Overview Dashboard', href: '/admin/', icon: <Activity className="w-4 h-4" /> },
+    { id: 'overview', title: 'Overview Dashboard', href: '/', icon: <Activity className="w-4 h-4" /> },
     ...(!isEditor
       ? [
-          { id: 'inquiries', title: 'Inquiries', href: '/admin/inquiries', icon: <MessageDotsSquare className="w-4 h-4" /> },
-          { id: 'applications', title: 'Applications', href: '/admin/applications', icon: <File02 className="w-4 h-4" /> },
-          { id: 'bookings', title: 'Bookings Calendar & List', href: '/admin/bookings', icon: <Calendar className="w-4 h-4" /> },
-          { id: 'consultation-types', title: 'Consultation Types', href: '/admin/consultation-types', icon: <Clock className="w-4 h-4" /> },
-          { id: 'subscribers', title: 'Newsletter Subscribers', href: '/admin/subscribers', icon: <Users01 className="w-4 h-4" /> },
+          { id: 'inquiries', title: 'Inquiries', href: '/inquiries', icon: <MessageDotsSquare className="w-4 h-4" /> },
+          { id: 'applications', title: 'Applications', href: '/applications', icon: <File02 className="w-4 h-4" /> },
+          { id: 'bookings', title: 'Bookings Calendar & List', href: '/bookings', icon: <Calendar className="w-4 h-4" /> },
+          { id: 'consultation-types', title: 'Consultation Types', href: '/consultation-types', icon: <Clock className="w-4 h-4" /> },
+          { id: 'subscribers', title: 'Newsletter Subscribers', href: '/subscribers', icon: <Users01 className="w-4 h-4" /> },
         ]
       : []),
     ...(!isCoordinator
       ? [
-          { id: 'services', title: 'Services Management', href: '/admin/services', icon: <LayersThree01 className="w-4 h-4" /> },
-          { id: 'blog', title: 'Blog Posts CMS', href: '/admin/blog', icon: <BookOpen01 className="w-4 h-4" /> },
-          { id: 'faqs', title: 'FAQs & Page Assignments', href: '/admin/faqs', icon: <HelpCircle className="w-4 h-4" /> },
-          { id: 'reviews', title: 'Reviews Moderation', href: '/admin/reviews', icon: <Star01 className="w-4 h-4" /> },
+          { id: 'services', title: 'Services Management', href: '/services', icon: <LayersThree01 className="w-4 h-4" /> },
+          { id: 'blog', title: 'Blog Posts CMS', href: '/blog', icon: <BookOpen01 className="w-4 h-4" /> },
+          { id: 'faqs', title: 'FAQs & Page Assignments', href: '/faqs', icon: <HelpCircle className="w-4 h-4" /> },
+          { id: 'reviews', title: 'Reviews Moderation', href: '/reviews', icon: <Star01 className="w-4 h-4" /> },
         ]
       : []),
-    { id: 'profile', title: 'My Profile', href: '/admin/settings/profile', icon: <User01 className="w-4 h-4" /> },
-    { id: 'security', title: 'Security & 2FA', href: '/admin/settings/security', icon: <Lock01 className="w-4 h-4" /> },
+    { id: 'profile', title: 'My Profile', href: '/settings/profile', icon: <User01 className="w-4 h-4" /> },
+    { id: 'security', title: 'Security & 2FA', href: '/settings/security', icon: <Lock01 className="w-4 h-4" /> },
     ...(isOwner || isCoordinator
-      ? [{ id: 'availability', title: 'Availability Rules', href: '/admin/settings/availability', icon: <Clock className="w-4 h-4" /> }]
+      ? [{ id: 'availability', title: 'Availability Rules', href: '/settings/availability', icon: <Clock className="w-4 h-4" /> }]
       : []),
     ...(isOwner
       ? [
-          { id: 'site-settings', title: 'Site Settings', href: '/admin/settings/site', icon: <Settings01 className="w-4 h-4" /> },
-          { id: 'team', title: 'Team & Staff Roles', href: '/admin/settings/team', icon: <Users01 className="w-4 h-4" /> },
-          { id: 'audit-log', title: 'Audit Log & Activity Trail', href: '/admin/audit-log', icon: <FileCheck02 className="w-4 h-4" /> },
+          { id: 'site-settings', title: 'Site Settings', href: '/settings/site', icon: <Settings01 className="w-4 h-4" /> },
+          { id: 'team', title: 'Team & Staff Roles', href: '/settings/team', icon: <Users01 className="w-4 h-4" /> },
+          { id: 'audit-log', title: 'Audit Log & Activity Trail', href: '/audit-log', icon: <FileCheck02 className="w-4 h-4" /> },
         ]
       : []),
   ];

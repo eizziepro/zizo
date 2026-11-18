@@ -336,7 +336,7 @@ export const FAQsPage: React.FC = () => {
       <PageHeader
         title="FAQs &amp; Page Assignments"
         description="Centralized medical, legal, and operational questions attached across service cards and static pages."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'FAQs' }]}
+        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'FAQs' }]}
         actions={
           <Button onClick={openCreate} iconLeading={<Plus className="w-4 h-4" />}>
             New FAQ

@@ -268,7 +268,7 @@ export const ApplicationsPage: React.FC = () => {
       <PageHeader
         title="Surrogate &amp; Donor Applications"
         description="Confidential initial screening questionnaires submitted by prospective gestational carriers and donors."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'Applications' }]}
+        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Applications' }]}
       />
 
       {/* Tabs & Status filters */}

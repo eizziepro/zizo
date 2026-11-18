@@ -367,7 +367,7 @@ export const ServicesPage: React.FC = () => {
       <PageHeader
         title="Services Management"
         description="Clinical packages, consultation programs, and public pricing tiers."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'Services' }]}
+        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Services' }]}
         actions={
           <Button onClick={openCreate} iconLeading={<Plus className="w-4 h-4" />}>
             New Service

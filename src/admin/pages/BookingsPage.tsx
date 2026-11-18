@@ -337,7 +337,7 @@ export const BookingsPage: React.FC = () => {
       <PageHeader
         title="Consultation Bookings"
         description="Review scheduled parent, surrogate, and donor conversations across global timezones."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'Bookings' }]}
+        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Bookings' }]}
         actions={
           <div className="flex items-center gap-3">
             <div className="flex items-center rounded-[8px] border border-[#E1E0DD] bg-white p-0.5 shadow-xs">

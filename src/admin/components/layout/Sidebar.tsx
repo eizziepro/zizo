@@ -42,7 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
         {/* Brand header */}
         <div className="flex items-center justify-between px-2 pt-2">
           <Link
-            to="/admin/"
+            to="/"
             onClick={onCloseMobile}
             className="inline-flex items-center gap-2.5 text-[#FAF9F6] hover:opacity-90 transition-opacity"
           >
@@ -64,7 +64,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
         <nav className="space-y-5 text-left" aria-label="Staff navigation">
           {/* Overview */}
           <div>
-            <NavLink to="/admin/" end className={navItemClass} onClick={onCloseMobile}>
+            <NavLink to="/" end className={navItemClass} onClick={onCloseMobile}>
               <span className="inline-flex items-center gap-3">
                 <Activity className="w-4 h-4 text-[#8BB2AF]" />
                 Overview
@@ -79,7 +79,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
                 Clients
               </p>
               <div className="space-y-0.5 pt-1">
-                <NavLink to="/admin/inquiries" className={navItemClass} onClick={onCloseMobile}>
+                <NavLink to="/inquiries" className={navItemClass} onClick={onCloseMobile}>
                   <span className="inline-flex items-center gap-3">
                     <MessageDotsSquare className="w-4 h-4 text-[#8BB2AF]" />
                     Inquiries
@@ -91,7 +91,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
                   )}
                 </NavLink>
 
-                <NavLink to="/admin/applications" className={navItemClass} onClick={onCloseMobile}>
+                <NavLink to="/applications" className={navItemClass} onClick={onCloseMobile}>
                   <span className="inline-flex items-center gap-3">
                     <File02 className="w-4 h-4 text-[#8BB2AF]" />
                     Applications
@@ -127,7 +127,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
                 Scheduling
               </p>
               <div className="space-y-0.5 pt-1">
-                <NavLink to="/admin/bookings" className={navItemClass} onClick={onCloseMobile}>
+                <NavLink to="/bookings" className={navItemClass} onClick={onCloseMobile}>
                   <span className="inline-flex items-center gap-3">
                     <Calendar className="w-4 h-4 text-[#8BB2AF]" />
                     Bookings
@@ -135,7 +135,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
                 </NavLink>
 
                 <NavLink
-                  to="/admin/consultation-types"
+                  to="/consultation-types"
                   className={navItemClass}
                   onClick={onCloseMobile}
                 >
@@ -155,21 +155,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
                 Website Content
               </p>
               <div className="space-y-0.5 pt-1">
-                <NavLink to="/admin/services" className={navItemClass} onClick={onCloseMobile}>
+                <NavLink to="/services" className={navItemClass} onClick={onCloseMobile}>
                   <span className="inline-flex items-center gap-3">
                     <LayersThree01 className="w-4 h-4 text-[#8BB2AF]" />
                     Services
                   </span>
                 </NavLink>
 
-                <NavLink to="/admin/blog" className={navItemClass} onClick={onCloseMobile}>
+                <NavLink to="/blog" className={navItemClass} onClick={onCloseMobile}>
                   <span className="inline-flex items-center gap-3">
                     <BookOpen01 className="w-4 h-4 text-[#8BB2AF]" />
                     Blog
                   </span>
                 </NavLink>
 
-                <NavLink to="/admin/faqs" className={navItemClass} onClick={onCloseMobile}>
+                <NavLink to="/faqs" className={navItemClass} onClick={onCloseMobile}>
                   <span className="inline-flex items-center gap-3">
                     <HelpCircle className="w-4 h-4 text-[#8BB2AF]" />
                     FAQs
@@ -177,7 +177,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
                 </NavLink>
 
                 {/* Sidebar item: strictly Reviews */}
-                <NavLink to="/admin/reviews" className={navItemClass} onClick={onCloseMobile}>
+                <NavLink to="/reviews" className={navItemClass} onClick={onCloseMobile}>
                   <span className="inline-flex items-center gap-3">
                     <Star01 className="w-4 h-4 text-[#8BB2AF]" />
                     Reviews
@@ -199,7 +199,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
                 Audience
               </p>
               <div className="space-y-0.5 pt-1">
-                <NavLink to="/admin/subscribers" className={navItemClass} onClick={onCloseMobile}>
+                <NavLink to="/subscribers" className={navItemClass} onClick={onCloseMobile}>
                   <span className="inline-flex items-center gap-3">
                     <Users01 className="w-4 h-4 text-[#8BB2AF]" />
                     Subscribers

@@ -1333,6 +1333,16 @@ setInterval(() => {
 // Static files from dist/
 app.use(express.static(DIST_DIR, { extensions: ['html'] }));
 
+// Admin Staff Portal SPA fallback (all /admin/* client-side routes serve dist/admin/index.html)
+app.get('/admin*', (_req, res) => {
+  const adminIndex = path.join(DIST_DIR, 'admin', 'index.html');
+  if (fs.existsSync(adminIndex)) {
+    res.sendFile(adminIndex);
+  } else {
+    res.status(404).send('Admin SPA not built. Run npm run build.');
+  }
+});
+
 app.use((req, res) => {
   const clean = req.path.replace(/\/+$/, '');
   const candidate = path.join(DIST_DIR, clean, 'index.html');

@@ -18,33 +18,33 @@ export const SettingsLayout: React.FC = () => {
       <PageHeader
         title="Settings &amp; Preferences"
         description="Manage your staff profile, credentials, organization configurations, and clinic availability."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'Settings' }]}
+        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Settings' }]}
       />
 
       {/* Tabs navigation */}
       <div className="border-b border-[#E1E0DD] overflow-x-auto">
         <nav className="flex gap-2" aria-label="Settings tabs">
-          <NavLink to="/admin/settings/profile" className={tabClass}>
+          <NavLink to="/settings/profile" className={tabClass}>
             Profile
           </NavLink>
-          <NavLink to="/admin/settings/security" className={tabClass}>
+          <NavLink to="/settings/security" className={tabClass}>
             Security
           </NavLink>
           {isOwner && (
-            <NavLink to="/admin/settings/site" className={tabClass}>
+            <NavLink to="/settings/site" className={tabClass}>
               Site Settings
             </NavLink>
           )}
           {(isOwner || isCoordinator) && (
-            <NavLink to="/admin/settings/availability" className={tabClass}>
+            <NavLink to="/settings/availability" className={tabClass}>
               Availability
             </NavLink>
           )}
-          <NavLink to="/admin/settings/notifications" className={tabClass}>
+          <NavLink to="/settings/notifications" className={tabClass}>
             Notifications
           </NavLink>
           {isOwner && (
-            <NavLink to="/admin/settings/team" className={tabClass}>
+            <NavLink to="/settings/team" className={tabClass}>
               Team &amp; Roles
             </NavLink>
           )}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface PageHeaderProps {
   title: string;
@@ -21,9 +22,9 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
             <React.Fragment key={idx}>
               {idx > 0 && <span>/</span>}
               {b.href ? (
-                <a href={b.href} className="hover:text-[#17645F] transition-colors">
+                <Link to={b.href} className="hover:text-[#17645F] transition-colors">
                   {b.label}
-                </a>
+                </Link>
               ) : (
                 <span className="text-[#17191A] font-medium">{b.label}</span>
               )}

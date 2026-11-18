@@ -273,7 +273,7 @@ export const BlogPage: React.FC = () => {
       <PageHeader
         title="Blog &amp; Clinical Insights"
         description="Publish educational articles, legal guidance, and medical fertility insights."
-        breadcrumbs={[{ label: 'Staff Portal', href: '/admin/' }, { label: 'Blog' }]}
+        breadcrumbs={[{ label: 'Staff Portal', href: '/' }, { label: 'Blog' }]}
         actions={
           <Button onClick={openCreate} iconLeading={<Plus className="w-4 h-4" />}>
             New Post
