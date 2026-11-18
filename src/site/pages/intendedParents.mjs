@@ -467,6 +467,151 @@ ${renderHeader({ isHome: false })}
         </div>
       </div>
 
+      <!-- 2. Consultation & Coordination Service Packages (Bento Grid) -->
+      <div class="space-y-6">
+        <div class="max-w-3xl">
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.12em] text-[#5D5E5F]">Consultation &amp; Coordination</p>
+          <h2 class="display text-[length:var(--fs-h2)] mt-1">Specialized service packages</h2>
+          <p class="text-[length:var(--fs-body)] text-[#5D5E5F] mt-2">
+            Explore our dedicated consultation and coordination pathways with transparent upfront fees and dedicated clinical case management.
+          </p>
+        </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <!-- Card 1: Wide (8 of 12) - Surrogacy Coordination -->
+        <a href="/services/surrogacy-coordination/" class="lg:col-span-8 group block relative min-h-[380px] rounded-2xl overflow-hidden bg-[#17191A] shadow-sm hover:border-[#8BB2AF]/60 transition-all reveal">
+          <div class="absolute inset-0">
+            ${pictureTag({
+              base: 'service-surrogacy',
+              alt: 'Expectant woman resting calmly in a sunlit Lagos home interior with attentive care support',
+              width: 1920,
+              height: 1080,
+              className: 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]',
+            })}
+          </div>
+          <div class="card-charcoal-scrim absolute inset-0"></div>
+          <div class="relative z-10 h-full p-6 sm:p-8 flex flex-col justify-between text-[#FAF9F6]">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center">
+                  <i data-lucide="user" class="w-4 h-4 text-white"></i>
+                </span>
+                <span class="text-xs px-3 py-1 rounded-full bg-white text-[#17191A] font-semibold shadow-sm">
+                  ₦50,000 · 60 min
+                </span>
+              </div>
+              <span class="w-10 h-10 rounded-full bg-white text-[#17191A] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
+                <i data-lucide="arrow-up-right" class="w-5 h-5 text-[#17645F]"></i>
+              </span>
+            </div>
+            <div class="max-w-xl space-y-1.5">
+              <h3 class="display text-2xl sm:text-3xl text-[#FAF9F6] mb-1">Surrogacy Coordination</h3>
+              <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/90 font-medium">Complete gestational surrogacy coordination from matching to delivery.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 2: Narrow (4 of 12) - Donor Profiling & Screening -->
+        <a href="/services/donor-profiling-screening/" class="lg:col-span-4 group block relative min-h-[380px] rounded-2xl overflow-hidden bg-[#17191A] shadow-sm hover:border-[#8BB2AF]/60 transition-all reveal">
+          <div class="absolute inset-0">
+            ${pictureTag({
+              base: 'service-ovum-donation',
+              alt: 'Care coordinator reviewing verified non-identifying egg donor profiles in a confidential setting',
+              width: 1920,
+              height: 1440,
+              className: 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]',
+            })}
+          </div>
+          <div class="card-charcoal-scrim absolute inset-0"></div>
+          <div class="relative z-10 h-full p-6 sm:p-8 flex flex-col justify-between text-[#FAF9F6]">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center">
+                  <i data-lucide="user" class="w-4 h-4 text-white"></i>
+                </span>
+                <span class="text-xs px-3 py-1 rounded-full bg-white text-[#17191A] font-semibold shadow-sm">
+                  Free · 45 min
+                </span>
+              </div>
+              <span class="w-10 h-10 rounded-full bg-white text-[#17191A] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
+                <i data-lucide="arrow-up-right" class="w-5 h-5 text-[#17645F]"></i>
+              </span>
+            </div>
+            <div class="space-y-1.5">
+              <h3 class="display text-2xl sm:text-3xl text-[#FAF9F6] mb-1">Donor Profiling &amp; Screening</h3>
+              <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/90 font-medium">Confidential egg donor matching with verified medical screening.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 3: Narrow (4 of 12) - Donor & Surrogate Enquiry -->
+        <a href="/services/donor-surrogate-enquiry/" class="lg:col-span-4 group block relative min-h-[380px] rounded-2xl overflow-hidden bg-[#17191A] shadow-sm hover:border-[#8BB2AF]/60 transition-all reveal">
+          <div class="absolute inset-0">
+            ${pictureTag({
+              base: 'service-matching',
+              alt: 'Care coordinator reviewing matching options with intended parents in a calm consultation room',
+              width: 1920,
+              height: 1440,
+              className: 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]',
+            })}
+          </div>
+          <div class="card-charcoal-scrim absolute inset-0"></div>
+          <div class="relative z-10 h-full p-6 sm:p-8 flex flex-col justify-between text-[#FAF9F6]">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center">
+                  <i data-lucide="user" class="w-4 h-4 text-white"></i>
+                </span>
+                <span class="text-xs px-3 py-1 rounded-full bg-white text-[#17191A] font-semibold shadow-sm">
+                  ₦10,000 · 45 min
+                </span>
+              </div>
+              <span class="w-10 h-10 rounded-full bg-white text-[#17191A] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
+                <i data-lucide="arrow-up-right" class="w-5 h-5 text-[#17645F]"></i>
+              </span>
+            </div>
+            <div class="space-y-1.5">
+              <h3 class="display text-2xl sm:text-3xl text-[#FAF9F6] mb-1">Donor &amp; Surrogate Enquiry</h3>
+              <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/90 font-medium">Private consultation exploring surrogate and donor pathway options.</p>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 4: Wide (8 of 12) - IVF Consultation & Coordination -->
+        <a href="/services/ivf-consultation-coordination/" class="lg:col-span-8 group block relative min-h-[380px] rounded-2xl overflow-hidden bg-[#17191A] shadow-sm hover:border-[#8BB2AF]/60 transition-all reveal">
+          <div class="absolute inset-0">
+            ${pictureTag({
+              base: 'service-counseling',
+              alt: 'Intended parents seated in an unhurried clinical planning session with fertility specialists',
+              width: 1920,
+              height: 1080,
+              className: 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]',
+            })}
+          </div>
+          <div class="card-charcoal-scrim absolute inset-0"></div>
+          <div class="relative z-10 h-full p-6 sm:p-8 flex flex-col justify-between text-[#FAF9F6]">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center">
+                  <i data-lucide="user" class="w-4 h-4 text-white"></i>
+                </span>
+                <span class="text-xs px-3 py-1 rounded-full bg-white text-[#17191A] font-semibold shadow-sm">
+                  ₦60,000 · 60 min
+                </span>
+              </div>
+              <span class="w-10 h-10 rounded-full bg-white text-[#17191A] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
+                <i data-lucide="arrow-up-right" class="w-5 h-5 text-[#17645F]"></i>
+              </span>
+            </div>
+            <div class="max-w-xl space-y-1.5">
+              <h3 class="display text-2xl sm:text-3xl text-[#FAF9F6] mb-1">IVF Consultation &amp; Coordination</h3>
+              <p class="text-[length:var(--fs-body)] text-[#FAF9F6]/90 font-medium">Comprehensive clinical IVF coordination with accredited partner clinics.</p>
+            </div>
+          </div>
+        </a>
+      </div>
+      </div>
+
       <!-- 2. Master Programme Pathway Cards (Elevated Architectural Layout) -->
       <div class="space-y-8">
         <div class="max-w-3xl">
