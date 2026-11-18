@@ -48,23 +48,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
         data-no-scrollbar
       >
         {/* Brand header */}
-        <div className="flex items-center justify-between px-2 pt-0.5 pb-0.5">
+        <div className="flex items-center justify-between px-2 pt-1 pb-1">
           <Link
             to="/"
             onClick={onCloseMobile}
-            className="inline-flex items-center gap-2.5 text-[#FAF9F6] hover:opacity-90 transition-opacity"
+            className="inline-flex items-center hover:opacity-90 transition-opacity"
+            aria-label="Zizo Admin Staff Portal"
           >
-            <div className="w-8 h-8 rounded-full bg-[#17645F] flex items-center justify-center font-display font-semibold text-lg text-white">
-              Z
-            </div>
-            <div className="text-left">
-              <span className="font-display text-base font-semibold block leading-tight">
-                Zizo Admin
-              </span>
-              <span className="text-[10px] text-[#8BB2AF] uppercase tracking-wider block">
-                Staff Portal
-              </span>
-            </div>
+            <img
+              src="/assets/img/zizo-donor-and-surrogacy-logo-white.png"
+              alt="Zizo Admin Staff Portal"
+              className="h-8 w-auto"
+            />
           </Link>
         </div>
 

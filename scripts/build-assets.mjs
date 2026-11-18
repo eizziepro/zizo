@@ -101,23 +101,30 @@ function writeBrandIconsAndCountryVectors() {
 }
 
 async function buildPngFavicons() {
-  const svgBuffer = Buffer.from(
+  const brandFaviconSrc = path.join(IMG_OUT, 'zizo-donor-and-surrogacy-favicon.png');
+  const fallbackSvg = Buffer.from(
     `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 36 36">
       <rect width="36" height="36" rx="7" fill="#FAF9F6"/>
       <circle cx="14" cy="18" r="9" stroke="#17191A" stroke-width="2" fill="none"/>
       <circle cx="22" cy="18" r="9" stroke="#17645F" stroke-width="2" fill="none"/>
     </svg>`
   );
+  const inputSource = fs.existsSync(brandFaviconSrc) ? brandFaviconSrc : fallbackSvg;
+
   const targets = [
     { name: 'icon-192.png', size: 192 },
     { name: 'icon-512.png', size: 512 },
     { name: 'apple-touch-icon.png', size: 180 },
     { name: 'favicon-32x32.png', size: 32 },
+    { name: 'favicon-16x16.png', size: 16 },
   ];
   for (const t of targets) {
     const out = path.join(IMG_OUT, t.name);
     if (!fs.existsSync(out)) {
-      await sharp(svgBuffer).resize(t.size, t.size).png().toFile(out);
+      await sharp(inputSource)
+        .resize(t.size, t.size, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+        .png()
+        .toFile(out);
     }
   }
 }

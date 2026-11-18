@@ -43,13 +43,12 @@ export const LoginPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#FAF9F6] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 antialiased">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center space-y-3">
-        <Link to="/" className="inline-flex items-center gap-2.5 text-[#17191A] hover:opacity-90 transition-opacity">
-          <div className="w-10 h-10 rounded-full bg-[#17645F] text-white flex items-center justify-center font-display font-semibold text-xl">
-            Z
-          </div>
-          <span className="font-display text-2xl font-semibold tracking-tight text-[#17191A]">
-            Zizo Staff Portal
-          </span>
+        <Link to="/" className="inline-flex items-center justify-center hover:opacity-90 transition-opacity">
+          <img
+            src="/assets/img/zizo-donor-and-surrogacy-logo.png"
+            alt="Zizo Donor and Surrogacy Staff Portal"
+            className="h-12 w-auto mx-auto"
+          />
         </Link>
         <p className="text-sm text-[#5D5E5F]">
           Authorized clinical coordinators and staff members only.

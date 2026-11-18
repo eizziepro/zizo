@@ -259,9 +259,14 @@ export function renderAdminPage({ settings = {}, siteUrl = '' }) {
   <div id="admin-auth-screen" class="min-h-screen flex items-center justify-center p-6 bg-[#FAF9F6]">
     <div class="w-full max-w-md border border-[#E1E0DD] rounded-[var(--radius)] bg-[#FAF9F6] p-8 space-y-6">
       <div class="flex items-center justify-between">
-        <a href="/" class="inline-flex items-center gap-2.5 text-[#17191A]">
-          ${zizoLogoSvg()}
-          <span class="font-display text-xl font-semibold">Zizo Staff Portal</span>
+        <a href="/" class="inline-flex items-center text-[#17191A]" aria-label="Zizo Donor and Surrogacy Home">
+          <img
+            src="/assets/img/zizo-donor-and-surrogacy-logo.png"
+            alt="Zizo Donor and Surrogacy Staff Portal"
+            width="120"
+            height="45"
+            class="h-10 w-auto"
+          />
         </a>
         <span class="text-xs text-[#5D5E5F]">Secure Staff Access</span>
       </div>
@@ -295,9 +300,14 @@ export function renderAdminPage({ settings = {}, siteUrl = '' }) {
     <aside class="w-full lg:w-64 bg-[#17191A] text-[#FAF9F6] surface-dark shrink-0 flex flex-col justify-between p-5 border-b lg:border-b-0 lg:border-r border-[#FAF9F6]/10">
       <div class="space-y-6">
         <div class="flex items-center justify-between">
-          <a href="/" class="inline-flex items-center gap-2.5 text-[#FAF9F6]">
-            ${zizoLogoSvg()}
-            <span class="font-display text-lg font-semibold">Zizo Admin</span>
+          <a href="/" class="inline-flex items-center text-[#FAF9F6]" aria-label="Zizo Donor and Surrogacy Home">
+            <img
+              src="/assets/img/zizo-donor-and-surrogacy-logo-white.png"
+              alt="Zizo Admin Staff Portal"
+              width="107"
+              height="40"
+              class="h-9 w-auto"
+            />
           </a>
         </div>
 

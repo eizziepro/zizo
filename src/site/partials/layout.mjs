@@ -88,9 +88,11 @@ export function renderHead({
   <meta name="twitter:description" content="${escapeHtml(description)}" />
   <meta name="twitter:image" content="${escapeHtml(fullOgImage)}" />
 
-  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png" />
+  <link rel="icon" type="image/png" href="/assets/img/zizo-donor-and-surrogacy-favicon.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png" />
+  <link rel="shortcut icon" href="/favicon.ico" />
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="theme-color" content="#17645F" />
 
@@ -113,12 +115,21 @@ export function renderHeader({ isHome = false }) {
   return `<header id="site-header" data-home="${isHome ? 'true' : 'false'}" class="site-header ${initialClass} fixed top-0 left-0 right-0 z-50">
   <div class="zizo-container">
     <div class="flex items-center justify-between gap-8 h-20">
-      <a href="/" class="flex items-center gap-3 whitespace-nowrap shrink-0 group" aria-label="Zizo Donor and Surrogacy Home">
-        ${zizoLogoSvg()}
-        <span class="flex flex-col leading-none">
-          <span class="font-display text-xl font-semibold tracking-tight">Zizo</span>
-          <span class="text-[0.65rem] font-medium uppercase tracking-[0.12em] opacity-85">Donor &amp; Surrogacy</span>
-        </span>
+      <a href="/" class="flex items-center whitespace-nowrap shrink-0 group py-1" aria-label="Zizo Donor and Surrogacy Home">
+        <img
+          src="/assets/img/zizo-donor-and-surrogacy-logo.png"
+          alt="Zizo Donor and Surrogacy - Fertility, Egg Donation &amp; Surrogacy Agency"
+          width="112"
+          height="42"
+          class="h-10 w-auto header-logo-dark"
+        />
+        <img
+          src="/assets/img/zizo-donor-and-surrogacy-logo-white.png"
+          alt="Zizo Donor and Surrogacy - Fertility, Egg Donation &amp; Surrogacy Agency"
+          width="112"
+          height="42"
+          class="h-10 w-auto header-logo-light"
+        />
       </a>
 
       <nav class="hidden lg:flex items-center gap-7 text-[length:var(--fs-small)] font-medium" aria-label="Primary navigation">
@@ -316,12 +327,15 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
   <div class="zizo-container">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-14 border-b border-[#FAF9F6]/15">
       <div class="lg:col-span-5 space-y-4">
-        <a href="/" class="inline-flex items-center gap-3 text-[#FAF9F6]">
-          ${zizoLogoSvg()}
-          <span class="flex flex-col leading-none">
-            <span class="font-display text-xl font-semibold">Zizo</span>
-            <span class="text-[0.65rem] font-medium uppercase tracking-[0.12em] text-[#FAF9F6]/75">Donor &amp; Surrogacy</span>
-          </span>
+        <a href="/" class="inline-flex items-center text-[#FAF9F6] py-1" aria-label="Zizo Donor and Surrogacy Home">
+          <img
+            src="/assets/img/zizo-donor-and-surrogacy-logo-white.png"
+            alt="Zizo Donor and Surrogacy - Safe Fertility Care Across Borders"
+            width="128"
+            height="48"
+            class="h-11 w-auto"
+            loading="lazy"
+          />
         </a>
         <p class="text-[length:var(--fs-small)] text-[#FAF9F6]/80 max-w-sm">
           A safe fertility brand that creates families across borders, with expert legal and medical coordination and personal care at every step.

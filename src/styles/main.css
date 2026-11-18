@@ -437,12 +437,26 @@
   border-bottom: 1px solid transparent;
 }
 
+.site-header.header-transparent .header-logo-dark {
+  display: none !important;
+}
+.site-header.header-transparent .header-logo-light {
+  display: inline-block !important;
+}
+
 .site-header.header-scrolled {
   background-color: rgba(250, 249, 246, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   color: var(--charcoal);
   border-bottom: 1px solid var(--border);
+}
+
+.site-header.header-scrolled .header-logo-dark {
+  display: inline-block !important;
+}
+.site-header.header-scrolled .header-logo-light {
+  display: none !important;
 }
 
 /* Desktop Dropdown: 120ms fade + tiny translateY <= 0.5rem, no scaling */
