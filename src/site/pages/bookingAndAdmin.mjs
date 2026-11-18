@@ -19,7 +19,7 @@ ${renderHeader({ isHome: false })}
 <main id="main-content">
   ${renderInteriorHero({
     breadcrumbs: [{ label: 'Home', href: '/' }, { label: 'Book a Consultation' }],
-    title: 'Schedule a confidential consultation.',
+    title: 'Book a consultation',
     intro:
       'Choose a consultation type, pick an available date and time in your timezone, and connect privately via Google Meet, phone, or WhatsApp.',
   })}
