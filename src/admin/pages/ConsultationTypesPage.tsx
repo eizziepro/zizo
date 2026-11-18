@@ -84,6 +84,7 @@ export const ConsultationTypesPage: React.FC = () => {
   const [types, setTypes] = useState<ConsultationType[]>(INITIAL_TYPES);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingType, setEditingType] = useState<ConsultationType | null>(null);
+  const [expandedChannels, setExpandedChannels] = useState<Record<string, boolean>>({});
 
   // Form states
   const [name, setName] = useState('');
@@ -226,14 +227,38 @@ export const ConsultationTypesPage: React.FC = () => {
                     {t.duration_min} min
                   </td>
                   <td className="px-4 py-3.5 whitespace-nowrap">
-                    <div className="flex items-center gap-1">
-                      <Badge variant="gray" size="sm">
-                        {t.channels[0]}
-                      </Badge>
-                      {t.channels.length > 1 && (
-                        <span className="text-[11px] text-[#5D5E5F]">
-                          +{t.channels.length - 1} more
-                        </span>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {expandedChannels[t.id] ? (
+                        <>
+                          {t.channels.map((ch) => (
+                            <Badge key={ch} variant="gray" size="sm">
+                              {ch}
+                            </Badge>
+                          ))}
+                          <button
+                            type="button"
+                            onClick={() => setExpandedChannels((prev) => ({ ...prev, [t.id]: false }))}
+                            className="text-[11px] text-[#17645F] hover:underline font-semibold cursor-pointer ml-1"
+                          >
+                            Hide
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <Badge variant="gray" size="sm">
+                            {t.channels[0]}
+                          </Badge>
+                          {t.channels.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => setExpandedChannels((prev) => ({ ...prev, [t.id]: true }))}
+                              className="text-[11px] text-[#17645F] hover:underline font-semibold cursor-pointer inline-flex items-center gap-0.5"
+                              title="Click to reveal all consultation channels"
+                            >
+                              +{t.channels.length - 1} more
+                            </button>
+                          )}
+                        </>
                       )}
                     </div>
                   </td>

@@ -75,17 +75,11 @@ export const AvatarMenu: React.FC = () => {
             }`}
           >
             <div className="flex items-center gap-3 min-w-0">
-              {user.avatar_path ? (
-                <img
-                  src={user.avatar_path}
-                  alt={user.full_name}
-                  className="w-9 h-9 rounded-full object-cover border border-white/20 shrink-0"
-                />
-              ) : (
-                <div className="w-9 h-9 rounded-full bg-[#17645F] text-[#FAF9F6] font-semibold text-xs flex items-center justify-center shrink-0 border border-white/20">
-                  {initials}
-                </div>
-              )}
+              <img
+                src={user.avatar_path || '/assets/img/founder-about-chizaram-ata-640w.webp'}
+                alt={user.full_name}
+                className="w-9 h-9 rounded-full object-cover border border-white/20 shrink-0"
+              />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-[#FAF9F6] truncate">
                   {user.display_name || user.full_name}

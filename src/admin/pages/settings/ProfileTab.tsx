@@ -97,195 +97,263 @@ export const ProfileTab: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSave} className="space-y-8 max-w-4xl text-left">
-      {/* Photo & Display Name Card */}
-      <div className="bg-white border border-[#E1E0DD] rounded-[10px] p-6 space-y-6 shadow-xs">
-        <h3 className="text-base font-semibold text-[#17191A]">Personal Information</h3>
+    <div className="w-full text-left">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left column: Profile Form */}
+        <form onSubmit={handleSave} className="lg:col-span-8 space-y-6">
+          {/* Photo & Display Name Card */}
+          <div className="bg-white border border-[#E1E0DD] rounded-[10px] p-6 space-y-6 shadow-xs">
+            <h3 className="text-base font-semibold text-[#17191A]">Personal Information</h3>
 
-        <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-          <div className="relative w-20 h-20 rounded-full border border-[#E1E0DD] bg-[#FAF9F6] overflow-hidden shrink-0 flex items-center justify-center">
-            {avatarPreview ? (
-              <img src={avatarPreview} alt="Avatar" className="w-full h-full object-cover" />
-            ) : (
-              <span className="text-xl font-bold text-[#17645F]">
-                {(fullName || 'U').slice(0, 2).toUpperCase()}
-              </span>
-            )}
-          </div>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+              <div className="relative w-20 h-20 rounded-full border border-[#E1E0DD] bg-[#FAF9F6] overflow-hidden shrink-0 flex items-center justify-center">
+                <img
+                  src={avatarPreview || user?.avatar_path || '/assets/img/founder-about-chizaram-ata-640w.webp'}
+                  alt="Avatar"
+                  className="w-full h-full object-cover"
+                />
+              </div>
 
-          <div className="space-y-2">
-            <label className="btn-secondary !text-xs !py-1.5 !px-3 inline-flex items-center gap-2 cursor-pointer border border-[#E1E0DD] rounded-[6px] hover:bg-[#F0EFEC]">
-              <Upload01 className="w-3.5 h-3.5" />
-              <span>Change photo</span>
-              <input
-                type="file"
-                accept="image/png, image/jpeg, image/webp"
-                onChange={handlePhotoUpload}
-                className="hidden"
+              <div className="space-y-2">
+                <label className="btn-secondary !text-xs !py-1.5 !px-3 inline-flex items-center gap-2 cursor-pointer border border-[#E1E0DD] rounded-[6px] hover:bg-[#F0EFEC]">
+                  <Upload01 className="w-3.5 h-3.5" />
+                  <span>Change photo</span>
+                  <input
+                    type="file"
+                    accept="image/png, image/jpeg, image/webp"
+                    onChange={handlePhotoUpload}
+                    className="hidden"
+                  />
+                </label>
+                <p className="text-xs text-[#5D5E5F]">
+                  JPG, PNG, or WebP. 1:1 aspect ratio, max 5MB. Resized to 512px.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="Full Name"
+                required
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
               />
-            </label>
-            <p className="text-xs text-[#5D5E5F]">
-              JPG, PNG, or WebP. 1:1 aspect ratio, max 5MB. Resized to 512px.
+              <Input
+                label="Display Name (Staff nickname)"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                placeholder="e.g. Dr. Chizaram"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="Email Address"
+                disabled
+                value={user?.email || ''}
+                helperText="Staff email address is managed through system administrators."
+              />
+              <Input
+                label="Staff Role"
+                disabled
+                value={(user?.role || 'staff').toUpperCase()}
+                helperText="Role permissions are enforced server-side via Supabase RLS."
+              />
+            </div>
+          </div>
+
+          {/* Role & Contact Details */}
+          <div className="bg-white border border-[#E1E0DD] rounded-[10px] p-6 space-y-6 shadow-xs">
+            <h3 className="text-base font-semibold text-[#17191A]">Department &amp; Direct Contact</h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="Job Title"
+                value={jobTitle}
+                onChange={(e) => setJobTitle(e.target.value)}
+                placeholder="e.g. Senior Surrogacy Coordinator"
+              />
+              <Input
+                label="Department"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                placeholder="e.g. Clinical Operations"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="Direct Phone Number"
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+234 800 000 0000"
+              />
+              <Input
+                label="WhatsApp Number"
+                type="tel"
+                value={whatsapp}
+                onChange={(e) => setWhatsapp(e.target.value)}
+                placeholder="+234 800 000 0000"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <Input
+                label="Location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Lagos, Nigeria"
+              />
+              <Select
+                label="Timezone"
+                value={timezone}
+                onChange={(e) => setTimezone(e.target.value)}
+                options={[
+                  { value: 'Africa/Lagos', label: 'Africa/Lagos (WAT, UTC+1)' },
+                  { value: 'UTC', label: 'UTC' },
+                  { value: 'Europe/London', label: 'Europe/London (GMT/BST)' },
+                  { value: 'America/New_York', label: 'America/New_York (EST)' },
+                ]}
+              />
+              <Select
+                label="Preferred Language"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                options={[
+                  { value: 'en', label: 'English' },
+                  { value: 'fr', label: 'French' },
+                ]}
+              />
+            </div>
+
+            <Textarea
+              label="Professional Bio"
+              rows={3}
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+              placeholder="Short coordinator bio shown on booking confirmations and team introductions."
+            />
+          </div>
+
+          {/* More Information Section */}
+          <div className="bg-white border border-[#E1E0DD] rounded-[10px] p-6 space-y-6 shadow-xs">
+            <div>
+              <h3 className="text-base font-semibold text-[#17191A]">More Information</h3>
+              <p className="text-xs text-[#5D5E5F] mt-0.5">
+                Additional professional links and confidential emergency contacts.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="Website Link"
+                type="url"
+                value={websiteLink}
+                onChange={(e) => setWebsiteLink(e.target.value)}
+                placeholder="https://..."
+              />
+              <Input
+                label="LinkedIn Profile"
+                type="url"
+                value={linkedinLink}
+                onChange={(e) => setLinkedinLink(e.target.value)}
+                placeholder="https://linkedin.com/in/..."
+              />
+            </div>
+
+            <div className="border-t border-[#E1E0DD] pt-4 space-y-4">
+              <h4 className="text-xs font-semibold text-[#8BB2AF] uppercase tracking-wider">
+                Confidential Emergency Contact (Visible to Owners Only)
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Input
+                  label="Contact Full Name"
+                  value={emergencyName}
+                  onChange={(e) => setEmergencyName(e.target.value)}
+                />
+                <Input
+                  label="Contact Phone"
+                  type="tel"
+                  value={emergencyPhone}
+                  onChange={(e) => setEmergencyPhone(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-end gap-3 pt-2">
+            <Button type="submit" isLoading={isSaving}>
+              Save profile changes
+            </Button>
+          </div>
+        </form>
+
+        {/* Right column: Staff Identity & Compliance Summary */}
+        <aside className="lg:col-span-4 space-y-6">
+          {/* Identity Preview Card */}
+          <div className="bg-white border border-[#E1E0DD] rounded-[10px] p-6 shadow-xs space-y-5 text-center">
+            <div className="relative mx-auto w-24 h-24 rounded-full border-2 border-[#17645F] overflow-hidden shadow-xs">
+              <img
+                src={avatarPreview || user?.avatar_path || '/assets/img/founder-about-chizaram-ata-640w.webp'}
+                alt={fullName}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <h4 className="text-base font-semibold text-[#17191A]">{fullName || 'Staff Member'}</h4>
+              <p className="text-xs text-[#5D5E5F] mt-0.5">{jobTitle || 'Clinical Coordinator'}</p>
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#E2ECEB] text-[#17645F] border border-[#C5D8D7]">
+              <span className="w-2 h-2 rounded-full bg-[#17645F]" />
+              {(user?.role || 'owner').toUpperCase()}
+            </div>
+
+            <div className="border-t border-[#E1E0DD] pt-4 text-xs space-y-2.5 text-left">
+              <div className="flex items-center justify-between">
+                <span className="text-[#5D5E5F]">Department:</span>
+                <span className="font-medium text-[#17191A]">{department || 'Leadership'}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#5D5E5F]">Timezone:</span>
+                <span className="font-mono text-[#17191A]">{timezone}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#5D5E5F]">Location:</span>
+                <span className="text-[#17191A]">{location}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[#5D5E5F]">Language:</span>
+                <span className="text-[#17191A]">{language.toUpperCase()}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Security & NDPA Compliance Card */}
+          <div className="bg-[#FAF9F6] border border-[#E1E0DD] rounded-[10px] p-5 shadow-xs space-y-3.5">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#2E7D32]" />
+              <h4 className="text-xs font-semibold text-[#17191A] uppercase tracking-wider">
+                Clinical Data Protection
+              </h4>
+            </div>
+            <p className="text-xs text-[#5D5E5F] leading-relaxed">
+              Your staff credentials are bound to strict NDPA 2023 regulations and internal confidentiality guidelines.
             </p>
+            <div className="space-y-2 text-xs">
+              <div className="flex items-center justify-between p-2 rounded bg-white border border-[#E1E0DD]">
+                <span className="text-[#5D5E5F]">2FA Security</span>
+                <span className="font-medium text-[#2E7D32]">Enrolled</span>
+              </div>
+              <div className="flex items-center justify-between p-2 rounded bg-white border border-[#E1E0DD]">
+                <span className="text-[#5D5E5F]">Auto-Lock Session</span>
+                <span className="font-mono text-[#17191A]">30 minutes</span>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            label="Full Name"
-            required
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-          />
-          <Input
-            label="Display Name (Staff nickname)"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-            placeholder="e.g. Dr. Chizaram"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            label="Email Address"
-            disabled
-            value={user?.email || ''}
-            helperText="Staff email address is managed through system administrators."
-          />
-          <Input
-            label="Staff Role"
-            disabled
-            value={(user?.role || 'staff').toUpperCase()}
-            helperText="Role permissions are enforced server-side via Supabase RLS."
-          />
-        </div>
+        </aside>
       </div>
-
-      {/* Role & Contact Details */}
-      <div className="bg-white border border-[#E1E0DD] rounded-[10px] p-6 space-y-6 shadow-xs">
-        <h3 className="text-base font-semibold text-[#17191A]">Department &amp; Direct Contact</h3>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            label="Job Title"
-            value={jobTitle}
-            onChange={(e) => setJobTitle(e.target.value)}
-            placeholder="e.g. Senior Surrogacy Coordinator"
-          />
-          <Input
-            label="Department"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-            placeholder="e.g. Clinical Operations"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            label="Direct Phone Number"
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="+234 800 000 0000"
-          />
-          <Input
-            label="WhatsApp Number"
-            type="tel"
-            value={whatsapp}
-            onChange={(e) => setWhatsapp(e.target.value)}
-            placeholder="+234 800 000 0000"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Input
-            label="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Lagos, Nigeria"
-          />
-          <Select
-            label="Timezone"
-            value={timezone}
-            onChange={(e) => setTimezone(e.target.value)}
-            options={[
-              { value: 'Africa/Lagos', label: 'Africa/Lagos (WAT, UTC+1)' },
-              { value: 'UTC', label: 'UTC' },
-              { value: 'Europe/London', label: 'Europe/London (GMT/BST)' },
-              { value: 'America/New_York', label: 'America/New_York (EST)' },
-            ]}
-          />
-          <Select
-            label="Preferred Language"
-            value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            options={[
-              { value: 'en', label: 'English' },
-              { value: 'fr', label: 'French' },
-            ]}
-          />
-        </div>
-
-        <Textarea
-          label="Professional Bio"
-          rows={3}
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-          placeholder="Short coordinator bio shown on booking confirmations and team introductions."
-        />
-      </div>
-
-      {/* More Information Section */}
-      <div className="bg-white border border-[#E1E0DD] rounded-[10px] p-6 space-y-6 shadow-xs">
-        <div>
-          <h3 className="text-base font-semibold text-[#17191A]">More Information</h3>
-          <p className="text-xs text-[#5D5E5F] mt-0.5">
-            Additional professional links and confidential emergency contacts.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input
-            label="Website Link"
-            type="url"
-            value={websiteLink}
-            onChange={(e) => setWebsiteLink(e.target.value)}
-            placeholder="https://..."
-          />
-          <Input
-            label="LinkedIn Profile"
-            type="url"
-            value={linkedinLink}
-            onChange={(e) => setLinkedinLink(e.target.value)}
-            placeholder="https://linkedin.com/in/..."
-          />
-        </div>
-
-        <div className="border-t border-[#E1E0DD] pt-4 space-y-4">
-          <h4 className="text-xs font-semibold text-[#8BB2AF] uppercase tracking-wider">
-            Confidential Emergency Contact (Visible to Owners Only)
-          </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
-              label="Contact Full Name"
-              value={emergencyName}
-              onChange={(e) => setEmergencyName(e.target.value)}
-            />
-            <Input
-              label="Contact Phone"
-              type="tel"
-              value={emergencyPhone}
-              onChange={(e) => setEmergencyPhone(e.target.value)}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-end gap-3 pt-2">
-        <Button type="submit" isLoading={isSaving}>
-          Save profile changes
-        </Button>
-      </div>
-    </form>
+    </div>
   );
 };

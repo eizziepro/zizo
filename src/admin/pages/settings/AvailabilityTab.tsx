@@ -109,7 +109,7 @@ export const AvailabilityTab: React.FC = () => {
   });
 
   return (
-    <form onSubmit={handleSave} className="space-y-8 max-w-4xl text-left">
+    <form onSubmit={handleSave} className="space-y-8 w-full text-left">
       {/* Clinic Working Hours Table */}
       <div className="bg-white border border-[#E1E0DD] rounded-[10px] p-6 space-y-6 shadow-xs">
         <div>

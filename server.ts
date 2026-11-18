@@ -1333,6 +1333,11 @@ setInterval(() => {
 // Static files from dist/
 app.use(express.static(DIST_DIR, { extensions: ['html'] }));
 
+// Prevent double /admin prefix redirects if cached in client browsers
+app.get('/admin/admin*', (req, res) => {
+  res.redirect(301, req.url.replace('/admin/admin', '/admin'));
+});
+
 // Admin Staff Portal SPA fallback (all /admin/* client-side routes serve dist/admin/index.html)
 app.get('/admin*', (_req, res) => {
   const adminIndex = path.join(DIST_DIR, 'admin', 'index.html');

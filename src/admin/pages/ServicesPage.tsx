@@ -95,6 +95,7 @@ export const ServicesPage: React.FC = () => {
   const [services, setServices] = useState<ServiceItem[]>(INITIAL_SERVICES);
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingService, setEditingService] = useState<ServiceItem | null>(null);
+  const [viewingService, setViewingService] = useState<ServiceItem | null>(null);
   const [editorTab, setEditorTab] = useState<'overview' | 'content' | 'pricing' | 'seo' | 'faqs'>('overview');
 
   // Form states
@@ -252,13 +253,6 @@ export const ServicesPage: React.FC = () => {
       },
     },
     {
-      accessorKey: 'short_description',
-      header: 'Short Description',
-      cell: ({ row }) => (
-        <p className="text-xs text-[#5D5E5F] truncate max-w-xs">{row.original.short_description}</p>
-      ),
-    },
-    {
       accessorKey: 'price_amount',
       header: 'Price',
       cell: ({ row }) => {
@@ -315,6 +309,11 @@ export const ServicesPage: React.FC = () => {
             <RowActionsMenu
               rowLabel={s.title}
               items={[
+                {
+                  id: 'view',
+                  label: 'View service',
+                  onClick: () => setViewingService(s),
+                },
                 {
                   id: 'edit',
                   label: 'Edit service',
@@ -378,8 +377,92 @@ export const ServicesPage: React.FC = () => {
         data={services}
         columns={columns}
         searchPlaceholder="Search services by title, slug, price..."
-        onRowClick={(row) => openEdit(row)}
+        onRowClick={(row) => setViewingService(row)}
       />
+
+      {/* Drawer for View Service Details */}
+      <Drawer
+        isOpen={Boolean(viewingService)}
+        onClose={() => setViewingService(null)}
+        width="2xl"
+        title="Service Package Details"
+        description="Comprehensive clinical program overview, pricing, and attached resources."
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setViewingService(null)}>
+              Close
+            </Button>
+            {viewingService && (
+              <Button
+                variant="primary"
+                onClick={() => {
+                  const s = viewingService;
+                  setViewingService(null);
+                  openEdit(s);
+                }}
+              >
+                Edit Service
+              </Button>
+            )}
+          </>
+        }
+      >
+        {viewingService && (
+          <div className="space-y-6 text-left">
+            <div>
+              <span className="text-xs font-semibold text-[#5D5E5F] uppercase tracking-wider block">
+                Clinical Program
+              </span>
+              <h3 className="text-xl font-semibold text-[#17191A] mt-1">{viewingService.title}</h3>
+              <p className="text-xs font-mono text-[#5D5E5F] mt-0.5">Slug: /{viewingService.slug}/</p>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap">
+              <StatusBadge status={viewingService.status} />
+              <Badge variant="brand" size="sm">
+                {viewingService.price_amount === 0 ? 'Free' : `₦${viewingService.price_amount.toLocaleString()}`} {viewingService.price_label}
+              </Badge>
+              <Badge variant="gray" size="sm">
+                {viewingService.faqs_count || 0} Attached FAQs
+              </Badge>
+              {viewingService.featured && (
+                <Badge variant="success" size="sm">
+                  Featured on Homepage
+                </Badge>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <span className="text-xs font-semibold text-[#5D5E5F] uppercase tracking-wider block">
+                Short Description
+              </span>
+              <div className="p-4 rounded-[8px] bg-[#FAF9F6] border border-[#E1E0DD] text-sm text-[#2E3031] leading-relaxed">
+                {viewingService.short_description}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <span className="text-xs font-semibold text-[#5D5E5F] uppercase tracking-wider block">
+                Full Package Overview
+              </span>
+              <div className="p-4 rounded-[8px] bg-white border border-[#E1E0DD] text-sm text-[#2E3031] leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto font-sans">
+                {viewingService.body_md}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 pt-2 border-t border-[#E1E0DD] text-xs text-[#5D5E5F]">
+              <div>
+                <span className="font-semibold block text-[#17191A]">SEO Meta Title</span>
+                <span className="truncate block">{viewingService.seo?.meta_title || 'Default'}</span>
+              </div>
+              <div>
+                <span className="font-semibold block text-[#17191A]">Last Updated</span>
+                <span>{viewingService.updated_at}</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </Drawer>
 
       {/* Full-Page Tabbed Drawer Editor */}
       <Drawer

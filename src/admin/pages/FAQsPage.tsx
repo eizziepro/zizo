@@ -95,6 +95,7 @@ export const FAQsPage: React.FC = () => {
   // Drawer / modal states
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingFaq, setEditingFaq] = useState<FAQ | null>(null);
+  const [viewingFaq, setViewingFaq] = useState<FAQ | null>(null);
   const [question, setQuestion] = useState('');
   const [answerMd, setAnswerMd] = useState('');
   const [audience, setAudience] = useState<FAQ['audience']>('General');
@@ -252,38 +253,6 @@ export const FAQsPage: React.FC = () => {
       cell: ({ row }) => <Badge variant="gray" size="sm">{row.original.audience}</Badge>,
     },
     {
-      id: 'assigned_to',
-      header: 'Assigned Pages',
-      cell: ({ row }) => {
-        const assignments = row.original.assignments || [];
-        if (assignments.length === 0) {
-          return <span className="text-xs text-[#969594] italic whitespace-nowrap">Unassigned (Hub only)</span>;
-        }
-
-        const visible = assignments.slice(0, 2);
-        const overflow = assignments.length - visible.length;
-
-        return (
-          <div className="flex items-center gap-1 whitespace-nowrap">
-            {visible.map((a) => (
-              <Badge key={a.page_ref} variant="brand" size="sm">
-                {a.page_title || a.page_ref}
-              </Badge>
-            ))}
-            {overflow > 0 && (
-              <Badge
-                variant="gray"
-                size="sm"
-                title={assignments.map((a) => a.page_title || a.page_ref).join(', ')}
-              >
-                +{overflow}
-              </Badge>
-            )}
-          </div>
-        );
-      },
-    },
-    {
       accessorKey: 'status',
       header: 'Status',
       cell: ({ row }) => <StatusBadge status={row.original.status} />,
@@ -305,6 +274,11 @@ export const FAQsPage: React.FC = () => {
             <RowActionsMenu
               rowLabel={faq.question}
               items={[
+                {
+                  id: 'view',
+                  label: 'View details',
+                  onClick: () => setViewingFaq(faq),
+                },
                 {
                   id: 'edit',
                   label: 'Edit FAQ',
@@ -383,8 +357,89 @@ export const FAQsPage: React.FC = () => {
         data={filteredFaqs}
         columns={columns}
         searchPlaceholder="Search questions or answers..."
-        onRowClick={(row) => openEdit(row)}
+        onRowClick={(row) => setViewingFaq(row)}
       />
+
+      {/* Drawer for View Details */}
+      <Drawer
+        isOpen={Boolean(viewingFaq)}
+        onClose={() => setViewingFaq(null)}
+        title="FAQ Overview"
+        description="Full answer content and assigned website touchpoints."
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setViewingFaq(null)}>
+              Close
+            </Button>
+            {viewingFaq && (
+              <Button
+                variant="primary"
+                onClick={() => {
+                  const toEdit = viewingFaq;
+                  setViewingFaq(null);
+                  openEdit(toEdit);
+                }}
+              >
+                Edit FAQ
+              </Button>
+            )}
+          </>
+        }
+      >
+        {viewingFaq && (
+          <div className="space-y-6 text-left">
+            <div className="space-y-2">
+              <span className="text-xs font-semibold text-[#5D5E5F] uppercase tracking-wider block">
+                Question
+              </span>
+              <h3 className="text-lg font-semibold text-[#17191A]">{viewingFaq.question}</h3>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Badge variant="gray">{viewingFaq.audience}</Badge>
+              <StatusBadge status={viewingFaq.status} />
+              <span className="text-xs text-[#5D5E5F]">Updated: {viewingFaq.updated_at}</span>
+            </div>
+
+            <div className="space-y-2">
+              <span className="text-xs font-semibold text-[#5D5E5F] uppercase tracking-wider block">
+                Answer Content
+              </span>
+              <div className="p-4 rounded-[8px] bg-[#FAF9F6] border border-[#E1E0DD] text-sm text-[#2E3031] leading-relaxed whitespace-pre-wrap">
+                {viewingFaq.answer_md}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <span className="text-xs font-semibold text-[#5D5E5F] uppercase tracking-wider block">
+                Attached Pages ({(viewingFaq.assignments || []).length})
+              </span>
+              {(viewingFaq.assignments || []).length > 0 ? (
+                <div className="space-y-2">
+                  {viewingFaq.assignments?.map((a) => (
+                    <div
+                      key={a.page_ref}
+                      className="p-3 rounded-[8px] border border-[#E1E0DD] bg-white flex items-center justify-between"
+                    >
+                      <div>
+                        <p className="text-sm font-medium text-[#17191A]">{a.page_title || a.page_ref}</p>
+                        <p className="text-xs font-mono text-[#5D5E5F]">Ref: {a.page_ref}</p>
+                      </div>
+                      <Badge variant="brand" size="sm">
+                        {a.page_type}
+                      </Badge>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-[#969594] italic">
+                  Not attached to individual pages; visible only on the centralized FAQ Hub.
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+      </Drawer>
 
       {/* Drawer for Create / Edit */}
       <Drawer

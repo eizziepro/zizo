@@ -11,6 +11,8 @@ import { Input } from '../components/untitledui/Input';
 import { Textarea } from '../components/untitledui/Textarea';
 import { Select } from '../components/untitledui/Select';
 import { ConfirmModal } from '../components/common/ConfirmModal';
+import { ImageUpload } from '../components/untitledui/ImageUpload';
+import { WysiwygEditor } from '../components/untitledui/WysiwygEditor';
 import { useNotifications } from '../context/NotificationContext';
 import { useAuditLog } from '../hooks/useAuditLog';
 import { Plus, BookOpen01 } from '@untitledui/icons';
@@ -23,6 +25,7 @@ interface BlogPost {
   body_md: string;
   category: string;
   author: string;
+  featured_image?: string | null;
   status: 'draft' | 'scheduled' | 'published' | 'archived';
   publish_at?: string | null;
   updated_at: string;
@@ -34,9 +37,10 @@ const INITIAL_POSTS: BlogPost[] = [
     title: 'Navigating Cross-Border Surrogacy Contracts in West Africa',
     slug: 'navigating-cross-border-surrogacy-contracts',
     excerpt: 'Key legal covenants, parentage declarations, and international travel logistics for intended parents.',
-    body_md: '## Cross-Border Surrogacy Frameworks\n\nLegal planning is foundational when coordinating surrogacy between Nigeria, the UK, Europe, and the US...',
+    body_md: '<h2>Cross-Border Surrogacy Frameworks</h2><p>Legal planning is foundational when coordinating surrogacy between Nigeria, the UK, Europe, and the US...</p>',
     category: 'Legal & Ethics',
     author: 'Dr. Chizaram Ata',
+    featured_image: '/assets/img/blog-default-1024w.webp',
     status: 'published',
     publish_at: '2026-02-01T10:00:00Z',
     updated_at: '2026-02-15',
@@ -46,9 +50,10 @@ const INITIAL_POSTS: BlogPost[] = [
     title: 'Understanding Ovum Donor Screening Protocols',
     slug: 'understanding-ovum-donor-screening-protocols',
     excerpt: 'Why thorough phenotypic and genetic evaluation protects maternal and infant outcomes.',
-    body_md: '## Clinical Donor Screening\n\nBefore any cycle begins, comprehensive blood panels, AMH tests, and genetic karyotyping are executed...',
+    body_md: '<h2>Clinical Donor Screening</h2><p>Before any cycle begins, comprehensive blood panels, AMH tests, and genetic karyotyping are executed...</p>',
     category: 'Clinical Care',
     author: 'Amara Okafor',
+    featured_image: '/assets/img/service-ovum-donation-1024w.webp',
     status: 'published',
     publish_at: '2026-02-10T12:00:00Z',
     updated_at: '2026-02-16',
@@ -58,9 +63,10 @@ const INITIAL_POSTS: BlogPost[] = [
     title: 'Preparing for Your First Gestational Transfer',
     slug: 'preparing-for-your-first-gestational-transfer',
     excerpt: 'Step-by-step guidance for surrogates and parents approaching embryo transfer day.',
-    body_md: '## Transfer Preparation Steps\n\nEndometrial preparation, hormonal synchronization, and emotional groundedness...',
+    body_md: '<h2>Transfer Preparation Steps</h2><p>Endometrial preparation, hormonal synchronization, and emotional groundedness...</p>',
     category: 'Surrogacy Journey',
     author: 'Tunde Bakare',
+    featured_image: '/assets/img/service-surrogacy-1024w.webp',
     status: 'draft',
     updated_at: '2026-02-17',
   },
@@ -83,6 +89,7 @@ export const BlogPage: React.FC = () => {
   const [category, setCategory] = useState('Clinical Care');
   const [author, setAuthor] = useState('Dr. Chizaram Ata');
   const [status, setStatus] = useState<BlogPost['status']>('published');
+  const [featuredImage, setFeaturedImage] = useState<string | null>(null);
 
   // Delete modal
   const [postToDelete, setPostToDelete] = useState<BlogPost | null>(null);
@@ -101,6 +108,7 @@ export const BlogPage: React.FC = () => {
     setBodyMd('');
     setCategory('Clinical Care');
     setAuthor('Dr. Chizaram Ata');
+    setFeaturedImage(null);
     setStatus('published');
     setEditorOpen(true);
   };
@@ -113,6 +121,7 @@ export const BlogPage: React.FC = () => {
     setBodyMd(p.body_md);
     setCategory(p.category);
     setAuthor(p.author);
+    setFeaturedImage(p.featured_image || null);
     setStatus(p.status);
     setEditorOpen(true);
   };
@@ -127,6 +136,7 @@ export const BlogPage: React.FC = () => {
       body_md: bodyMd,
       category,
       author,
+      featured_image: featuredImage,
       status,
       publish_at: status === 'published' ? new Date().toISOString() : null,
       updated_at: new Date().toISOString().split('T')[0],
@@ -275,7 +285,7 @@ export const BlogPage: React.FC = () => {
         description="Publish educational articles, legal guidance, and medical fertility insights."
         actions={
           <Button onClick={openCreate} iconLeading={<Plus className="w-4 h-4" />}>
-            New Post
+            Draft New Article
           </Button>
         }
       />
@@ -324,6 +334,13 @@ export const BlogPage: React.FC = () => {
         }
       >
         <form onSubmit={handleSave} className="space-y-4">
+          <ImageUpload
+            label="Featured Cover Image"
+            helperText="Click to upload or drag image. Automatically converted to WebP format."
+            value={featuredImage}
+            onChange={setFeaturedImage}
+          />
+
           <Input
             label="Article Title"
             required
@@ -377,19 +394,12 @@ export const BlogPage: React.FC = () => {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-[#17191A] mb-1.5">
-              Article Body (Markdown)
-            </label>
-            <textarea
-              rows={12}
-              required
-              value={bodyMd}
-              onChange={(e) => setBodyMd(e.target.value)}
-              className="w-full font-mono text-xs rounded-[8px] border border-[#E1E0DD] p-3 focus:outline-none focus:ring-2 focus:ring-[#17645F]"
-              placeholder="## Introduction...&#10;&#10;Write the article body here using standard markdown..."
-            />
-          </div>
+          <WysiwygEditor
+            label="Article Body (WYSIWYG)"
+            value={bodyMd}
+            onChange={setBodyMd}
+            minHeight="240px"
+          />
 
           <Select
             label="Status"

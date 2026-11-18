@@ -138,7 +138,7 @@ export const TeamTab: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl text-left">
+    <div className="space-y-6 w-full text-left">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 className="text-base font-semibold text-[#17191A]">Staff Accounts &amp; Permissions</h3>
@@ -153,6 +153,30 @@ export const TeamTab: React.FC = () => {
         >
           Invite Staff Member
         </Button>
+      </div>
+
+      {/* Team Summary Metric Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="p-4 rounded-[10px] bg-white border border-[#E1E0DD] shadow-xs">
+          <p className="text-xs text-[#5D5E5F]">Total Staff</p>
+          <p className="text-xl font-semibold text-[#17191A] mt-1">{team.length}</p>
+        </div>
+        <div className="p-4 rounded-[10px] bg-white border border-[#E1E0DD] shadow-xs">
+          <p className="text-xs text-[#5D5E5F]">Active Coordinators</p>
+          <p className="text-xl font-semibold text-[#17645F] mt-1">
+            {team.filter((t) => t.role === 'coordinator' && t.active).length}
+          </p>
+        </div>
+        <div className="p-4 rounded-[10px] bg-white border border-[#E1E0DD] shadow-xs">
+          <p className="text-xs text-[#5D5E5F]">Clinical Editors</p>
+          <p className="text-xl font-semibold text-[#17191A] mt-1">
+            {team.filter((t) => t.role === 'editor' && t.active).length}
+          </p>
+        </div>
+        <div className="p-4 rounded-[10px] bg-white border border-[#E1E0DD] shadow-xs">
+          <p className="text-xs text-[#5D5E5F]">2FA Enrolled</p>
+          <p className="text-xl font-semibold text-[#2E7D32] mt-1">100%</p>
+        </div>
       </div>
 
       <div className="rounded-[10px] border border-[#E1E0DD] bg-white shadow-xs overflow-hidden">

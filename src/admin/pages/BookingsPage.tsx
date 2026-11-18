@@ -6,6 +6,7 @@ import { StatusBadge } from '../components/common/StatusBadge';
 import { MaskedValue } from '../components/common/MaskedValue';
 import { RowActionsMenu } from '../components/common/RowActionsMenu';
 import { Avatar } from '../components/untitledui/Avatar';
+import { Badge } from '../components/untitledui/Badge';
 import { Button } from '../components/untitledui/Button';
 import { Modal } from '../components/untitledui/Modal';
 import { Drawer } from '../components/untitledui/Drawer';
