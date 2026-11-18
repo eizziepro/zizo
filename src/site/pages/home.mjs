@@ -310,9 +310,7 @@ ${header}
     <div class="zizo-container space-y-[var(--space-md)]">
       <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 reveal">
         <div>
-          <span class="inline-flex items-center px-3 py-1 rounded-full bg-[#17191A] text-[#FAF9F6] text-xs font-semibold tracking-wider uppercase mb-3">
-            Services
-          </span>
+          <p class="text-[length:var(--fs-small)] uppercase tracking-[0.14em] text-[#5D5E5F] font-medium mb-2">Services</p>
           <h2 class="display text-3xl sm:text-4xl text-[#17191A]">Thoughtful fertility coordination</h2>
         </div>
         <a href="/services/" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline underline-offset-4">Explore all services</a>
@@ -326,10 +324,6 @@ ${header}
               <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
             </span>
             <div class="flex items-center gap-2">
-              <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#E1E0DD] text-xs font-semibold text-[#17191A] shadow-sm">
-                <i data-lucide="clock" class="w-3.5 h-3.5 text-[#17645F]"></i>
-                <span>45 min</span>
-              </span>
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
                 <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
               </span>
@@ -337,7 +331,7 @@ ${header}
           </div>
           <div class="space-y-1.5 pt-8">
             <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">Donor Profiling &amp; Screening</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Confidential egg donor matching with verified medical screening.</p>
+            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Confidential egg donor matching</p>
           </div>
         </a>
 
@@ -348,10 +342,6 @@ ${header}
               <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
             </span>
             <div class="flex items-center gap-2">
-              <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#E1E0DD] text-xs font-semibold text-[#17191A] shadow-sm">
-                <i data-lucide="clock" class="w-3.5 h-3.5 text-[#17645F]"></i>
-                <span>60 min</span>
-              </span>
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
                 <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
               </span>
@@ -370,10 +360,6 @@ ${header}
               <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
             </span>
             <div class="flex items-center gap-2">
-              <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#E1E0DD] text-xs font-semibold text-[#17191A] shadow-sm">
-                <i data-lucide="clock" class="w-3.5 h-3.5 text-[#17645F]"></i>
-                <span>45 min</span>
-              </span>
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
                 <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
               </span>
@@ -392,10 +378,6 @@ ${header}
               <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
             </span>
             <div class="flex items-center gap-2">
-              <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-[#E1E0DD] text-xs font-semibold text-[#17191A] shadow-sm">
-                <i data-lucide="clock" class="w-3.5 h-3.5 text-[#17645F]"></i>
-                <span>60 min</span>
-              </span>
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
                 <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
               </span>
