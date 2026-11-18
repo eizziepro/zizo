@@ -3,6 +3,37 @@ const controlsEl = document.getElementById('manage-controls');
 const token = new URLSearchParams(window.location.search).get('token');
 const visitorTz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'Africa/Lagos';
 
+function formatUtcCompact(isoString) {
+  const d = new Date(isoString);
+  const pad = (n) => String(n).padStart(2, '0');
+  return (
+    `${d.getUTCFullYear()}` +
+    `${pad(d.getUTCMonth() + 1)}` +
+    `${pad(d.getUTCDate())}T` +
+    `${pad(d.getUTCHours())}` +
+    `${pad(d.getUTCMinutes())}` +
+    `${pad(d.getUTCSeconds())}Z`
+  );
+}
+
+function getGoogleCalendarUrl(b) {
+  const summary = `Zizo Consultation: ${b.type_name}`;
+  const manageLink = `${window.location.origin}/book/manage/?token=${encodeURIComponent(token)}`;
+  const details = `Private ${b.type_name} with Zizo Donor and Surrogacy clinical coordinators via ${b.channel || 'Online / WhatsApp'}.\n\nManage or reschedule:\n${manageLink}`;
+  const location = b.channel || 'Online / WhatsApp';
+  const dates = `${formatUtcCompact(b.start_at)}/${formatUtcCompact(b.end_at)}`;
+
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: summary,
+    dates: dates,
+    details: details,
+    location: location,
+  });
+
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
 async function initManage() {
   if (!token) {
     if (statusEl) statusEl.textContent = 'Invalid or missing consultation management link.';
@@ -22,11 +53,23 @@ async function initManage() {
     }).format(new Date(b.start_at));
 
     if (statusEl) {
+      const googleCalUrl = getGoogleCalendarUrl(b);
       statusEl.innerHTML = `
-        <div class="border border-[#E1E0DD] rounded-[var(--radius)] p-5 bg-[#E1E0DD]/25 space-y-1.5 text-[length:var(--fs-small)]">
+        <div class="border border-[#E1E0DD] rounded-[var(--radius)] p-5 bg-[#E1E0DD]/25 space-y-2 text-[length:var(--fs-small)]">
           <p><strong>Consultation:</strong> ${b.type_name}</p>
           <p><strong>Scheduled:</strong> ${localFormatted} (${visitorTz})</p>
           <p><strong>Status:</strong> <span class="capitalize font-semibold text-[#17645F]">${b.status}</span></p>
+          ${
+            b.status !== 'cancelled'
+              ? `<div class="pt-2 border-t border-[#E1E0DD]/60 flex items-center gap-4">
+                  <a href="${googleCalUrl}" target="_blank" rel="noopener noreferrer" class="text-[#17645F] font-semibold underline inline-flex items-center gap-1.5 hover:text-[#155A56]">
+                    <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+                    <span>Add to Google Calendar</span>
+                  </a>
+                  <a href="/api/ics?token=${encodeURIComponent(token)}" class="text-[#5D5E5F] hover:text-[#17191A] underline">Download .ics</a>
+                </div>`
+              : ''
+          }
         </div>
       `;
     }

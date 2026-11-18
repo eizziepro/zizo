@@ -11,7 +11,7 @@ export interface IcsEventInput {
   attendeeName: string;
 }
 
-function formatIcsUtc(isoDate: string): string {
+export function formatIcsUtc(isoDate: string): string {
   const d = new Date(isoDate);
   const pad = (n: number) => String(n).padStart(2, '0');
   return (
@@ -20,11 +20,31 @@ function formatIcsUtc(isoDate: string): string {
     `${pad(d.getUTCDate())}T` +
     `${pad(d.getUTCHours())}` +
     `${pad(d.getUTCMinutes())}` +
-    `${pad(d.getUTCSeconds())}Z`
+    `${pad(d.getUTCSeconds())}` +
+    `Z`
   );
 }
 
-function escapeIcsText(val: string): string {
+export function generateGoogleCalendarUrl(input: {
+  startAt: string;
+  endAt: string;
+  summary: string;
+  description: string;
+  location: string;
+}): string {
+  const dtStart = formatIcsUtc(input.startAt);
+  const dtEnd = formatIcsUtc(input.endAt);
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: input.summary,
+    dates: `${dtStart}/${dtEnd}`,
+    details: input.description,
+    location: input.location,
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
+export function escapeIcsText(val: string): string {
   return (val || '')
     .replace(/\\/g, '\\\\')
     .replace(/\r?\n/g, '\\n')

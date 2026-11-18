@@ -9,7 +9,7 @@ import {
   getAvailableDatesInMonth,
   hasBookingConflict,
 } from './lib/availability';
-import { generateIcsContent } from './lib/ics';
+import { generateIcsContent, generateGoogleCalendarUrl } from './lib/ics';
 import {
   createSignedToken,
   generateTotpSecret,
@@ -439,10 +439,18 @@ app.post('/api/bookings', async (req, res) => {
     }
 
     const manageUrl = `${process.env.APP_URL || 'http://localhost:3000'}/book/manage/?token=${rawManageToken}`;
+    const googleCalLink = generateGoogleCalendarUrl({
+      startAt: startAt.toISOString(),
+      endAt: endAt.toISOString(),
+      summary: `Zizo Consultation: ${ct.name}`,
+      description: `Private ${ct.name} via ${body.channel || 'Google Meet'}.\nManage or reschedule: ${manageUrl}`,
+      location: body.channel || 'Online / WhatsApp',
+    });
+
     queueEmail(
       String(body.email).trim(),
       `Zizo Consultation ${status === 'confirmed' ? 'Confirmed' : 'Requested'}: ${ct.name}`,
-      `Hello ${body.name},\n\nYour ${ct.name} is ${status} for ${startAt.toISOString()}.\nManage or reschedule: ${manageUrl}`,
+      `Hello ${body.name},\n\nYour ${ct.name} is ${status} for ${startAt.toISOString()}.\nChannel: ${body.channel || 'Google Meet'}\n\nAdd directly to Google Calendar (1-click):\n${googleCalLink}\n\nManage or reschedule your consultation:\n${manageUrl}`,
       true
     );
     queueEmail(
