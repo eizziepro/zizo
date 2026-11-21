@@ -45,7 +45,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
     const menuHeight = menuRef.current?.offsetHeight || estimatedHeight;
     const spaceBelow = window.innerHeight - rect.bottom;
     const spaceAbove = rect.top;
-    const shouldOpenUpwards = placement.startsWith('top') || (spaceBelow < menuHeight && spaceAbove > spaceBelow);
+    const shouldOpenUpwards = placement.startsWith('top') || (spaceBelow < (menuHeight + 24) && spaceAbove > spaceBelow);
 
     const top = shouldOpenUpwards
       ? Math.max(8, rect.top - menuHeight - 4)
@@ -137,7 +137,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
           top: `${coords.top}px`,
           ...(coords.left !== undefined ? { left: `${coords.left}px` } : {}),
           ...(coords.right !== undefined ? { right: `${coords.right}px` } : {}),
-          zIndex: 9999,
+          zIndex: 99999,
           transformOrigin: coords.openUpwards ? 'bottom right' : 'top right',
         }}
         onClick={(e) => e.stopPropagation()}

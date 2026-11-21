@@ -3,6 +3,7 @@ import { useNotifications } from '../../context/NotificationContext';
 import { useAuditLog } from '../../hooks/useAuditLog';
 import { Toggle } from '../../components/untitledui/Toggle';
 import { Button } from '../../components/untitledui/Button';
+import { Bell01, CheckCircle } from '@untitledui/icons';
 
 export const NotificationsTab: React.FC = () => {
   const { toast } = useNotifications();
@@ -38,86 +39,118 @@ export const NotificationsTab: React.FC = () => {
   };
 
   return (
-    <div className="w-full text-left">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left column: Notifications Form */}
-        <form onSubmit={handleSave} className="lg:col-span-8 space-y-6">
-          <div className="bg-white border border-[#E1E0DD] rounded-[10px] p-6 space-y-6 shadow-xs">
+    <div className="w-full text-left space-y-6">
+      <form onSubmit={handleSave} className="space-y-6">
+        {/* Card 1: Email Notification Alerts */}
+        <div className="bg-white border border-[#E1E0DD] rounded-[10px] p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#E2ECEB] text-[#17645F] flex items-center justify-center shrink-0">
+              <Bell01 className="w-5 h-5" />
+            </div>
             <div>
               <h3 className="text-base font-semibold text-[#17191A]">Email Notification Alerts</h3>
-              <p className="text-xs text-[#5D5E5F] mt-0.5">
-                Select the activity events for which you want to receive direct email dispatches.
+              <p className="text-xs text-[#5D5E5F]">
+                Configure the specific client touchpoints and clinical events that trigger real-time email dispatches to your staff address.
               </p>
             </div>
+          </div>
 
-            <div className="space-y-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="p-4 rounded-[8px] bg-[#FAF9F6] border border-[#E1E0DD] flex flex-col justify-between space-y-3">
+              <div>
+                <p className="text-sm font-semibold text-[#17191A]">New Consultation Bookings</p>
+                <p className="text-xs text-[#5D5E5F] mt-1 leading-relaxed">
+                  Receive an immediate alert whenever an intended parent schedules, cancels, or reschedules a clinical consultation appointment.
+                </p>
+              </div>
               <Toggle
                 checked={notifBooking}
                 onChange={setNotifBooking}
-                label="New Consultation Bookings"
-                description="Receive an email alert whenever an intended parent schedules or reschedules a consultation."
+                label="Enable Booking Alerts"
               />
+            </div>
 
+            <div className="p-4 rounded-[8px] bg-[#FAF9F6] border border-[#E1E0DD] flex flex-col justify-between space-y-3">
+              <div>
+                <p className="text-sm font-semibold text-[#17191A]">Inbound Inquiries &amp; Messages</p>
+                <p className="text-xs text-[#5D5E5F] mt-1 leading-relaxed">
+                  Alert when an intended parent submits a contact question, pricing inquiry, or international program consultation form.
+                </p>
+              </div>
               <Toggle
                 checked={notifInquiry}
                 onChange={setNotifInquiry}
-                label="Inbound Inquiries &amp; Messages"
-                description="Receive an alert when a contact form or cost inquiry is submitted."
+                label="Enable Inquiry Alerts"
               />
+            </div>
 
+            <div className="p-4 rounded-[8px] bg-[#FAF9F6] border border-[#E1E0DD] flex flex-col justify-between space-y-3">
+              <div>
+                <p className="text-sm font-semibold text-[#17191A]">Surrogate &amp; Donor Applications</p>
+                <p className="text-xs text-[#5D5E5F] mt-1 leading-relaxed">
+                  Receive a dispatch whenever a prospective gestational surrogate or egg donor completes their initial intake screening questionnaire.
+                </p>
+              </div>
               <Toggle
                 checked={notifApplication}
                 onChange={setNotifApplication}
-                label="Surrogate &amp; Donor Applications"
-                description="Receive an alert when an initial screening questionnaire is completed."
+                label="Enable Application Alerts"
               />
+            </div>
 
+            <div className="p-4 rounded-[8px] bg-[#FAF9F6] border border-[#E1E0DD] flex flex-col justify-between space-y-3">
+              <div>
+                <p className="text-sm font-semibold text-[#17191A]">Pending Review Submissions</p>
+                <p className="text-xs text-[#5D5E5F] mt-1 leading-relaxed">
+                  Alert when an intended parent, surrogate, or donor submits a feedback review or testimonial requiring clinical moderation.
+                </p>
+              </div>
               <Toggle
                 checked={notifReview}
                 onChange={setNotifReview}
-                label="Pending Review Submissions"
-                description="Alert when a parent, surrogate, or donor submits a feedback story requiring moderation."
+                label="Enable Moderation Alerts"
               />
             </div>
           </div>
+        </div>
 
-          <div className="flex justify-end pt-2">
-            <Button type="submit" isLoading={isSaving}>
-              Save Notification Preferences
-            </Button>
+        {/* Card 2: Delivery Engine & Response Standards */}
+        <div className="bg-[#FAF9F6] border border-[#E1E0DD] rounded-[10px] p-6 sm:p-8 space-y-4 shadow-xs">
+          <div className="flex items-center gap-2">
+            <CheckCircle className="w-4 h-4 text-[#17645F]" />
+            <h4 className="text-xs font-semibold text-[#17191A] uppercase tracking-wider">
+              Notification Engine Infrastructure &amp; Clinical SLAs
+            </h4>
           </div>
-        </form>
-
-        {/* Right column: Delivery Status & SLA Guidelines */}
-        <aside className="lg:col-span-4 space-y-6">
-          <div className="bg-white border border-[#E1E0DD] rounded-[10px] p-6 shadow-xs space-y-4">
-            <h4 className="text-sm font-semibold text-[#17191A]">Delivery Configuration</h4>
-            <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between p-2 rounded bg-[#FAF9F6] border border-[#E1E0DD]">
-                <span className="text-[#5D5E5F]">Routing Engine:</span>
-                <span className="font-medium text-[#17645F]">Resend / SMTP Edge</span>
-              </div>
-              <div className="flex items-center justify-between p-2 rounded bg-[#FAF9F6] border border-[#E1E0DD]">
-                <span className="text-[#5D5E5F]">Delivery Latency:</span>
-                <span className="font-mono text-[#17191A]">&lt; 30 seconds</span>
-              </div>
-              <div className="flex items-center justify-between p-2 rounded bg-[#FAF9F6] border border-[#E1E0DD]">
-                <span className="text-[#5D5E5F]">Spam Filter Status:</span>
-                <span className="font-medium text-[#2E7D32]">SPF &amp; DKIM Verified</span>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+            <div className="p-4 rounded-[8px] bg-white border border-[#E1E0DD] space-y-1.5 shadow-2xs">
+              <p className="font-semibold text-[#17191A]">Routing Engine</p>
+              <p className="text-[#5D5E5F] leading-relaxed">
+                Dispatched via Resend transactional edge relay with SPF, DKIM, and DMARC 100% verified.
+              </p>
+            </div>
+            <div className="p-4 rounded-[8px] bg-white border border-[#E1E0DD] space-y-1.5 shadow-2xs">
+              <p className="font-semibold text-[#17191A]">Dispatch Latency</p>
+              <p className="text-[#5D5E5F] leading-relaxed">
+                Average latency &lt; 30 seconds from public form submission to staff inbox arrival.
+              </p>
+            </div>
+            <div className="p-4 rounded-[8px] bg-white border border-[#E1E0DD] space-y-1.5 shadow-2xs">
+              <p className="font-semibold text-[#17191A]">Clinical Response SLA</p>
+              <p className="text-[#5D5E5F] leading-relaxed">
+                Coordinators are expected to initiate client outreach within 2 business hours of alert receipt.
+              </p>
             </div>
           </div>
+        </div>
 
-          <div className="bg-[#FAF9F6] border border-[#E1E0DD] rounded-[10px] p-5 shadow-xs space-y-2 text-xs text-[#5D5E5F] leading-relaxed">
-            <h4 className="font-semibold text-[#17191A] uppercase tracking-wider text-[11px]">
-              Response SLA Standard
-            </h4>
-            <p>
-              To maintain our 98% client satisfaction benchmark, clinical coordinators should respond to incoming inquiries within 2 business hours.
-            </p>
-          </div>
-        </aside>
-      </div>
+        {/* Bottom Save Action Bar */}
+        <div className="flex items-center justify-end gap-3 pt-2">
+          <Button type="submit" isLoading={isSaving} size="md">
+            Save notification preferences
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };

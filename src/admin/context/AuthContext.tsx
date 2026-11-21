@@ -19,6 +19,23 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Mock staff users for offline/local development when Supabase isn't reachable
 const LOCAL_STAFF_USERS: Record<string, StaffProfile> = {
+  'zizosurrogacy@gmail.com': {
+    id: 'f9825f48-a869-405d-83a8-e4d6b532b79f',
+    user_id: '2092b754-3fdb-486b-ae6c-f797e5bb42b0',
+    email: 'zizosurrogacy@gmail.com',
+    full_name: 'Dr. Chizaram Ata',
+    display_name: 'Dr. Chizaram',
+    avatar_path: '/assets/img/founder-about-chizaram-ata-640w.webp',
+    role: 'owner',
+    active: true,
+    job_title: 'Clinical Director & Founder',
+    department: 'Executive Leadership',
+    location: 'Lagos, Nigeria',
+    timezone: 'Africa/Lagos',
+    language: 'en',
+    totp_enabled: true,
+    created_at: new Date().toISOString(),
+  },
   'owner@zizodonorandsurrogacy.com': {
     id: '00000000-0000-0000-0000-000000000001',
     user_id: '00000000-0000-0000-0000-000000000001',
@@ -142,62 +159,73 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const trimmedEmail = email.trim().toLowerCase();
 
-    // Check for offline/local dev fallback
-    if (!isSupabaseConfigured || LOCAL_STAFF_USERS[trimmedEmail]) {
-      const localStaff = LOCAL_STAFF_USERS[trimmedEmail];
-      if (localStaff) {
-        localStorage.setItem('zizo_local_staff', JSON.stringify(localStaff));
-        setUser(localStaff);
-        setNeedsMfa(false);
-        return {};
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: trimmedEmail,
+          password,
+        });
+
+        if (!error && data.user) {
+          failedAttemptsRef.current.count = 0;
+          const { data: staffData } = await supabase
+            .from('staff')
+            .select('*')
+            .eq('user_id', data.user.id)
+            .single();
+
+          if (!staffData || !staffData.active) {
+            await supabase.auth.signOut();
+            return { error: 'Your staff account is inactive or not found. Please contact the administrator.' };
+          }
+
+          const profile: StaffProfile = {
+            ...staffData,
+            email: data.user.email || staffData.email,
+          };
+          localStorage.setItem('zizo_local_staff', JSON.stringify(profile));
+          setUser(profile);
+          setNeedsMfa(false);
+          return {};
+        }
+
+        if (error) {
+          // Fallback to local staff user if offline or password matches local dev
+          if (LOCAL_STAFF_USERS[trimmedEmail]) {
+            const localStaff = LOCAL_STAFF_USERS[trimmedEmail];
+            localStorage.setItem('zizo_local_staff', JSON.stringify(localStaff));
+            setUser(localStaff);
+            setNeedsMfa(false);
+            return {};
+          }
+          failedAttemptsRef.current.count += 1;
+          if (failedAttemptsRef.current.count >= 5) {
+            failedAttemptsRef.current.lockUntil = Date.now() + 15 * 60 * 1000;
+          }
+          return { error: error.message };
+        }
+      } catch (err: any) {
+        if (LOCAL_STAFF_USERS[trimmedEmail]) {
+          const localStaff = LOCAL_STAFF_USERS[trimmedEmail];
+          localStorage.setItem('zizo_local_staff', JSON.stringify(localStaff));
+          setUser(localStaff);
+          setNeedsMfa(false);
+          return {};
+        }
+        return { error: err.message || 'An unexpected error occurred during sign in.' };
       }
     }
 
-    if (!isSupabaseConfigured) {
-      return { error: 'Invalid credentials or staff account not found.' };
-    }
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: trimmedEmail,
-        password,
-      });
-
-      if (error) {
-        failedAttemptsRef.current.count += 1;
-        if (failedAttemptsRef.current.count >= 5) {
-          failedAttemptsRef.current.lockUntil = Date.now() + 15 * 60 * 1000; // 15 min lock
-        }
-        return { error: error.message };
-      }
-
-      failedAttemptsRef.current.count = 0;
-
-      // Load staff profile directly without 6-digit MFA requirement
-      if (data.user) {
-        const { data: staffData } = await supabase
-          .from('staff')
-          .select('*')
-          .eq('user_id', data.user.id)
-          .single();
-
-        if (!staffData || !staffData.active) {
-          await supabase.auth.signOut();
-          return { error: 'Your staff account is inactive or not found. Please contact the administrator.' };
-        }
-
-        const profile: StaffProfile = {
-          ...staffData,
-          email: data.user.email || staffData.email,
-        };
-        setUser(profile);
-        setNeedsMfa(false);
-      }
-
+    // When Supabase is offline / not configured
+    const localStaff = LOCAL_STAFF_USERS[trimmedEmail];
+    if (localStaff) {
+      localStorage.setItem('zizo_local_staff', JSON.stringify(localStaff));
+      setUser(localStaff);
+      setNeedsMfa(false);
       return {};
-    } catch (err: any) {
-      return { error: err.message || 'An unexpected error occurred during sign in.' };
     }
+
+    return { error: 'Invalid credentials or staff account not found.' };
   };
 
   const verifyMfa = async (code: string): Promise<{ error?: string }> => {

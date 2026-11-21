@@ -322,7 +322,7 @@ ${header}
           <div class="flex items-start justify-between gap-4">
             <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
               <svg class="w-5 h-5 text-[#17191A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 22c6.23-.05 7.87-5.57 7.5-10-.36-4.34-3.95-9.96-7.5-10-3.55.04-7.14 5.66-7.5 10-.37 4.43 1.27 9.95 7.5 10z"/>
+                <path d="M12 2C8.5 2 5.5 8 5.5 14a6.5 6.5 0 0 0 13 0C18.5 8 15.5 2 12 2z"/>
               </svg>
             </span>
             <div class="flex items-center gap-2">
@@ -333,7 +333,7 @@ ${header}
           </div>
           <div class="space-y-1.5 pt-8">
             <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">Donor Profiling &amp; Screening</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed"><span class="block">Comprehensive clinical screening and health profiling</span><span>with confidential egg donor matching.</span></p>
+            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed"><span class="block">Confidence egg donor matching</span><span>with comprehensive clinical screening.</span></p>
           </div>
         </a>
 
@@ -362,7 +362,10 @@ ${header}
           <div class="flex items-start justify-between gap-4">
             <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
               <svg class="w-5 h-5 text-[#17191A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
               </svg>
             </span>
             <div class="flex items-center gap-2">

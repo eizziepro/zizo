@@ -14,7 +14,7 @@ export const SettingsLayout: React.FC = () => {
     }`;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full">
       <PageHeader
         title="Settings &amp; Preferences"
         description="Manage your staff profile, credentials, organization configurations, and clinic availability."
@@ -22,7 +22,7 @@ export const SettingsLayout: React.FC = () => {
 
       {/* Tabs navigation */}
       <div className="border-b border-[#E1E0DD] overflow-x-auto">
-        <nav className="flex gap-2" aria-label="Settings tabs">
+        <nav className="flex gap-2 min-w-max" aria-label="Settings tabs">
           <NavLink to="/settings/profile" className={tabClass}>
             Profile
           </NavLink>
