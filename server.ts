@@ -454,7 +454,7 @@ app.post('/api/bookings', async (req, res) => {
       true
     );
     queueEmail(
-      String(settings.notification_emails || 'coordinator@zizodonorandsurrogacy.com'),
+      String(settings.notification_emails || 'info@zizosurrogacy.com'),
       `New Consultation Booking: ${body.name} (${ct.name})`,
       `Client: ${body.name} (${body.email}, ${body.country})\nChannel: ${body.channel}\nStart UTC: ${startAt.toISOString()}`
     );
@@ -619,7 +619,7 @@ app.get('/api/ics', (req, res) => {
     summary: `Zizo Consultation: ${row.type_name}`,
     description: `Private ${row.type_name} via ${row.channel}.`,
     location: row.meeting_url || row.channel,
-    organizerEmail: process.env.RESEND_FROM_EMAIL || 'care@zizodonorandsurrogacy.com',
+    organizerEmail: process.env.RESEND_FROM_EMAIL || 'info@zizosurrogacy.com',
     attendeeEmail: row.email,
     attendeeName: row.name,
   });

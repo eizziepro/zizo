@@ -293,7 +293,7 @@ export function renderInteriorHero({ breadcrumbs = [], title, intro, note = '' }
 }
 
 export function getWhatsappHref(settings = {}) {
-  const whatsappRaw = String(settings.whatsapp_number || '{{WHATSAPP_NUMBER}}');
+  const whatsappRaw = String(settings.whatsapp_number || '2349024944961');
   const whatsappClean = whatsappRaw.replace(/[^\d]/g, '');
   return whatsappClean
     ? `https://wa.me/${whatsappClean}?text=${encodeURIComponent('Hello Zizo Donor and Surrogacy, I would like to learn more about a confidential consultation.')}`
@@ -318,9 +318,9 @@ export function renderClosingCta({ settings = {}, whatsappHref = '' }) {
 }
 
 export function renderFooter({ settings = {}, hideStickyBar = false, extraScripts = '' }) {
-  const address = String(settings.contact_address || '{{ADDRESS_LAGOS}}');
-  const email = String(settings.contact_email || '{{EMAIL}}');
-  const phone = String(settings.contact_phone || '{{PHONE}}');
+  const address = String(settings.contact_address || 'Bode Thomas St, Surulere, Lagos');
+  const email = String(settings.contact_email || 'info@zizosurrogacy.com');
+  const phone = String(settings.contact_phone || '09024944961');
   const whatsappHref = getWhatsappHref(settings);
 
   return `<footer class="bg-[#17191A] text-[#FAF9F6] surface-dark pt-16 pb-10 border-t border-[#FAF9F6]/10">

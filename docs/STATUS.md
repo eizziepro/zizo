@@ -49,10 +49,10 @@ The following values are currently represented by safe placeholder tokens or sit
 
 | Token / Key | Current Stored Default | Location / Usage | Action Required from Client |
 | :--- | :--- | :--- | :--- |
-| `{{ADDRESS_LAGOS}}` | `Lagos, Nigeria` | Footer, Contact page, Schema JSON-LD | Provide full physical office address in Lagos. |
-| `{{EMAIL}}` | `care@zizodonorandsurrogacy.com` | Footer, Contact page, Headers | Confirm primary inbound contact email. |
-| `{{PHONE}}` | `+234 (0) 123 456 7890` | Footer, Contact page | Confirm primary phone number. |
-| `{{WHATSAPP_NUMBER}}`| `2348000000000` | Floating button, Contact CTA, Footer | Provide WhatsApp Business phone number (international format without `+`). |
+| `{{ADDRESS_LAGOS}}` | `Bode Thomas St, Surulere, Lagos` | Footer, Contact page, Schema JSON-LD | **Confirmed & Applied** |
+| `{{EMAIL}}` | `info@zizosurrogacy.com` | Footer, Contact page, Headers | **Confirmed & Applied** |
+| `{{PHONE}}` | `09024944961` | Footer, Contact page | **Confirmed & Applied** |
+| `{{WHATSAPP_NUMBER}}`| `2349024944961` | Floating button, Contact CTA, Footer | **Confirmed & Applied** |
 | `{{FAMILIES_HELPED}}`| Hidden if unconfirmed | Trust stats (Section 2) | Provide verified count of families supported. If unconfirmed, the cell remains automatically hidden. |
 | `{{CANCEL_CUTOFF_HOURS}}` | `24` | Booking manage cancellation policy | Confirm cancellation notice window (default 24 hours). |
 | `founder_photo_url` | Placeholder box | `/about/` Founder story | Provide high-resolution authentic photograph of founder Chizaram Ata. **Never AI-generate.** |

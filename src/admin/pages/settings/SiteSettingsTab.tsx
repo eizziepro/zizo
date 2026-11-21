@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNotifications } from '../../context/NotificationContext';
 import { useAuditLog } from '../../hooks/useAuditLog';
 import { Input } from '../../components/untitledui/Input';
@@ -12,11 +12,11 @@ export const SiteSettingsTab: React.FC = () => {
 
   const [businessName, setBusinessName] = useState('Zizo Donor and Surrogacy');
   const [tagline, setTagline] = useState('Safe fertility care across borders');
-  const [contactEmail, setContactEmail] = useState('care@zizodonorandsurrogacy.com');
-  const [notificationEmail, setNotificationEmail] = useState('coordinator@zizodonorandsurrogacy.com');
-  const [contactPhone, setContactPhone] = useState('+234 (0) 123 456 7890');
-  const [whatsappNumber, setWhatsappNumber] = useState('2348000000000');
-  const [address, setAddress] = useState('Lagos, Nigeria');
+  const [contactEmail, setContactEmail] = useState('info@zizosurrogacy.com');
+  const [notificationEmail, setNotificationEmail] = useState('info@zizosurrogacy.com');
+  const [contactPhone, setContactPhone] = useState('09024944961');
+  const [whatsappNumber, setWhatsappNumber] = useState('2349024944961');
+  const [address, setAddress] = useState('Bode Thomas St, Surulere, Lagos');
   const [businessHours, setBusinessHours] = useState('Monday - Friday, 09:00 - 17:00 (WAT)');
 
   // Toggles
@@ -26,19 +26,50 @@ export const SiteSettingsTab: React.FC = () => {
 
   const [isSaving, setIsSaving] = useState(false);
 
+  useEffect(() => {
+    fetch('/api/admin/settings')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data?.settings) {
+          const s = data.settings;
+          if (s.brand_name) setBusinessName(s.brand_name);
+          if (s.contact_email) setContactEmail(s.contact_email);
+          if (s.notification_emails) setNotificationEmail(s.notification_emails);
+          if (s.contact_phone) setContactPhone(s.contact_phone);
+          if (s.whatsapp_number) setWhatsappNumber(s.whatsapp_number);
+          if (s.contact_address) setAddress(s.contact_address);
+          if (s.business_hours) setBusinessHours(s.business_hours);
+          if (typeof s.auto_confirm_bookings === 'boolean') setBookingsAutoConfirm(s.auto_confirm_bookings);
+        }
+      })
+      .catch((err) => console.error('Failed to load settings:', err));
+  }, []);
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
     try {
+      const updates = {
+        brand_name: businessName,
+        contact_email: contactEmail,
+        notification_emails: notificationEmail,
+        contact_phone: contactPhone,
+        whatsapp_number: whatsappNumber,
+        contact_address: address,
+        business_hours: businessHours,
+        auto_confirm_bookings: bookingsAutoConfirm,
+      };
+
+      await fetch('/api/admin/settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates),
+      });
+
       await logAction({
         action: 'UPDATE_SITE_SETTINGS',
         tableName: 'site_settings',
-        diff: {
-          businessName,
-          contactEmail,
-          reviewsRequireModeration,
-          bookingsAutoConfirm,
-        },
+        diff: updates,
       });
       toast('Site Settings Saved', 'Public clinic configurations were updated.', 'success');
     } catch (err: any) {

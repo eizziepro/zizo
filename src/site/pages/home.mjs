@@ -63,7 +63,7 @@ export function renderHomePage({ settings = {}, homeFaqs = [], reviews = [], pos
           ? 'md:grid-cols-2'
           : 'md:grid-cols-1';
 
-  const whatsappRaw = String(settings.whatsapp_number || '{{WHATSAPP_NUMBER}}');
+  const whatsappRaw = String(settings.whatsapp_number || '2349024944961');
   const whatsappClean = whatsappRaw.replace(/[^\d]/g, '');
   const whatsappHref = whatsappClean
     ? `https://wa.me/${whatsappClean}?text=${encodeURIComponent('Hello Zizo Donor and Surrogacy, I would like to learn more about starting my journey.')}`

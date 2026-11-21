@@ -720,9 +720,9 @@ ${renderFooter({ settings })}`;
 }
 
 export function renderContactPage({ settings = {}, siteUrl = '' }) {
-  const address = String(settings.contact_address || '{{ADDRESS_LAGOS}}');
-  const email = String(settings.contact_email || '{{EMAIL}}');
-  const phone = String(settings.contact_phone || '{{PHONE}}');
+  const address = String(settings.contact_address || 'Bode Thomas St, Surulere, Lagos');
+  const email = String(settings.contact_email || 'info@zizosurrogacy.com');
+  const phone = String(settings.contact_phone || '09024944961');
   const hours = String(settings.business_hours || 'Monday – Friday, 09:00 – 17:00 WAT');
 
   return `${renderHead({
@@ -750,7 +750,7 @@ ${renderHeader({ isHome: false })}
           <p class="text-[length:var(--fs-small)] flex items-start gap-2.5"><i data-lucide="mail" class="w-4 h-4 text-[#17645F] mt-1 shrink-0"></i><span>${escapeHtml(email)}</span></p>
           <p class="text-[length:var(--fs-small)] flex items-start gap-2.5"><i data-lucide="phone" class="w-4 h-4 text-[#17645F] mt-1 shrink-0"></i><span>${escapeHtml(phone)}</span></p>
           <p class="text-[length:var(--fs-small)] text-[#5D5E5F]">Hours: ${escapeHtml(hours)}</p>
-          <a href="https://maps.google.com/?q=Lagos+Nigeria" target="_blank" rel="noopener noreferrer" class="inline-block text-[length:var(--fs-small)] font-semibold text-[#17645F] underline underline-offset-4">
+          <a href="https://maps.google.com/?q=Bode+Thomas+St,+Surulere,+Lagos" target="_blank" rel="noopener noreferrer" class="inline-block text-[length:var(--fs-small)] font-semibold text-[#17645F] underline underline-offset-4">
             Open Lagos location in Maps
           </a>
         </div>

@@ -187,14 +187,14 @@ export const ProfileTab: React.FC = () => {
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="+234 800 000 0000"
+                placeholder="09024944961"
               />
               <Input
                 label="WhatsApp Number"
                 type="tel"
                 value={whatsapp}
                 onChange={(e) => setWhatsapp(e.target.value)}
-                placeholder="+234 800 000 0000"
+                placeholder="2349024944961"
               />
             </div>
 
