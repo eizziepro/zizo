@@ -658,11 +658,9 @@ export const CasesPage: React.FC = () => {
         accessorKey: 'case_number',
         header: 'Case ID',
         cell: ({ row }) => (
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-semibold px-2 py-1 rounded bg-[#E2ECEB] text-[#17645F] border border-[#C5D8D7]">
-              {row.original.case_number}
-            </span>
-          </div>
+          <span className="font-mono text-xs font-semibold px-2 py-1 rounded bg-[#E2ECEB] text-[#17645F] border border-[#C5D8D7] whitespace-nowrap inline-block">
+            {row.original.case_number}
+          </span>
         ),
       },
       {
@@ -671,14 +669,12 @@ export const CasesPage: React.FC = () => {
         cell: ({ row }) => {
           const c = row.original;
           return (
-            <div className="flex items-center gap-3">
-              <Avatar src={c.avatar_url || undefined} name={c.client_name} size="md" />
+            <div className="flex items-center gap-2.5 whitespace-nowrap">
+              <Avatar src={c.avatar_url || undefined} name={c.client_name} size="sm" />
               <div>
                 <p className="font-semibold text-sm text-[#17191A] whitespace-nowrap">{c.client_name}</p>
-                <div className="flex items-center gap-1.5 text-xs text-[#5D5E5F]">
+                <div className="text-xs text-[#5D5E5F]">
                   <MaskedValue value={c.client_email} type="email" tableName="cases" recordId={c.id} />
-                  <span>•</span>
-                  <span>{c.country}</span>
                 </div>
               </div>
             </div>
@@ -686,25 +682,32 @@ export const CasesPage: React.FC = () => {
         },
       },
       {
-        accessorKey: 'program',
-        header: 'Program Pathway',
+        accessorKey: 'country',
+        header: 'Country',
         cell: ({ row }) => (
-          <div className="space-y-0.5">
-            <Badge variant="brand" size="sm">
-              {PROGRAM_LABELS[row.original.program]}
-            </Badge>
-          </div>
+          <span className="text-xs font-medium text-[#2E3031] whitespace-nowrap">
+            {row.original.country}
+          </span>
+        ),
+      },
+      {
+        accessorKey: 'program',
+        header: 'Program Path',
+        cell: ({ row }) => (
+          <Badge variant="brand" size="sm">
+            {PROGRAM_LABELS[row.original.program]}
+          </Badge>
         ),
       },
       {
         accessorKey: 'stage',
-        header: 'Journey Stage & Progress',
+        header: 'Journey & Stage Progression',
         cell: ({ row }) => {
           const c = row.original;
           return (
-            <div className="space-y-1.5 min-w-[190px]">
+            <div className="space-y-1 min-w-[150px] max-w-[210px]">
               <div className="flex items-center justify-between text-xs">
-                <span className="font-medium text-[#17191A] truncate max-w-[140px]" title={STAGE_LABELS[c.stage]}>
+                <span className="font-medium text-[#17191A] truncate" title={STAGE_LABELS[c.stage]}>
                   {STAGE_LABELS[c.stage]}
                 </span>
                 <span className="font-mono text-[11px] text-[#17645F] font-semibold">{c.progress_pct}%</span>
@@ -745,41 +748,6 @@ export const CasesPage: React.FC = () => {
             </div>
           );
         },
-      },
-      {
-        id: 'matches',
-        header: 'Matched Profiles',
-        cell: ({ row }) => {
-          const c = row.original;
-          return (
-            <div className="space-y-1 text-xs">
-              {c.matched_surrogate && (
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#FAF9F6] border border-[#E1E0DD] text-[#5D5E5F]">
-                    Surrogate:
-                  </span>
-                  <span className="font-medium text-[#17191A]">{c.matched_surrogate.code}</span>
-                </div>
-              )}
-              {c.matched_donor && (
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#FAF9F6] border border-[#E1E0DD] text-[#5D5E5F]">
-                    Donor:
-                  </span>
-                  <span className="font-medium text-[#17191A]">{c.matched_donor.code}</span>
-                </div>
-              )}
-              {!c.matched_surrogate && !c.matched_donor && (
-                <span className="text-xs text-[#969594] italic">In Matching</span>
-              )}
-            </div>
-          );
-        },
-      },
-      {
-        accessorKey: 'health_status',
-        header: 'Health Status',
-        cell: ({ row }) => getHealthBadge(row.original.health_status),
       },
       {
         id: 'actions',
@@ -950,15 +918,31 @@ export const CasesPage: React.FC = () => {
             {/* Top Progress & Health Status Banner */}
             <div className="p-5 rounded-[10px] bg-[#FAF9F6] border border-[#E1E0DD] space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <div className="flex items-center gap-2.5">
-                  <span className="font-mono text-sm font-bold text-[#17645F] px-2 py-0.5 rounded bg-[#E2ECEB] border border-[#C5D8D7]">
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  <span className="font-mono text-sm font-bold text-[#17645F] px-2 py-0.5 rounded bg-[#E2ECEB] border border-[#C5D8D7] whitespace-nowrap">
                     {selectedCase.case_number}
                   </span>
                   <Badge variant="brand" size="sm">{PROGRAM_LABELS[selectedCase.program]}</Badge>
                   {getHealthBadge(selectedCase.health_status)}
                 </div>
-                <div className="text-xs text-[#5D5E5F]">
-                  Coordinator: <strong className="text-[#17191A]">{selectedCase.assigned_coordinator.full_name}</strong>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-[#5D5E5F]">Health Status:</span>
+                  <select
+                    value={selectedCase.health_status}
+                    onChange={(e) => {
+                      const nextStatus = e.target.value as CaseHealthStatus;
+                      const updated = cases.map((item) => (item.id === selectedCase.id ? { ...item, health_status: nextStatus } : item));
+                      saveCases(updated);
+                      setSelectedCase({ ...selectedCase, health_status: nextStatus });
+                      toast('Health Status Updated', `Case ${selectedCase.case_number} marked as ${nextStatus.replace('_', ' ')}.`, 'success');
+                    }}
+                    className="rounded border border-[#E1E0DD] bg-white px-2 py-1 text-xs text-[#17191A] font-medium focus:outline-none focus:ring-1 focus:ring-[#17645F] cursor-pointer"
+                  >
+                    <option value="on_track">🟢 On Track</option>
+                    <option value="pending_clinical">🟠 Pending Clinical</option>
+                    <option value="action_required">🔴 Action Required</option>
+                    <option value="completed">🔵 Completed</option>
+                  </select>
                 </div>
               </div>
 
@@ -1030,28 +1014,41 @@ export const CasesPage: React.FC = () => {
 
             {/* Medical Linkages & Escrow Summary (2 cols) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              {/* Surrogate & Donor Linkages */}
+              {/* Matched Profiles & Clinical Linkages */}
               <div className="p-4 rounded-[10px] bg-white border border-[#E1E0DD] shadow-xs space-y-3">
                 <h4 className="font-semibold text-[#17191A] uppercase tracking-wider text-[11px]">
-                  Clinical Linkages &amp; Partner Clinic
+                  Matched Profiles &amp; Clinic
                 </h4>
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   <div className="flex items-center justify-between">
                     <span className="text-[#5D5E5F]">Partner Clinic:</span>
                     <span className="font-semibold text-[#17191A]">{selectedCase.partner_clinic}</span>
                   </div>
-                  {selectedCase.matched_surrogate && (
+                  {selectedCase.matched_surrogate ? (
                     <div className="flex items-center justify-between">
-                      <span className="text-[#5D5E5F]">Surrogate:</span>
-                      <span className="font-medium text-[#17645F]">{selectedCase.matched_surrogate.name} ({selectedCase.matched_surrogate.code})</span>
+                      <span className="text-[#5D5E5F]">Gestational Surrogate:</span>
+                      <span className="font-medium text-[#17645F] bg-[#E2ECEB]/50 px-2 py-0.5 rounded border border-[#C5D8D7]">
+                        {selectedCase.matched_surrogate.name} ({selectedCase.matched_surrogate.code})
+                      </span>
                     </div>
-                  )}
-                  {selectedCase.matched_donor && (
+                  ) : null}
+                  {selectedCase.matched_donor ? (
                     <div className="flex items-center justify-between">
                       <span className="text-[#5D5E5F]">Egg Donor:</span>
-                      <span className="font-medium text-[#17645F]">{selectedCase.matched_donor.name} ({selectedCase.matched_donor.code})</span>
+                      <span className="font-medium text-[#17645F] bg-[#E2ECEB]/50 px-2 py-0.5 rounded border border-[#C5D8D7]">
+                        {selectedCase.matched_donor.name} ({selectedCase.matched_donor.code})
+                      </span>
+                    </div>
+                  ) : null}
+                  {!selectedCase.matched_surrogate && !selectedCase.matched_donor && (
+                    <div className="p-2 rounded bg-[#FAF9F6] border border-[#E1E0DD] text-[#5D5E5F] italic text-center">
+                      Matching in progress with clinical team
                     </div>
                   )}
+                  <div className="flex items-center justify-between pt-1 border-t border-[#E1E0DD]/60">
+                    <span className="text-[#5D5E5F]">Lead Coordinator:</span>
+                    <span className="font-medium text-[#17191A]">{selectedCase.assigned_coordinator.full_name}</span>
+                  </div>
                 </div>
               </div>
 
