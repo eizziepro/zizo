@@ -147,8 +147,8 @@ test('ADMIN APP ARCHITECTURE: Strict UI fidelity invariants', () => {
   assert.ok(sidebarContent.includes('Inquiries'), "Sidebar must have 'Inquiries'");
   assert.ok(sidebarContent.includes('Applications'), "Sidebar must have 'Applications'");
 
-  // Cases is disabled with Soon badge
-  assert.ok(sidebarContent.includes('Soon'), "Cases must show 'Soon' badge");
+  // Cases is an active nav link to /cases
+  assert.ok(sidebarContent.includes('/cases'), "Sidebar must have active link to '/cases'");
 
   // Avatar menu items invariant: Profile, Site Settings, Audit Log, Sign out
   const avatarMenuPath = path.resolve('src/admin/components/layout/AvatarMenu.tsx');

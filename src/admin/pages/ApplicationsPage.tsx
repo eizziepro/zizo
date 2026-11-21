@@ -81,7 +81,7 @@ const INITIAL_APPLICATIONS: Application[] = [
     },
     status: 'approved',
     assigned_to: '1',
-    assigned_staff: { full_name: 'Dr. Chizaram Ata' },
+    assigned_staff: { full_name: 'Chizaram Ata' },
     notes: 'Approved for matching database.',
     created_at: '2026-11-10T11:00:00Z',
   },
@@ -108,6 +108,7 @@ export const ApplicationsPage: React.FC = () => {
     setApplications((prev) =>
       prev.map((a) => (a.id === id ? { ...a, status } : a))
     );
+    setSelectedApp(null);
     logAction({
       action: 'UPDATE_APPLICATION_STATUS',
       tableName: 'applications',

@@ -180,7 +180,7 @@ export const ProfileTab: React.FC = () => {
               label="Display Name (Staff nickname)"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              placeholder="e.g. Dr. Chizaram"
+              placeholder="e.g. Chizaram"
               helperText="How your name appears in calendar invites and confirmation notices."
             />
           </div>

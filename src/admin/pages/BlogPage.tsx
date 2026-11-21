@@ -39,7 +39,7 @@ const INITIAL_POSTS: BlogPost[] = [
     excerpt: 'Key legal covenants, parentage declarations, and international travel logistics for intended parents.',
     body_md: '<h2>Cross-Border Surrogacy Frameworks</h2><p>Legal planning is foundational when coordinating surrogacy between Nigeria, the UK, Europe, and the US...</p>',
     category: 'Legal & Ethics',
-    author: 'Dr. Chizaram Ata',
+    author: 'Chizaram Ata',
     featured_image: '/assets/img/blog-default-1024w.webp',
     status: 'published',
     publish_at: '2026-02-01T10:00:00Z',
@@ -87,7 +87,7 @@ export const BlogPage: React.FC = () => {
   const [excerpt, setExcerpt] = useState('');
   const [bodyMd, setBodyMd] = useState('');
   const [category, setCategory] = useState('Clinical Care');
-  const [author, setAuthor] = useState('Dr. Chizaram Ata');
+  const [author, setAuthor] = useState('Chizaram Ata');
   const [status, setStatus] = useState<BlogPost['status']>('published');
   const [featuredImage, setFeaturedImage] = useState<string | null>(null);
 
@@ -107,7 +107,7 @@ export const BlogPage: React.FC = () => {
     setExcerpt('');
     setBodyMd('');
     setCategory('Clinical Care');
-    setAuthor('Dr. Chizaram Ata');
+    setAuthor('Chizaram Ata');
     setFeaturedImage(null);
     setStatus('published');
     setEditorOpen(true);
@@ -388,7 +388,7 @@ export const BlogPage: React.FC = () => {
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
               options={[
-                { value: 'Dr. Chizaram Ata', label: 'Dr. Chizaram Ata' },
+                { value: 'Chizaram Ata', label: 'Chizaram Ata' },
                 { value: 'Amara Okafor', label: 'Amara Okafor' },
                 { value: 'Tunde Bakare', label: 'Tunde Bakare' },
               ]}

@@ -29,7 +29,7 @@ const INITIAL_INQUIRIES: Inquiry[] = [
     message: 'We are looking for full surrogacy package breakdown including clinic coordination and legal contracts.',
     status: 'new',
     assigned_to: '1',
-    assigned_staff: { full_name: 'Dr. Chizaram Ata' },
+    assigned_staff: { full_name: 'Chizaram Ata' },
     notes: 'Initial cost breakdown sent via email.',
     created_at: '2026-11-18T01:30:00Z',
   },
@@ -87,13 +87,14 @@ export const InquiriesPage: React.FC = () => {
     setInquiries((prev) =>
       prev.map((i) => (i.id === id ? { ...i, status } : i))
     );
+    setSelectedInquiry(null);
     logAction({
       action: 'UPDATE_INQUIRY_STATUS',
       tableName: 'inquiries',
       recordId: id,
       diff: { status },
     });
-    toast('Inquiry Updated', `Status changed to ${status}.`, 'success');
+    toast('Inquiry Updated', `Status changed to ${status.replace('_', ' ')}.`, 'success');
   };
 
   const handleDelete = () => {

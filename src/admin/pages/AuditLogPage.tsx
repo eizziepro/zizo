@@ -12,7 +12,7 @@ import type { AuditLogEntry } from '../types';
 const INITIAL_AUDIT_LOGS: AuditLogEntry[] = [
   {
     id: 'aud-1',
-    actor: 'Dr. Chizaram Ata',
+    actor: 'Chizaram Ata',
     action: 'REVEAL_PII',
     table_name: 'inquiries',
     record_id: 'inq-1',
@@ -32,7 +32,7 @@ const INITIAL_AUDIT_LOGS: AuditLogEntry[] = [
   },
   {
     id: 'aud-3',
-    actor: 'Dr. Chizaram Ata',
+    actor: 'Chizaram Ata',
     action: 'EXPORT_SUBSCRIBERS_CSV',
     table_name: 'subscribers',
     diff: { total_records_exported: 4 },

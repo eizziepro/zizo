@@ -54,7 +54,7 @@ const INITIAL_REVIEWS: Review[] = [
     role: 'Egg Donor',
     rating: 5,
     title: 'Transparent compensation and gentle care',
-    body: 'Dr. Chizaram explained each medication cycle clearly. My privacy and confidentiality were completely respected throughout.',
+    body: 'Chizaram explained each medication cycle clearly. My privacy and confidentiality were completely respected throughout.',
     country: 'Nigeria',
     avatar_url: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=160&q=80',
     status: 'pending',
@@ -90,6 +90,7 @@ export const ReviewsPage: React.FC = () => {
     setReviews((prev) =>
       prev.map((r) => (r.id === id ? { ...r, status, approved_at: status === 'approved' ? new Date().toISOString() : r.approved_at } : r))
     );
+    setSelectedReview(null);
     logAction({
       action: 'UPDATE_REVIEW_STATUS',
       tableName: 'reviews',

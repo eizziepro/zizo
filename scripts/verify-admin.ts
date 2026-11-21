@@ -146,7 +146,7 @@ async function runVerification() {
 
   console.log('\n--- 10. Testing Sidebar User Photo & No Native Scrollbars ---');
   const avatarImg = page.locator('aside img[alt*="Chizaram"]');
-  console.log('✓ Sidebar uses Dr. Chizaram human photo avatar:', await avatarImg.isVisible());
+  console.log('✓ Sidebar uses Chizaram human photo avatar:', await avatarImg.isVisible());
 
   console.log('\n=========================================');
   console.log('🎉 ALL PLAYWRIGHT DASHBOARD TESTS PASSED!');

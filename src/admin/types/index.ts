@@ -202,3 +202,82 @@ export interface AuditLogEntry {
   ip_address?: string | null;
   created_at: string;
 }
+
+export type CaseProgram =
+  | 'gestational_surrogacy'
+  | 'egg_donation_ivf'
+  | 'surrogacy_and_egg_donation'
+  | 'ivf_coordination';
+
+export type CaseStage =
+  | 'legal_intake'
+  | 'matching_clearance'
+  | 'ivf_embryo_creation'
+  | 'embryo_transfer'
+  | 'pregnancy_trimester_1'
+  | 'pregnancy_trimester_2_3'
+  | 'delivery_citizenship'
+  | 'journey_completed';
+
+export type CaseHealthStatus = 'on_track' | 'pending_clinical' | 'action_required' | 'completed' | 'paused';
+
+export interface CaseMilestone {
+  id: string;
+  title: string;
+  stage: CaseStage;
+  completed: boolean;
+  completed_at?: string | null;
+  target_date?: string | null;
+  notes?: string;
+}
+
+export interface CaseNote {
+  id: string;
+  author: string;
+  role: string;
+  created_at: string;
+  text: string;
+  category: 'clinical' | 'legal' | 'coordination' | 'financial';
+}
+
+export interface CaseRecord {
+  id: string;
+  case_number: string;
+  client_name: string;
+  client_email: string;
+  client_phone: string;
+  avatar_url?: string | null;
+  country: string;
+  program: CaseProgram;
+  stage: CaseStage;
+  health_status: CaseHealthStatus;
+  progress_pct: number;
+  assigned_coordinator: {
+    id: string;
+    full_name: string;
+    avatar_path?: string;
+  };
+  partner_clinic: string;
+  matched_surrogate?: {
+    id: string;
+    code: string;
+    name: string;
+  } | null;
+  matched_donor?: {
+    id: string;
+    code: string;
+    name: string;
+  } | null;
+  start_date: string;
+  target_delivery_date?: string | null;
+  estimated_transfer_date?: string | null;
+  milestones: CaseMilestone[];
+  notes: CaseNote[];
+  financial_status: {
+    total_budget_usd: number;
+    disbursed_usd: number;
+    escrow_secured: boolean;
+  };
+  created_at: string;
+  updated_at: string;
+}

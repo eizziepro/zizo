@@ -21,6 +21,7 @@ interface SidebarProps {
   badgeCounts?: {
     newInquiries?: number;
     newApplications?: number;
+    activeCases?: number;
     pendingReviews?: number;
   };
   onCloseMobile?: () => void;
@@ -106,19 +107,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
                   )}
                 </NavLink>
 
-                {/* Cases: Phase 2 disabled */}
-                <div
-                  className="flex items-center justify-between px-3 py-2 rounded-[8px] text-sm text-[#FAF9F6]/40 cursor-not-allowed"
-                  title="Cases module coming in Phase 2"
-                >
+                <NavLink to="/cases" className={navItemClass} onClick={onCloseMobile}>
                   <span className="inline-flex items-center gap-3">
-                    <Folder className="w-4 h-4 text-[#8BB2AF]/40" />
+                    <Folder className="w-4 h-4 text-[#8BB2AF]" />
                     Cases
                   </span>
-                  <Badge variant="gray" size="sm">
-                    Soon
+                  <Badge variant="brand" size="sm">
+                    {badgeCounts.activeCases ?? 6}
                   </Badge>
-                </div>
+                </NavLink>
               </div>
             </div>
           )}

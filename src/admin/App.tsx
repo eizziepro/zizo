@@ -109,7 +109,14 @@ export const AdminApp: React.FC = () => {
                     </ProtectedRoute>
                   }
                 />
-                <Route path="cases" element={<CasesPage />} />
+                <Route
+                  path="cases"
+                  element={
+                    <ProtectedRoute allowedRoles={['owner', 'coordinator']}>
+                      <CasesPage />
+                    </ProtectedRoute>
+                  }
+                />
 
                 {/* 3. Scheduling */}
                 <Route

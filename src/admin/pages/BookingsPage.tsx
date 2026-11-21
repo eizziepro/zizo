@@ -24,7 +24,7 @@ const INITIAL_BOOKINGS: Booking[] = [
     consultation_type_id: 'ct-1',
     consultation_type: { name: 'Intended Parent Consultation', duration_min: 30, price_minor: 0, currency: 'NGN' },
     staff_id: '1',
-    assigned_staff: { full_name: 'Dr. Chizaram Ata' },
+    assigned_staff: { full_name: 'Chizaram Ata' },
     start_at: '2026-11-20T10:00:00Z',
     end_at: '2026-11-20T10:30:00Z',
     status: 'confirmed',
@@ -64,7 +64,7 @@ const INITIAL_BOOKINGS: Booking[] = [
     consultation_type_id: 'ct-4',
     consultation_type: { name: 'Cost and Program Planning', duration_min: 45, price_minor: 0, currency: 'NGN' },
     staff_id: '1',
-    assigned_staff: { full_name: 'Dr. Chizaram Ata' },
+    assigned_staff: { full_name: 'Chizaram Ata' },
     start_at: '2026-11-15T11:00:00Z',
     end_at: '2026-11-15T11:45:00Z',
     status: 'completed',
@@ -138,7 +138,8 @@ export const BookingsPage: React.FC = () => {
     setBookings((prev) =>
       prev.map((b) => (b.id === bookingId ? { ...b, status: newStatus } : b))
     );
-    toast('Status Updated', `Booking status changed to ${newStatus}.`, 'success');
+    setSelectedBooking(null);
+    toast('Status Updated', `Booking status changed to ${newStatus.replace('_', ' ')}.`, 'success');
   };
 
   const handleReschedule = () => {
@@ -514,11 +515,25 @@ export const BookingsPage: React.FC = () => {
 
             <div className="pt-4 border-t border-[#E1E0DD] flex flex-wrap gap-2">
               <Button
+                variant="primary"
+                size="sm"
+                onClick={() => handleStatusChange(selectedBooking.id, 'completed')}
+              >
+                Mark Completed
+              </Button>
+              <Button
                 variant="secondary"
                 size="sm"
                 onClick={() => setRescheduleModalOpen(true)}
               >
-                Reschedule Appointment
+                Reschedule
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => handleStatusChange(selectedBooking.id, 'no_show')}
+              >
+                Mark No-Show
               </Button>
               <Button
                 variant="destructive"
