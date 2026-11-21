@@ -321,7 +321,9 @@ ${header}
         <a href="/services/donor-profiling-screening/" class="lg:col-span-7 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
           <div class="flex items-start justify-between gap-4">
             <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
-              <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
+              <svg class="w-5 h-5 text-[#17191A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 22c6.23-.05 7.87-5.57 7.5-10-.36-4.34-3.95-9.96-7.5-10-3.55.04-7.14 5.66-7.5 10-.37 4.43 1.27 9.95 7.5 10z"/>
+              </svg>
             </span>
             <div class="flex items-center gap-2">
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
@@ -331,7 +333,7 @@ ${header}
           </div>
           <div class="space-y-1.5 pt-8">
             <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">Donor Profiling &amp; Screening</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Confidential egg donor matching</p>
+            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed"><span class="block">Comprehensive clinical screening and health profiling</span><span>with confidential egg donor matching.</span></p>
           </div>
         </a>
 
@@ -339,7 +341,9 @@ ${header}
         <a href="/services/surrogacy-coordination/" class="lg:col-span-5 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
           <div class="flex items-start justify-between gap-4">
             <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
-              <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
+              <svg class="w-5 h-5 text-[#17191A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+              </svg>
             </span>
             <div class="flex items-center gap-2">
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
@@ -349,7 +353,7 @@ ${header}
           </div>
           <div class="space-y-1.5 pt-8">
             <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">Surrogacy Coordination</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Complete gestational surrogacy coordination from matching to delivery.</p>
+            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed"><span class="block">Complete gestational surrogacy coordination</span><span>from matching to delivery.</span></p>
           </div>
         </a>
 
@@ -357,7 +361,9 @@ ${header}
         <a href="/services/donor-surrogate-enquiry/" class="lg:col-span-5 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
           <div class="flex items-start justify-between gap-4">
             <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
-              <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
+              <svg class="w-5 h-5 text-[#17191A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
             </span>
             <div class="flex items-center gap-2">
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
@@ -367,7 +373,7 @@ ${header}
           </div>
           <div class="space-y-1.5 pt-8">
             <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">Donor &amp; Surrogate Enquiry</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Private introductory consultation exploring your family building options.</p>
+            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed"><span class="block">Private introductory consultation</span><span>exploring your family building options.</span></p>
           </div>
         </a>
 
@@ -375,7 +381,14 @@ ${header}
         <a href="/services/ivf-consultation-coordination/" class="lg:col-span-7 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
           <div class="flex items-start justify-between gap-4">
             <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
-              <i data-lucide="user" class="w-5 h-5 text-[#17191A]"></i>
+              <svg class="w-5 h-5 text-[#17191A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m18 2 4 4"/>
+                <path d="m17 7 3-3"/>
+                <path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/>
+                <path d="m9 11 4 4"/>
+                <path d="m5 19-3 3"/>
+                <path d="m14 4 6 6"/>
+              </svg>
             </span>
             <div class="flex items-center gap-2">
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
@@ -385,7 +398,7 @@ ${header}
           </div>
           <div class="space-y-1.5 pt-8">
             <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">IVF Consultation &amp; Coordination</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">Comprehensive clinical IVF coordination with accredited partner clinics.</p>
+            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed"><span class="block">Comprehensive clinical IVF coordination</span><span>with accredited partner clinics.</span></p>
           </div>
         </a>
       </div>
