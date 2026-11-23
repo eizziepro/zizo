@@ -31,7 +31,6 @@ export const ROLE_PERMISSIONS: Record<string, string[]> = {
     'overview',
     'inquiries',
     'applications',
-    'cases',
     'bookings',
     'consultation-types',
     'services',
@@ -44,6 +43,7 @@ export const ROLE_PERMISSIONS: Record<string, string[]> = {
     'settings:security',
     'settings:site',
     'settings:availability',
+    'settings:integrations',
     'settings:notifications',
     'settings:team',
   ],
@@ -51,13 +51,13 @@ export const ROLE_PERMISSIONS: Record<string, string[]> = {
     'overview',
     'inquiries',
     'applications',
-    'cases',
     'bookings',
     'consultation-types',
     'subscribers',
     'settings:profile',
     'settings:security',
     'settings:availability',
+    'settings:integrations',
     'settings:notifications',
   ],
   editor: [
@@ -100,6 +100,27 @@ test('ADMIN PERMISSIONS: Staff role boundaries and restrictions', () => {
   assert.ok(!ROLE_PERMISSIONS.editor.includes('settings:team'), 'Editor must NOT access team settings');
 });
 
+test('ADMIN PERMISSIONS: Custom modular editor permissions and roles', () => {
+  const defaultEditorPerms = ['services', 'blog', 'faqs', 'reviews'];
+  assert.ok(defaultEditorPerms.includes('services'));
+  assert.ok(defaultEditorPerms.includes('blog'));
+  assert.ok(defaultEditorPerms.includes('faqs'));
+  assert.ok(defaultEditorPerms.includes('reviews'));
+
+  // Editor with custom extended permissions
+  const customEditorPerms = [...defaultEditorPerms, 'inquiries', 'applications'];
+  assert.ok(customEditorPerms.includes('inquiries'));
+  assert.ok(customEditorPerms.includes('applications'));
+  assert.ok(!customEditorPerms.includes('audit-log'));
+
+  // TeamTab only allows editor and owner for staff invitations
+  const teamTabPath = path.resolve('src/admin/pages/settings/TeamTab.tsx');
+  const teamTabSrc = fs.readFileSync(teamTabPath, 'utf8');
+  assert.ok(teamTabSrc.includes("value: 'editor'"));
+  assert.ok(teamTabSrc.includes("value: 'owner'"));
+  assert.ok(!teamTabSrc.includes("value: 'coordinator'"));
+});
+
 test('ADMIN PII: Masking rules for emails and phone numbers', () => {
   assert.equal(maskEmail('adebayo@gmail.com'), 'a***@gmail.com');
   assert.equal(maskEmail('info@zizofertility.com'), 'i***@zizofertility.com');
@@ -136,6 +157,19 @@ test('ADMIN DATABASE: Supabase migration 004_admin_upgrade schema verification',
   assert.ok(sql.includes('Staff insert audit_log'), 'Staff insert audit_log policy must be present in migration');
 });
 
+test('ADMIN DATABASE: Supabase migration 005_cases_and_enhancements schema verification', () => {
+  const migrationPath = path.resolve('supabase/migrations/005_cases_and_enhancements.sql');
+  assert.ok(fs.existsSync(migrationPath), 'Migration 005_cases_and_enhancements.sql must exist');
+
+  const sql = fs.readFileSync(migrationPath, 'utf8');
+
+  // Verify form schema enhancements exist and cases table is removed
+  assert.ok(!sql.includes('CREATE TABLE IF NOT EXISTS cases'), 'Cases table must NOT be created');
+  assert.ok(sql.includes('DROP TABLE IF EXISTS cases'), 'Cases table must be dropped');
+  assert.ok(sql.includes('ALTER TABLE applications'), 'Applications table enhancements must be present');
+  assert.ok(sql.includes('ALTER TABLE inquiries'), 'Inquiries table enhancements must be present');
+});
+
 test('ADMIN APP ARCHITECTURE: Strict UI fidelity invariants', () => {
   // Sidebar invariant: 'Reviews' (never 'Reviews and Testimonials')
   const sidebarPath = path.resolve('src/admin/components/layout/Sidebar.tsx');
@@ -147,8 +181,9 @@ test('ADMIN APP ARCHITECTURE: Strict UI fidelity invariants', () => {
   assert.ok(sidebarContent.includes('Inquiries'), "Sidebar must have 'Inquiries'");
   assert.ok(sidebarContent.includes('Applications'), "Sidebar must have 'Applications'");
 
-  // Cases is an active nav link to /cases
-  assert.ok(sidebarContent.includes('/cases'), "Sidebar must have active link to '/cases'");
+  // Cases must NOT be an active nav link or present
+  assert.ok(!sidebarContent.includes('/cases'), "Sidebar must NOT have a link to '/cases'");
+  assert.ok(!fs.existsSync(path.resolve('src/admin/pages/CasesPage.tsx')), 'CasesPage.tsx must not exist');
 
   // Avatar menu items invariant: Profile, Site Settings, Audit Log, Sign out
   const avatarMenuPath = path.resolve('src/admin/components/layout/AvatarMenu.tsx');

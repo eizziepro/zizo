@@ -100,10 +100,19 @@ async function loadConfirmation() {
     const outlookCalUrl = getOutlookCalendarUrl(b);
     const yahooCalUrl = getYahooCalendarUrl(b);
 
+    const priceMinor = Number(b.price_minor || 0);
+    const isPaidType = priceMinor > 0;
+    const paymentBadge = isPaidType
+      ? (b.payment_status === 'paid'
+          ? '<span class="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-xs border border-emerald-200">✓ Paid &amp; Verified</span>'
+          : '<span class="inline-flex items-center gap-1 font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded text-xs border border-amber-200">Pending Gateway Confirmation</span>')
+      : '<span class="inline-flex items-center gap-1 font-semibold text-[#17645F] bg-[#8BB2AF]/20 px-2 py-0.5 rounded text-xs">Complimentary</span>';
+
     if (summaryEl) {
       summaryEl.innerHTML = `
         <p><strong>Consultation:</strong> ${b.type_name} (${b.duration_min} min)</p>
-        <p><strong>Status:</strong> <span class="capitalize font-semibold text-[#17645F]">${b.status}</span></p>
+        <p><strong>Appointment Status:</strong> <span class="capitalize font-semibold text-[#17645F]">${b.status}</span></p>
+        <p><strong>Payment Status:</strong> ${paymentBadge}</p>
         <p><strong>Date &amp; Time:</strong> ${localFormatted} (${tz}) · ${watFormatted} WAT</p>
         <p><strong>Channel:</strong> ${b.channel}</p>
         <p class="text-[length:var(--fs-small)] text-[#5D5E5F] pt-2">A confirmation email has been dispatched. You can add this appointment directly to your calendar below.</p>

@@ -11,6 +11,7 @@ import { Drawer } from '../components/untitledui/Drawer';
 import { Input } from '../components/untitledui/Input';
 import { Textarea } from '../components/untitledui/Textarea';
 import { Select } from '../components/untitledui/Select';
+import { ImageUpload } from '../components/untitledui/ImageUpload';
 import { ConfirmModal } from '../components/common/ConfirmModal';
 import { useNotifications } from '../context/NotificationContext';
 import { useAuditLog } from '../hooks/useAuditLog';
@@ -103,6 +104,9 @@ export const ServicesPage: React.FC = () => {
   const [slug, setSlug] = useState('');
   const [shortDesc, setShortDesc] = useState('');
   const [bodyMd, setBodyMd] = useState('');
+  const [imagePath, setImagePath] = useState<string | null>(null);
+  const [imageAlt, setImageAlt] = useState('');
+  const [linkedConsultationType, setLinkedConsultationType] = useState<string>('');
   const [priceAmount, setPriceAmount] = useState('0');
   const [priceCurrency, setPriceCurrency] = useState('NGN');
   const [priceLabel, setPriceLabel] = useState('From');
@@ -121,6 +125,9 @@ export const ServicesPage: React.FC = () => {
     setSlug('');
     setShortDesc('');
     setBodyMd('');
+    setImagePath(null);
+    setImageAlt('');
+    setLinkedConsultationType('');
     setPriceAmount('0');
     setPriceCurrency('NGN');
     setPriceLabel('From');
@@ -139,6 +146,9 @@ export const ServicesPage: React.FC = () => {
     setSlug(srv.slug);
     setShortDesc(srv.short_description);
     setBodyMd(srv.body_md);
+    setImagePath(srv.image_path || null);
+    setImageAlt(srv.image_alt || '');
+    setLinkedConsultationType(srv.linked_consultation_type_id || '');
     setPriceAmount(String(srv.price_amount));
     setPriceCurrency(srv.price_currency);
     setPriceLabel(srv.price_label);
@@ -166,6 +176,9 @@ export const ServicesPage: React.FC = () => {
       slug: slug || title.toLowerCase().replace(/\s+/g, '-'),
       short_description: shortDesc,
       body_md: bodyMd,
+      image_path: imagePath,
+      image_alt: imageAlt.trim() || null,
+      linked_consultation_type_id: linkedConsultationType || null,
       price_amount: Number(priceAmount),
       price_currency: priceCurrency,
       price_label: priceLabel,
@@ -554,6 +567,33 @@ export const ServicesPage: React.FC = () => {
                   />
                 </div>
               </div>
+
+              <Select
+                label="Linked Consultation Type"
+                value={linkedConsultationType}
+                onChange={(e) => setLinkedConsultationType(e.target.value)}
+                options={[
+                  { value: '', label: 'None (Direct inquiry routing)' },
+                  { value: 'ct-1', label: 'Intended Parent Consultation (30 mins)' },
+                  { value: 'ct-2', label: 'Surrogate Information Call (20 mins)' },
+                  { value: 'ct-3', label: 'Egg Donor Information Call (20 mins)' },
+                  { value: 'ct-4', label: 'Cost and Program Planning (45 mins)' },
+                ]}
+              />
+
+              <ImageUpload
+                label="Service Card &amp; Header Image"
+                helperText="Upload image representing this clinical service."
+                value={imagePath}
+                onChange={setImagePath}
+              />
+
+              <Input
+                label="Image Alt Text"
+                value={imageAlt}
+                onChange={(e) => setImageAlt(e.target.value)}
+                placeholder="Accessibility description for this service image..."
+              />
             </div>
           )}
 

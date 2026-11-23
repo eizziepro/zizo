@@ -184,7 +184,7 @@ ${renderHeader({ isHome: false })}
 ${renderFooter({
   settings,
   hideStickyBar: true,
-  extraScripts: '<script type="module" src="/assets/js/booking.js"></script>',
+  extraScripts: '<script src="https://js.paystack.co/v1/inline.js"></script><script type="module" src="/assets/js/booking.js"></script>',
 })}`;
 }
 

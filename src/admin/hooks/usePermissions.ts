@@ -6,7 +6,6 @@ export const ROLE_PERMISSIONS: Record<StaffRole, string[]> = {
     'overview',
     'inquiries',
     'applications',
-    'cases',
     'bookings',
     'consultation-types',
     'services',
@@ -19,6 +18,7 @@ export const ROLE_PERMISSIONS: Record<StaffRole, string[]> = {
     'settings:security',
     'settings:site',
     'settings:availability',
+    'settings:integrations',
     'settings:notifications',
     'settings:team',
   ],
@@ -26,13 +26,13 @@ export const ROLE_PERMISSIONS: Record<StaffRole, string[]> = {
     'overview',
     'inquiries',
     'applications',
-    'cases',
     'bookings',
     'consultation-types',
     'subscribers',
     'settings:profile',
     'settings:security',
     'settings:availability',
+    'settings:integrations',
     'settings:notifications',
   ],
   editor: [
@@ -53,6 +53,15 @@ export function usePermissions() {
   const canAccess = (permissionKey: string): boolean => {
     if (!role) return false;
     if (role === 'owner') return true;
+
+    // Check individual custom permissions assigned to this staff member
+    if (user?.permissions && Array.isArray(user.permissions)) {
+      if (['overview', 'settings:profile', 'settings:security', 'settings:notifications'].includes(permissionKey)) {
+        return true;
+      }
+      return user.permissions.includes(permissionKey);
+    }
+
     const allowed = ROLE_PERMISSIONS[role] || [];
     return allowed.includes(permissionKey);
   };

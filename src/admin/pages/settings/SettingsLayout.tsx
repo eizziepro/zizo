@@ -4,7 +4,7 @@ import { PageHeader } from '../../components/untitledui/PageHeader';
 import { usePermissions } from '../../hooks/usePermissions';
 
 export const SettingsLayout: React.FC = () => {
-  const { isOwner, isCoordinator } = usePermissions();
+  const { isOwner, canAccess } = usePermissions();
 
   const tabClass = ({ isActive }: { isActive: boolean }) =>
     `px-4 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
@@ -29,14 +29,19 @@ export const SettingsLayout: React.FC = () => {
           <NavLink to="/settings/security" className={tabClass}>
             Security
           </NavLink>
-          {isOwner && (
+          {canAccess('settings:site') && (
             <NavLink to="/settings/site" className={tabClass}>
               Site Settings
             </NavLink>
           )}
-          {(isOwner || isCoordinator) && (
+          {canAccess('settings:availability') && (
             <NavLink to="/settings/availability" className={tabClass}>
               Availability
+            </NavLink>
+          )}
+          {canAccess('settings:integrations') && (
+            <NavLink to="/settings/integrations" className={tabClass}>
+              Integrations
             </NavLink>
           )}
           <NavLink to="/settings/notifications" className={tabClass}>

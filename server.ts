@@ -27,6 +27,15 @@ import {
   slugify,
   validateReviewPayload,
 } from './lib/validation';
+import {
+  maskApiKey,
+  validatePaystackSignature,
+  initializePaystack,
+  verifyPaystack,
+  testPaystackConnection,
+  testRemitaConnection,
+} from './lib/payments';
+
 // @ts-ignore - build.mjs is an ESM build script
 import { buildStaticSite } from './build.mjs';
 
@@ -48,7 +57,14 @@ interface AuthedRequest extends Request {
   staff?: StaffUser;
 }
 
-app.use(express.json({ limit: '2mb' }));
+app.use(
+  express.json({
+    limit: '2mb',
+    verify: (req: any, _res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
 
 // Security Headers
 app.use((_req, res, next) => {
@@ -60,12 +76,12 @@ app.use((_req, res, next) => {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://challenges.cloudflare.com 'unsafe-inline'",
+      "script-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://challenges.cloudflare.com https://js.paystack.co 'unsafe-inline'",
       "style-src 'self' https://fonts.googleapis.com 'unsafe-inline'",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https:",
-      "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com",
-      "frame-src https://challenges.cloudflare.com",
+      "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://api.paystack.co https://checkout.paystack.com",
+      "frame-src 'self' https://challenges.cloudflare.com https://checkout.paystack.com",
     ].join('; ')
   );
   next();
@@ -238,7 +254,7 @@ app.post('/api/reviews', async (req, res) => {
   const body = req.body || {};
   const check = validateReviewPayload(body);
   if (!check.ok) {
-    res.status(400).json({ error: check.error });
+    res.status(400).json({ error: (check as { ok: false; error: string }).error });
     return;
   }
 
@@ -375,7 +391,7 @@ app.post('/api/bookings', async (req, res) => {
   const ct = db
     .prepare('SELECT * FROM consultation_types WHERE id = ? AND active = 1')
     .get(String(body.consultation_type_id || '')) as
-    | { id: string; name: string; duration_min: number; buffer_min: number }
+    | { id: string; name: string; duration_min: number; buffer_min: number; price_minor?: number; currency?: string }
     | undefined;
   if (!ct) {
     res.status(400).json({ error: 'Invalid consultation type.' });
@@ -392,6 +408,10 @@ app.post('/api/bookings', async (req, res) => {
   const staffId = String(body.staff_id || 'staff-coord');
   const settings = getPublicSettings();
   const status = settings.auto_confirm_bookings === false ? 'pending' : 'confirmed';
+  const priceMinor = Number(ct.price_minor || 0);
+  const paymentRequired = priceMinor > 0;
+  const initialStatus = paymentRequired ? 'pending' : status;
+  const initialPaymentStatus = paymentRequired ? 'pending' : 'not_required';
 
   const rawManageToken = randomToken(24);
   const tokenHash = sha256Hex(rawManageToken);
@@ -408,15 +428,15 @@ app.post('/api/bookings', async (req, res) => {
       }
 
       db.prepare(
-        `INSERT INTO bookings (id, consultation_type_id, staff_id, start_at, end_at, status, name, email, phone, country, audience, channel, note, token_hash, created_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        `INSERT INTO bookings (id, consultation_type_id, staff_id, start_at, end_at, status, name, email, phone, country, audience, channel, note, token_hash, payment_status, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       ).run(
         bookingId,
         ct.id,
         staffId,
         startAt.toISOString(),
         endAt.toISOString(),
-        status,
+        initialStatus,
         String(body.name).trim(),
         String(body.email).trim().toLowerCase(),
         String(body.phone).trim(),
@@ -425,6 +445,7 @@ app.post('/api/bookings', async (req, res) => {
         String(body.channel || 'Google Meet'),
         body.note ? String(body.note).trim() : null,
         tokenHash,
+        initialPaymentStatus,
         new Date().toISOString()
       );
       return true;
@@ -449,8 +470,8 @@ app.post('/api/bookings', async (req, res) => {
 
     queueEmail(
       String(body.email).trim(),
-      `Zizo Consultation ${status === 'confirmed' ? 'Confirmed' : 'Requested'}: ${ct.name}`,
-      `Hello ${body.name},\n\nYour ${ct.name} is ${status} for ${startAt.toISOString()}.\nChannel: ${body.channel || 'Google Meet'}\n\nAdd directly to Google Calendar (1-click):\n${googleCalLink}\n\nManage or reschedule your consultation:\n${manageUrl}`,
+      `Zizo Consultation ${initialStatus === 'confirmed' ? 'Confirmed' : 'Requested'}: ${ct.name}`,
+      `Hello ${body.name},\n\nYour ${ct.name} is ${initialStatus} for ${startAt.toISOString()}.\nChannel: ${body.channel || 'Google Meet'}\n\nAdd directly to Google Calendar (1-click):\n${googleCalLink}\n\nManage or reschedule your consultation:\n${manageUrl}`,
       true
     );
     queueEmail(
@@ -461,8 +482,12 @@ app.post('/api/bookings', async (req, res) => {
 
     res.status(201).json({
       ok: true,
-      status,
+      status: initialStatus,
+      bookingId,
       manageToken: rawManageToken,
+      paymentRequired,
+      priceMinor,
+      currency: ct.currency || 'NGN',
     });
   } catch (err) {
     res.status(500).json({ error: 'Unable to schedule booking right now.' });
@@ -479,7 +504,8 @@ app.get('/api/bookings/manage', (req, res) => {
   const tokenHash = sha256Hex(rawToken);
   const row = db
     .prepare(
-      `SELECT b.id, b.consultation_type_id, b.staff_id, b.start_at, b.end_at, b.status, b.channel, ct.name as type_name, ct.duration_min
+      `SELECT b.id, b.consultation_type_id, b.staff_id, b.start_at, b.end_at, b.status, b.channel, b.payment_status,
+              ct.name as type_name, ct.duration_min, ct.price_minor, ct.currency
        FROM bookings b
        JOIN consultation_types ct ON ct.id = b.consultation_type_id
        WHERE b.token_hash = ?`
@@ -498,6 +524,7 @@ app.get('/api/bookings/manage', (req, res) => {
 
   res.json({
     booking: {
+      id: row.id,
       consultation_type_id: row.consultation_type_id,
       type_name: row.type_name,
       duration_min: row.duration_min,
@@ -505,6 +532,9 @@ app.get('/api/bookings/manage', (req, res) => {
       end_at: row.end_at,
       status: row.status,
       channel: row.channel,
+      payment_status: row.payment_status,
+      price_minor: row.price_minor,
+      currency: row.currency,
     },
     canModify,
     cutoffHours,
@@ -1316,6 +1346,386 @@ app.patch('/api/admin/settings', requireStaff(['owner']), (req: AuthedRequest, r
 
 app.get('/api/admin/audit', requireStaff(['owner']), (_req, res) => {
   res.json({ logs: getDb().prepare('SELECT * FROM audit_log ORDER BY created_at DESC LIMIT 100').all() });
+});
+
+// --- Integration & Payment Settings APIs ---
+
+app.get('/api/admin/integrations', requireStaff(['owner', 'coordinator']), (_req, res) => {
+  const settings = getPublicSettings();
+  const host = _req.get('host') || 'localhost:3000';
+  const protocol = _req.protocol || 'http';
+  const baseUrl = `${protocol}://${host}`;
+
+  res.json({
+    paystack: {
+      enabled: Boolean(settings.paystack_enabled),
+      mode: (settings.paystack_mode as string) || 'test',
+      public_key: (settings.paystack_public_key as string) || '',
+      secret_key_masked: maskApiKey(settings.paystack_secret_key as string),
+      webhook_secret_masked: maskApiKey(settings.paystack_webhook_secret as string),
+      has_secret_key: Boolean(settings.paystack_secret_key),
+      currencies: (settings.paystack_currencies as string[]) || ['NGN', 'USD', 'GBP', 'EUR'],
+      webhook_url: `${baseUrl}/api/webhooks/paystack`,
+    },
+    remita: {
+      enabled: Boolean(settings.remita_enabled),
+      mode: (settings.remita_mode as string) || 'demo',
+      merchant_id: (settings.remita_merchant_id as string) || '',
+      service_type_id: (settings.remita_service_type_id as string) || '',
+      api_key_masked: maskApiKey(settings.remita_api_key as string),
+      public_key: (settings.remita_public_key as string) || '',
+      has_api_key: Boolean(settings.remita_api_key),
+      webhook_url: `${baseUrl}/api/webhooks/remita`,
+    },
+    catalog: {
+      hubspot: {
+        id: 'hubspot',
+        name: 'HubSpot CRM',
+        category: 'CRM & Client Pipeline',
+        description: 'Auto-sync intended parents, surrogate candidates, and consultations into HubSpot deals and contacts.',
+        status: settings.hubspot_enabled ? 'connected' : 'ready',
+        enabled: Boolean(settings.hubspot_enabled),
+        access_token_masked: maskApiKey(settings.hubspot_access_token as string),
+      },
+      google_meet: {
+        id: 'google_meet',
+        name: 'Google Workspace & Meet',
+        category: 'Scheduling & Video',
+        description: "Auto-sync scheduled appointments to coordinators' calendars and generate Google Meet room links.",
+        status: settings.google_meet_sync_enabled ? 'connected' : 'ready',
+        enabled: Boolean(settings.google_meet_sync_enabled),
+      },
+      whatsapp: {
+        id: 'whatsapp',
+        name: 'WhatsApp Business API',
+        category: 'Direct Messaging',
+        description: 'Send automated booking reminders, intake questions, and surrogate milestone check-ins via WhatsApp.',
+        status: settings.whatsapp_enabled ? 'connected' : 'planned',
+        enabled: Boolean(settings.whatsapp_enabled),
+      },
+      resend: {
+        id: 'resend',
+        name: 'Transactional Email (Resend / Brevo)',
+        category: 'Notifications & Receipts',
+        description: 'High-deliverability transactional emails for payment receipts, intake links, and doctor notes.',
+        status: 'planned',
+        enabled: false,
+      },
+      clinic_emr: {
+        id: 'clinic_emr',
+        name: 'Bridge Clinic EMR Gateway',
+        category: 'Clinical & Laboratory',
+        description: 'Direct HL7 / FHIR clinical data bridge for patient baseline ultrasound scans and hormonal profiles.',
+        status: 'planned',
+        enabled: false,
+      },
+    },
+  });
+});
+
+app.post('/api/admin/integrations', requireStaff(['owner']), (req: AuthedRequest, res) => {
+  const db = getDb();
+  const body = req.body || {};
+  const updates: Record<string, unknown> = {};
+
+  // Paystack fields
+  if ('paystack_enabled' in body) updates.paystack_enabled = Boolean(body.paystack_enabled);
+  if ('paystack_mode' in body) updates.paystack_mode = body.paystack_mode === 'live' ? 'live' : 'test';
+  if ('paystack_public_key' in body) updates.paystack_public_key = String(body.paystack_public_key || '').trim();
+  if ('paystack_secret_key' in body && body.paystack_secret_key && !String(body.paystack_secret_key).includes('••••')) {
+    updates.paystack_secret_key = String(body.paystack_secret_key).trim();
+  }
+  if ('paystack_webhook_secret' in body && body.paystack_webhook_secret && !String(body.paystack_webhook_secret).includes('••••')) {
+    updates.paystack_webhook_secret = String(body.paystack_webhook_secret).trim();
+  }
+  if ('paystack_currencies' in body && Array.isArray(body.paystack_currencies)) {
+    updates.paystack_currencies = body.paystack_currencies;
+  }
+
+  // Remita fields
+  if ('remita_enabled' in body) updates.remita_enabled = Boolean(body.remita_enabled);
+  if ('remita_mode' in body) updates.remita_mode = body.remita_mode === 'live' ? 'live' : 'demo';
+  if ('remita_merchant_id' in body) updates.remita_merchant_id = String(body.remita_merchant_id || '').trim();
+  if ('remita_service_type_id' in body) updates.remita_service_type_id = String(body.remita_service_type_id || '').trim();
+  if ('remita_public_key' in body) updates.remita_public_key = String(body.remita_public_key || '').trim();
+  if ('remita_api_key' in body && body.remita_api_key && !String(body.remita_api_key).includes('••••')) {
+    updates.remita_api_key = String(body.remita_api_key).trim();
+  }
+
+  // Catalog integrations
+  if ('hubspot_enabled' in body) updates.hubspot_enabled = Boolean(body.hubspot_enabled);
+  if ('hubspot_access_token' in body && body.hubspot_access_token && !String(body.hubspot_access_token).includes('••••')) {
+    updates.hubspot_access_token = String(body.hubspot_access_token).trim();
+  }
+  if ('whatsapp_enabled' in body) updates.whatsapp_enabled = Boolean(body.whatsapp_enabled);
+  if ('google_meet_sync_enabled' in body) updates.google_meet_sync_enabled = Boolean(body.google_meet_sync_enabled);
+
+  const stmt = db.prepare('INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)');
+  const tx = db.transaction(() => {
+    for (const [k, v] of Object.entries(updates)) {
+      stmt.run(k, JSON.stringify(v));
+    }
+  });
+  tx();
+
+  logAudit(req.staff!.email, 'update', 'integrations', null, {
+    updated_fields: Object.keys(updates),
+  });
+
+  res.json({ ok: true, message: 'Integration settings saved successfully.' });
+});
+
+app.post('/api/admin/integrations/test-connection', requireStaff(['owner', 'coordinator']), async (req: AuthedRequest, res) => {
+  const { gateway, secret_key, merchant_id, api_key } = req.body || {};
+  const settings = getPublicSettings();
+
+  if (gateway === 'paystack') {
+    const keyToTest = secret_key && !secret_key.includes('••••') ? secret_key : (settings.paystack_secret_key as string);
+    const result = await testPaystackConnection(keyToTest);
+    res.json(result);
+    return;
+  }
+
+  if (gateway === 'remita') {
+    const mId = merchant_id || (settings.remita_merchant_id as string);
+    const aKey = api_key && !api_key.includes('••••') ? api_key : (settings.remita_api_key as string);
+    const result = await testRemitaConnection(mId, aKey);
+    res.json(result);
+    return;
+  }
+
+  res.status(400).json({ ok: false, message: 'Unknown gateway test request.' });
+});
+
+// --- Public Payments & Checkout APIs ---
+
+app.post('/api/payments/initialize', async (req, res) => {
+  const { booking_id, currency = 'NGN' } = req.body || {};
+  const db = getDb();
+  const settings = getPublicSettings();
+
+  const bk = db
+    .prepare(
+      `SELECT b.*, ct.price_minor, ct.currency as default_currency, ct.name as type_name
+       FROM bookings b
+       JOIN consultation_types ct ON ct.id = b.consultation_type_id
+       WHERE b.id = ?`
+    )
+    .get(booking_id) as any;
+
+  if (!bk) {
+    res.status(404).json({ error: 'Booking record not found.' });
+    return;
+  }
+
+  const priceMinor = Number(bk.price_minor || 0);
+  if (priceMinor <= 0) {
+    res.json({ ok: true, required: false, message: 'Consultation is complimentary. No payment required.' });
+    return;
+  }
+
+  const isPaystackEnabled = Boolean(settings.paystack_enabled);
+  const secretKey = (settings.paystack_secret_key as string) || '';
+  const publicKey = (settings.paystack_public_key as string) || '';
+
+  // Generate reference and record initialized transaction for both live and sandbox/mock payments
+  const isLiveConfigured = isPaystackEnabled && Boolean(secretKey);
+  const reference = isLiveConfigured
+    ? `zizo_${bk.id.replace(/[^a-zA-Z0-9]/g, '').slice(0, 8)}_${Date.now()}`
+    : `mock_zizo_${bk.id.replace(/[^a-zA-Z0-9]/g, '').slice(0, 8)}_${Date.now()}`;
+  const nowIso = new Date().toISOString();
+
+  if (!isLiveConfigured) {
+    // Record mock transaction in initialized state so mock verification can link and confirm
+    db.prepare(`
+      INSERT INTO payment_transactions (id, booking_id, gateway, gateway_reference, amount_minor, currency, status, customer_email, customer_name, created_at, updated_at)
+      VALUES (?, ?, 'paystack', ?, ?, ?, 'initialized', ?, ?, ?, ?)
+    `).run(
+      crypto.randomUUID(),
+      bk.id,
+      reference,
+      priceMinor,
+      currency,
+      bk.email,
+      bk.name,
+      nowIso,
+      nowIso
+    );
+
+    res.json({
+      ok: true,
+      required: true,
+      configured: false,
+      gateway: 'paystack',
+      reference,
+      amount_minor: priceMinor,
+      currency,
+      email: bk.email,
+      name: bk.name,
+      message: 'Paystack mock sandbox ready for testing.',
+      booking: { id: bk.id, name: bk.name, amount_minor: priceMinor, currency },
+    });
+    return;
+  }
+
+  const callbackUrl = `${req.protocol}://${req.get('host')}/book/confirmation?ref=${reference}`;
+
+  const initResult = await initializePaystack({
+    email: bk.email,
+    amount_minor: priceMinor,
+    currency,
+    reference,
+    callback_url: callbackUrl,
+    metadata: {
+      booking_id: bk.id,
+      client_name: bk.name,
+      consultation_type: bk.type_name,
+    },
+    secret_key: secretKey,
+  });
+
+  if (!initResult.ok) {
+    res.status(400).json({ error: initResult.error || 'Unable to initialize Paystack transaction.' });
+    return;
+  }
+
+  db.prepare(`
+    INSERT INTO payment_transactions (id, booking_id, gateway, gateway_reference, amount_minor, currency, status, customer_email, customer_name, created_at, updated_at)
+    VALUES (?, ?, 'paystack', ?, ?, ?, 'initialized', ?, ?, ?, ?)
+  `).run(
+    crypto.randomUUID(),
+    bk.id,
+    reference,
+    priceMinor,
+    currency,
+    bk.email,
+    bk.name,
+    nowIso,
+    nowIso
+  );
+
+  res.json({
+    ok: true,
+    required: true,
+    configured: true,
+    gateway: 'paystack',
+    public_key: publicKey,
+    reference,
+    access_code: initResult.access_code,
+    authorization_url: initResult.authorization_url,
+    amount_minor: priceMinor,
+    currency,
+    email: bk.email,
+    name: bk.name,
+  });
+});
+
+app.post('/api/payments/verify', async (req, res) => {
+  const { reference, booking_id } = req.body || {};
+  if (!reference && !booking_id) {
+    res.status(400).json({ error: 'Transaction reference or booking ID is required.' });
+    return;
+  }
+
+  const db = getDb();
+  const settings = getPublicSettings();
+  const secretKey = (settings.paystack_secret_key as string) || '';
+
+  let txRecord: any = null;
+  if (reference) {
+    txRecord = db
+      .prepare('SELECT * FROM payment_transactions WHERE gateway_reference = ?')
+      .get(reference) as any;
+  }
+
+  if (!txRecord && booking_id) {
+    txRecord = db
+      .prepare('SELECT * FROM payment_transactions WHERE booking_id = ? ORDER BY created_at DESC LIMIT 1')
+      .get(booking_id) as any;
+  }
+
+  const isMock = String(reference || '').startsWith('mock_') || !secretKey;
+
+  if (!txRecord && isMock) {
+    // Pick the most recent initialized transaction for mock simulation
+    txRecord = db
+      .prepare("SELECT * FROM payment_transactions WHERE status = 'initialized' ORDER BY created_at DESC LIMIT 1")
+      .get() as any;
+  }
+
+  const targetBookingId = txRecord?.booking_id || booking_id;
+
+  let verifyResult: any;
+  if (isMock) {
+    verifyResult = { ok: true, status: 'success', paid_at: new Date().toISOString() };
+  } else if (secretKey && !secretKey.includes('sandbox')) {
+    verifyResult = await verifyPaystack(reference, secretKey);
+  } else {
+    // Sandbox simulation mode
+    verifyResult = { ok: true, status: 'success', paid_at: new Date().toISOString() };
+  }
+
+  if (verifyResult.ok && verifyResult.status === 'success') {
+    const nowIso = new Date().toISOString();
+    const finalRef = reference || txRecord?.gateway_reference || `mock_${Date.now()}`;
+
+    if (txRecord) {
+      db.prepare(
+        'UPDATE payment_transactions SET status = ?, paid_at = ?, raw_response = ?, updated_at = ? WHERE id = ?'
+      ).run('success', verifyResult.paid_at || nowIso, JSON.stringify(verifyResult), nowIso, txRecord.id);
+    } else if (targetBookingId) {
+      const bk = db.prepare('SELECT * FROM bookings WHERE id = ?').get(targetBookingId) as any;
+      if (bk) {
+        db.prepare(`
+          INSERT INTO payment_transactions (id, booking_id, gateway, gateway_reference, amount_minor, currency, status, customer_email, customer_name, paid_at, created_at, updated_at)
+          VALUES (?, ?, 'paystack', ?, 0, 'NGN', 'success', ?, ?, ?, ?, ?)
+        `).run(crypto.randomUUID(), bk.id, finalRef, bk.email, bk.name, nowIso, nowIso, nowIso);
+      }
+    }
+
+    if (targetBookingId) {
+      db.prepare("UPDATE bookings SET payment_status = 'paid', status = 'confirmed' WHERE id = ?").run(
+        targetBookingId
+      );
+    }
+
+    res.json({ ok: true, status: 'success', reference: finalRef, booking_id: targetBookingId });
+  } else {
+    res.status(400).json({ error: verifyResult.error || 'Payment verification could not be confirmed.' });
+  }
+});
+
+app.post('/api/webhooks/paystack', (req: any, res) => {
+  const settings = getPublicSettings();
+  const secretKey = (settings.paystack_secret_key as string) || '';
+  const rawBody = req.rawBody || JSON.stringify(req.body);
+  const signature = req.headers['x-paystack-signature'] as string | undefined;
+
+  if (secretKey && !validatePaystackSignature(rawBody, signature, secretKey)) {
+    res.status(400).send('Invalid signature.');
+    return;
+  }
+
+  const event = req.body;
+  if (event && event.event === 'charge.success' && event.data) {
+    const data = event.data;
+    const ref = data.reference;
+    const db = getDb();
+    const nowIso = new Date().toISOString();
+
+    const tx = db.prepare('SELECT * FROM payment_transactions WHERE gateway_reference = ?').get(ref) as any;
+    if (tx) {
+      db.prepare(
+        'UPDATE payment_transactions SET status = ?, paid_at = ?, channel = ?, raw_response = ?, updated_at = ? WHERE gateway_reference = ?'
+      ).run('success', data.paid_at || nowIso, data.channel || 'card', JSON.stringify(data), nowIso, ref);
+
+      if (tx.booking_id) {
+        db.prepare("UPDATE bookings SET payment_status = 'paid', status = 'confirmed' WHERE id = ?").run(tx.booking_id);
+      }
+    }
+  }
+
+  res.status(200).send('Webhook received.');
 });
 
 // Scheduled publishing & reminder sweep (runs every 60s in Node process, mirroring pg_cron)

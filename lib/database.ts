@@ -110,6 +110,8 @@ function initSchema(db: Database.Database): void {
       created_at TEXT NOT NULL
     );
 
+    DROP TABLE IF EXISTS cases;
+
     CREATE TABLE IF NOT EXISTS inquiries (
       id TEXT PRIMARY KEY,
       type TEXT NOT NULL,
@@ -117,6 +119,8 @@ function initSchema(db: Database.Database): void {
       email TEXT NOT NULL,
       phone TEXT,
       country TEXT,
+      preferred_region TEXT,
+      source TEXT NOT NULL DEFAULT 'Website form',
       message TEXT NOT NULL,
       status TEXT NOT NULL DEFAULT 'new',
       assigned_to TEXT,
@@ -128,6 +132,7 @@ function initSchema(db: Database.Database): void {
     CREATE TABLE IF NOT EXISTS applications (
       id TEXT PRIMARY KEY,
       kind TEXT NOT NULL CHECK(kind IN ('surrogate', 'egg_donor')),
+      candidate_code TEXT,
       name TEXT NOT NULL,
       email TEXT NOT NULL,
       phone TEXT NOT NULL,
@@ -135,6 +140,7 @@ function initSchema(db: Database.Database): void {
       country TEXT NOT NULL,
       city TEXT NOT NULL,
       answers TEXT NOT NULL,
+      screening_checklist TEXT NOT NULL DEFAULT '{"medical_history": false, "infectious_panel": false, "ultrasound_amh": false, "psych_eval": false, "legal_consent": false}',
       status TEXT NOT NULL DEFAULT 'new',
       assigned_to TEXT,
       notes TEXT,
@@ -265,6 +271,23 @@ function initSchema(db: Database.Database): void {
       status TEXT NOT NULL,
       created_at TEXT NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS payment_transactions (
+      id TEXT PRIMARY KEY,
+      booking_id TEXT,
+      gateway TEXT NOT NULL CHECK (gateway IN ('paystack', 'remita', 'manual')),
+      gateway_reference TEXT UNIQUE NOT NULL,
+      amount_minor INTEGER NOT NULL,
+      currency TEXT NOT NULL DEFAULT 'NGN',
+      status TEXT NOT NULL CHECK (status IN ('initialized', 'pending', 'success', 'failed', 'refunded')),
+      customer_email TEXT NOT NULL,
+      customer_name TEXT,
+      channel TEXT,
+      paid_at TEXT,
+      raw_response TEXT,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
   `);
 }
 
@@ -296,6 +319,22 @@ function seedIfEmpty(db: Database.Database): void {
       cancel_cutoff_hours: 24,
       auto_confirm_bookings: true,
       payment_enabled: false,
+      paystack_enabled: false,
+      paystack_mode: 'test',
+      paystack_public_key: '',
+      paystack_secret_key: '',
+      paystack_webhook_secret: '',
+      paystack_currencies: ['NGN', 'USD', 'GBP', 'EUR'],
+      remita_enabled: false,
+      remita_mode: 'demo',
+      remita_merchant_id: '',
+      remita_service_type_id: '',
+      remita_api_key: '',
+      remita_public_key: '',
+      hubspot_enabled: false,
+      hubspot_access_token: '',
+      whatsapp_enabled: false,
+      google_meet_sync_enabled: false,
       gcal_sync_enabled: false,
       founder_photo_url: '',
       analytics_domain: '',
@@ -304,6 +343,33 @@ function seedIfEmpty(db: Database.Database): void {
     const tx = db.transaction(() => {
       for (const [k, v] of Object.entries(defaultSettings)) {
         insertSetting.run(k, JSON.stringify(v));
+      }
+    });
+    tx();
+  } else {
+    // Ensure integration defaults exist for previously seeded databases
+    const defaultIntegrationKeys: Record<string, unknown> = {
+      paystack_enabled: false,
+      paystack_mode: 'test',
+      paystack_public_key: '',
+      paystack_secret_key: '',
+      paystack_webhook_secret: '',
+      paystack_currencies: ['NGN', 'USD', 'GBP', 'EUR'],
+      remita_enabled: false,
+      remita_mode: 'demo',
+      remita_merchant_id: '',
+      remita_service_type_id: '',
+      remita_api_key: '',
+      remita_public_key: '',
+      hubspot_enabled: false,
+      hubspot_access_token: '',
+      whatsapp_enabled: false,
+      google_meet_sync_enabled: false,
+    };
+    const insertOrIgnore = db.prepare('INSERT OR IGNORE INTO site_settings (key, value) VALUES (?, ?)');
+    const tx = db.transaction(() => {
+      for (const [k, v] of Object.entries(defaultIntegrationKeys)) {
+        insertOrIgnore.run(k, JSON.stringify(v));
       }
     });
     tx();
@@ -701,6 +767,261 @@ function seedIfEmpty(db: Database.Database): void {
     ];
     for (const [id, p, alt, w, h] of seededMedia) {
       insertMedia.run(id, p, alt, w, h, nowIso);
+    }
+  }
+
+  // 9. Consultation Bookings seed
+  const hasSampleBookings = (db.prepare("SELECT COUNT(*) as c FROM bookings WHERE id LIKE 'bk-%'").get() as { c: number }).c > 0;
+  if (!hasSampleBookings) {
+    const insertBooking = db.prepare(
+      `INSERT INTO bookings (
+        id, consultation_type_id, staff_id, start_at, end_at, status, name, email, phone, country,
+        audience, channel, note, internal_notes, token_hash, meeting_url, payment_status, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    );
+
+    const nowMs = Date.now();
+    const computeSqlSlot = (daysOffset: number, hours: number, min: number, dur: number) => {
+      const d = new Date(nowMs + daysOffset * 86400000);
+      d.setHours(hours, min, 0, 0);
+      return {
+        start: d.toISOString(),
+        end: new Date(d.getTime() + dur * 60000).toISOString(),
+      };
+    };
+
+    const initialBookings = [
+      {
+        id: 'bk-1',
+        type_id: 'ct-1',
+        staff_id: 'staff-1',
+        ...computeSqlSlot(1, 10, 0, 30),
+        status: 'confirmed',
+        name: 'Ade & Folake M.',
+        email: 'adefolake.m@example.co.uk',
+        phone: '+44 7911 123456',
+        country: 'United Kingdom',
+        audience: 'Intended Parent',
+        channel: 'Google Meet',
+        note: 'UK diaspora couple seeking gestational surrogacy pathway in Lagos.',
+        internal_notes: 'Reviewed initial questionnaire. Both embryos created and vitrified at Bridge Clinic.',
+        meeting_url: 'https://meet.google.com/zizo-ip-adefolake',
+      },
+      {
+        id: 'bk-2',
+        type_id: 'ct-4',
+        staff_id: 'staff-1',
+        ...computeSqlSlot(1, 14, 0, 45),
+        status: 'confirmed',
+        name: 'Dr. & Mrs. Okon',
+        email: 'okon.family@example.com',
+        phone: '+1 281 555 0192',
+        country: 'United States',
+        audience: 'Intended Parent',
+        channel: 'Google Meet',
+        note: 'Houston-based physician couple interested in comprehensive cost breakdown.',
+        internal_notes: 'Sent 2026-2027 fee schedule v3.',
+        meeting_url: 'https://meet.google.com/zizo-cost-okon',
+      },
+      {
+        id: 'bk-3',
+        type_id: 'ct-2',
+        staff_id: 'staff-2',
+        ...computeSqlSlot(2, 11, 0, 20),
+        status: 'pending',
+        name: 'Blessing O.',
+        email: 'blessing.o@example.com',
+        phone: '+234 809 876 5432',
+        country: 'Nigeria',
+        audience: 'Surrogate',
+        channel: 'WhatsApp call',
+        note: 'Candidate completed online intake. Mother of two uncomplicated deliveries.',
+        internal_notes: 'Verify spouse consent letter and check obstetric discharge summary.',
+        meeting_url: 'https://wa.me/2348098765432',
+      },
+      {
+        id: 'bk-4',
+        type_id: 'ct-3',
+        staff_id: 'staff-2',
+        ...computeSqlSlot(3, 15, 0, 20),
+        status: 'confirmed',
+        name: 'Kemi B.',
+        email: 'kemi.b@example.com',
+        phone: '+234 803 442 9811',
+        country: 'Nigeria',
+        audience: 'Egg Donor',
+        channel: 'Google Meet',
+        note: 'Graduate student in biochemistry. Inquiring about stimulation cycle protocol.',
+        internal_notes: 'AMH test result uploaded (3.4 ng/mL). Excellent candidate profile.',
+        meeting_url: 'https://meet.google.com/zizo-donor-kemi',
+      },
+      {
+        id: 'bk-5',
+        type_id: 'ct-1',
+        staff_id: 'staff-1',
+        ...computeSqlSlot(4, 16, 0, 30),
+        status: 'confirmed',
+        name: 'Sarah & Liam Jenkins',
+        email: 'jenkins.family@example.ca',
+        phone: '+1 416 555 8390',
+        country: 'Canada',
+        audience: 'Intended Parent',
+        channel: 'Google Meet',
+        note: 'Canadian couple reviewing African surrogacy options.',
+        internal_notes: 'Explain Ontario birth certificate acquisition process.',
+        meeting_url: 'https://meet.google.com/zizo-ip-jenkins',
+      },
+      {
+        id: 'bk-6',
+        type_id: 'ct-4',
+        staff_id: 'staff-3',
+        ...computeSqlSlot(5, 9, 30, 45),
+        status: 'confirmed',
+        name: 'David & Michael K.',
+        email: 'david.m.k@example.com.au',
+        phone: '+61 2 9876 5432',
+        country: 'Australia',
+        audience: 'Intended Parent',
+        channel: 'Google Meet',
+        note: 'Sydney-based couple. Discussing dedicated donor selection.',
+        internal_notes: 'Ensure legal framework deck includes Australia Part VII family law considerations.',
+        meeting_url: 'https://meet.google.com/zizo-cost-aus',
+      },
+      {
+        id: 'bk-7',
+        type_id: 'ct-2',
+        staff_id: 'staff-2',
+        ...computeSqlSlot(6, 12, 0, 20),
+        status: 'pending',
+        name: 'Grace A.',
+        email: 'grace.a@example.com',
+        phone: '+234 812 345 6789',
+        country: 'Nigeria',
+        audience: 'Surrogate',
+        channel: 'Phone call',
+        note: 'Registered nurse from Abuja inquiring about clinical screening requirements.',
+        internal_notes: 'Nurse practitioner background; verify availability for in-person baseline scan in Lagos.',
+        meeting_url: null,
+      },
+      {
+        id: 'bk-8',
+        type_id: 'ct-4',
+        staff_id: 'staff-1',
+        ...computeSqlSlot(-8, 11, 0, 45),
+        status: 'completed',
+        name: 'Parent SS & MV',
+        email: 'parents.ss.mv@example.com',
+        phone: '+1 415 555 2671',
+        country: 'United States',
+        audience: 'Intended Parent',
+        channel: 'Google Meet',
+        note: 'Detailed budgeting for dual embryo transfers.',
+        internal_notes: 'Consultation completed successfully. Retainer agreement sent and executed.',
+        meeting_url: 'https://meet.google.com/zizo-ss-mv',
+      },
+      {
+        id: 'bk-9',
+        type_id: 'ct-1',
+        staff_id: 'staff-1',
+        ...computeSqlSlot(-5, 14, 0, 30),
+        status: 'completed',
+        name: 'Tunde & Bisola E.',
+        email: 'tunde.bisola@example.com',
+        phone: '+234 802 334 5566',
+        country: 'Nigeria',
+        audience: 'Intended Parent',
+        channel: 'Google Meet',
+        note: 'Domestic intended parents looking for accelerated surrogate matching in Lagos.',
+        internal_notes: 'Referred to Bridge Clinic for endometrial ultrasound. Matched with surrogate candidate SC-8821.',
+        meeting_url: 'https://meet.google.com/zizo-tunde-bisola',
+      },
+      {
+        id: 'bk-10',
+        type_id: 'ct-2',
+        staff_id: 'staff-2',
+        ...computeSqlSlot(-3, 10, 0, 20),
+        status: 'completed',
+        name: 'Mary N.',
+        email: 'mary.n@example.com',
+        phone: '+234 816 778 8990',
+        country: 'Nigeria',
+        audience: 'Surrogate',
+        channel: 'WhatsApp call',
+        note: 'Initial surrogate intake call. Discussed medical checkups and family support.',
+        internal_notes: 'Completed telephone interview. Candidate scored 95% on readiness checklist.',
+        meeting_url: 'https://wa.me/2348167788990',
+      },
+      {
+        id: 'bk-11',
+        type_id: 'ct-1',
+        staff_id: 'staff-3',
+        ...computeSqlSlot(-2, 15, 0, 30),
+        status: 'no_show',
+        name: 'Eunice W.',
+        email: 'eunice.w@example.com.gh',
+        phone: '+233 24 123 4567',
+        country: 'Ghana',
+        audience: 'Intended Parent',
+        channel: 'Google Meet',
+        note: 'Ghanaian client exploring IVF clinic options in Nigeria.',
+        internal_notes: 'Client did not connect on Google Meet. Sent automated follow-up email.',
+        meeting_url: 'https://meet.google.com/zizo-eunice-w',
+      },
+      {
+        id: 'bk-12',
+        type_id: 'ct-3',
+        staff_id: 'staff-2',
+        ...computeSqlSlot(-6, 15, 0, 20),
+        status: 'cancelled',
+        name: 'Chioma E.',
+        email: 'chioma.e@example.com',
+        phone: '+234 703 111 2233',
+        country: 'Nigeria',
+        audience: 'Egg Donor',
+        channel: 'Phone call',
+        note: 'Rescheduling requested due to university semester exam timetable.',
+        internal_notes: 'Candidate requested postponement until end of semester.',
+        meeting_url: null,
+      },
+      {
+        id: 'bk-13',
+        type_id: 'ct-1',
+        staff_id: 'staff-1',
+        ...computeSqlSlot(-1, 13, 0, 30),
+        status: 'cancelled',
+        name: 'Mark & Elena V.',
+        email: 'elena.mark.v@example.de',
+        phone: '+49 170 1234567',
+        country: 'Germany',
+        audience: 'Intended Parent',
+        channel: 'Google Meet',
+        note: 'Munich-based intended parents inquiring on cross-border surrogacy feasibility.',
+        internal_notes: 'Cancelled by client due to sudden international travel.',
+        meeting_url: 'https://meet.google.com/zizo-mark-elena',
+      },
+    ];
+
+    for (const b of initialBookings) {
+      insertBooking.run(
+        b.id,
+        b.type_id,
+        b.staff_id,
+        b.start,
+        b.end,
+        b.status,
+        b.name,
+        b.email,
+        b.phone,
+        b.country,
+        b.audience,
+        b.channel,
+        b.note,
+        b.internal_notes,
+        crypto.randomBytes(16).toString('hex'),
+        b.meeting_url,
+        'not_required',
+        nowIso
+      );
     }
   }
 }

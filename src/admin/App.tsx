@@ -4,13 +4,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { IdleTimerProvider } from './context/IdleTimerContext';
 import { NotificationProvider } from './context/NotificationContext';
+import { usePermissions } from './hooks/usePermissions';
 import { AppShell } from './components/layout/AppShell';
 
 // Pages
 import { OverviewPage } from './pages/OverviewPage';
 import { InquiriesPage } from './pages/InquiriesPage';
 import { ApplicationsPage } from './pages/ApplicationsPage';
-import { CasesPage } from './pages/CasesPage';
 import { BookingsPage } from './pages/BookingsPage';
 import { ConsultationTypesPage } from './pages/ConsultationTypesPage';
 import { ServicesPage } from './pages/ServicesPage';
@@ -28,6 +28,7 @@ import { ProfileTab } from './pages/settings/ProfileTab';
 import { SecurityTab } from './pages/settings/SecurityTab';
 import { SiteSettingsTab } from './pages/settings/SiteSettingsTab';
 import { AvailabilityTab } from './pages/settings/AvailabilityTab';
+import { IntegrationsTab } from './pages/settings/IntegrationsTab';
 import { NotificationsTab } from './pages/settings/NotificationsTab';
 import { TeamTab } from './pages/settings/TeamTab';
 
@@ -43,8 +44,10 @@ const queryClient = new QueryClient({
 const ProtectedRoute: React.FC<{
   children: React.ReactNode;
   allowedRoles?: ('owner' | 'coordinator' | 'editor')[];
-}> = ({ children, allowedRoles }) => {
+  permission?: string;
+}> = ({ children, allowedRoles, permission }) => {
   const { user, loading } = useAuth();
+  const { canAccess } = usePermissions();
   const location = useLocation();
 
   if (loading) {
@@ -62,7 +65,14 @@ const ProtectedRoute: React.FC<{
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
+  if (permission && !canAccess(permission)) {
+    return <ForbiddenPage />;
+  }
+
   if (allowedRoles && !allowedRoles.includes(user.role)) {
+    if (permission && canAccess(permission)) {
+      return <>{children}</>;
+    }
     return <ForbiddenPage />;
   }
 
@@ -96,7 +106,7 @@ export const AdminApp: React.FC = () => {
                 <Route
                   path="inquiries"
                   element={
-                    <ProtectedRoute allowedRoles={['owner', 'coordinator']}>
+                    <ProtectedRoute permission="inquiries">
                       <InquiriesPage />
                     </ProtectedRoute>
                   }
@@ -104,16 +114,8 @@ export const AdminApp: React.FC = () => {
                 <Route
                   path="applications"
                   element={
-                    <ProtectedRoute allowedRoles={['owner', 'coordinator']}>
+                    <ProtectedRoute permission="applications">
                       <ApplicationsPage />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route
-                  path="cases"
-                  element={
-                    <ProtectedRoute allowedRoles={['owner', 'coordinator']}>
-                      <CasesPage />
                     </ProtectedRoute>
                   }
                 />
@@ -122,7 +124,7 @@ export const AdminApp: React.FC = () => {
                 <Route
                   path="bookings"
                   element={
-                    <ProtectedRoute allowedRoles={['owner', 'coordinator']}>
+                    <ProtectedRoute permission="bookings">
                       <BookingsPage />
                     </ProtectedRoute>
                   }
@@ -130,7 +132,7 @@ export const AdminApp: React.FC = () => {
                 <Route
                   path="consultation-types"
                   element={
-                    <ProtectedRoute allowedRoles={['owner', 'coordinator']}>
+                    <ProtectedRoute permission="consultation-types">
                       <ConsultationTypesPage />
                     </ProtectedRoute>
                   }
@@ -140,7 +142,7 @@ export const AdminApp: React.FC = () => {
                 <Route
                   path="services"
                   element={
-                    <ProtectedRoute allowedRoles={['owner', 'editor']}>
+                    <ProtectedRoute permission="services">
                       <ServicesPage />
                     </ProtectedRoute>
                   }
@@ -148,7 +150,7 @@ export const AdminApp: React.FC = () => {
                 <Route
                   path="blog"
                   element={
-                    <ProtectedRoute allowedRoles={['owner', 'editor']}>
+                    <ProtectedRoute permission="blog">
                       <BlogPage />
                     </ProtectedRoute>
                   }
@@ -156,7 +158,7 @@ export const AdminApp: React.FC = () => {
                 <Route
                   path="faqs"
                   element={
-                    <ProtectedRoute allowedRoles={['owner', 'editor']}>
+                    <ProtectedRoute permission="faqs">
                       <FAQsPage />
                     </ProtectedRoute>
                   }
@@ -164,7 +166,7 @@ export const AdminApp: React.FC = () => {
                 <Route
                   path="reviews"
                   element={
-                    <ProtectedRoute allowedRoles={['owner', 'coordinator', 'editor']}>
+                    <ProtectedRoute permission="reviews">
                       <ReviewsPage />
                     </ProtectedRoute>
                   }
@@ -174,7 +176,7 @@ export const AdminApp: React.FC = () => {
                 <Route
                   path="subscribers"
                   element={
-                    <ProtectedRoute allowedRoles={['owner', 'coordinator']}>
+                    <ProtectedRoute permission="subscribers">
                       <SubscribersPage />
                     </ProtectedRoute>
                   }
@@ -188,7 +190,7 @@ export const AdminApp: React.FC = () => {
                   <Route
                     path="site"
                     element={
-                      <ProtectedRoute allowedRoles={['owner']}>
+                      <ProtectedRoute permission="settings:site">
                         <SiteSettingsTab />
                       </ProtectedRoute>
                     }
@@ -196,8 +198,16 @@ export const AdminApp: React.FC = () => {
                   <Route
                     path="availability"
                     element={
-                      <ProtectedRoute allowedRoles={['owner', 'coordinator']}>
+                      <ProtectedRoute permission="settings:availability">
                         <AvailabilityTab />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="integrations"
+                    element={
+                      <ProtectedRoute permission="settings:integrations">
+                        <IntegrationsTab />
                       </ProtectedRoute>
                     }
                   />
@@ -205,7 +215,7 @@ export const AdminApp: React.FC = () => {
                   <Route
                     path="team"
                     element={
-                      <ProtectedRoute allowedRoles={['owner']}>
+                      <ProtectedRoute permission="settings:team" allowedRoles={['owner']}>
                         <TeamTab />
                       </ProtectedRoute>
                     }
@@ -216,7 +226,7 @@ export const AdminApp: React.FC = () => {
                 <Route
                   path="audit-log"
                   element={
-                    <ProtectedRoute allowedRoles={['owner']}>
+                    <ProtectedRoute permission="audit-log" allowedRoles={['owner']}>
                       <AuditLogPage />
                     </ProtectedRoute>
                   }

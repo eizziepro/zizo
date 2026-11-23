@@ -285,7 +285,6 @@ src/admin/
 │   ├── OverviewPage.tsx     # Fraunces greeting, metrics, charts, today's agenda
 │   ├── InquiriesPage.tsx    # Filterable inquiries table, status drawer
 │   ├── ApplicationsPage.tsx # Surrogate & Donor applications, drawer, no photos
-│   ├── CasesPage.tsx        # Phase 2 placeholder (disabled in sidebar)
 │   ├── BookingsPage.tsx     # Upcoming/Past/Cancelled, list & calendar views
 │   ├── ConsultationTypesPage.tsx # Type management drawer, buffer, channels
 │   ├── ServicesPage.tsx     # Services table & tabbed full-page editor
@@ -334,7 +333,7 @@ To adhere to the requirement of **working in small, verifiable modules without b
   - Build `Consultation Types` page (`/admin/consultation-types`): table, create/edit Drawer, channel badges, toggle active.
   - Build `Bookings` page (`/admin/bookings`): Upcoming/Past/Cancelled/All tabs, List & Calendar views, reschedule/cancel modals.
   - Build `Inquiries` page (`/admin/inquiries`): status tabs, filters, detail drawer with status stepper and internal notes.
-  - Build `Applications` page (`/admin/applications`): Surrogate & Egg Donor tabs, status filters, drawer, anonymized list view. Scaffold disabled `Cases` route.
+  - Build `Applications` page (`/admin/applications`): Surrogate & Egg Donor tabs, status filters, drawer, anonymized list view.
 
 - **Phase 5: Website Content & Marketing**
   - Build `Services` page (`/admin/services`): table, drag reorder, tabbed full-page editor (Overview, Content in Markdown, Pricing, SEO, FAQs), deploy hook trigger.

@@ -4,7 +4,6 @@ import {
   Activity,
   MessageDotsSquare,
   File02,
-  Folder,
   Calendar,
   Clock,
   LayersThree01,
@@ -21,7 +20,6 @@ interface SidebarProps {
   badgeCounts?: {
     newInquiries?: number;
     newApplications?: number;
-    activeCases?: number;
     pendingReviews?: number;
   };
   onCloseMobile?: () => void;
@@ -77,123 +75,129 @@ export const Sidebar: React.FC<SidebarProps> = ({ badgeCounts = {}, onCloseMobil
           </div>
 
           {/* CLIENTS GROUP */}
-          {!isEditor && (
+          {(canAccess('inquiries') || canAccess('applications')) && (
             <div className="space-y-1">
               <p className="px-3 text-[11px] font-semibold text-[#8BB2AF] uppercase tracking-wider">
                 Clients
               </p>
               <div className="space-y-0.5 pt-1">
-                <NavLink to="/inquiries" className={navItemClass} onClick={onCloseMobile}>
-                  <span className="inline-flex items-center gap-3">
-                    <MessageDotsSquare className="w-4 h-4 text-[#8BB2AF]" />
-                    Inquiries
-                  </span>
-                  {Boolean(badgeCounts.newInquiries && badgeCounts.newInquiries > 0) && (
-                    <Badge variant="brand" size="sm">
-                      {badgeCounts.newInquiries}
-                    </Badge>
-                  )}
-                </NavLink>
+                {canAccess('inquiries') && (
+                  <NavLink to="/inquiries" className={navItemClass} onClick={onCloseMobile}>
+                    <span className="inline-flex items-center gap-3">
+                      <MessageDotsSquare className="w-4 h-4 text-[#8BB2AF]" />
+                      Inquiries
+                    </span>
+                    {Boolean(badgeCounts.newInquiries && badgeCounts.newInquiries > 0) && (
+                      <Badge variant="brand" size="sm">
+                        {badgeCounts.newInquiries}
+                      </Badge>
+                    )}
+                  </NavLink>
+                )}
 
-                <NavLink to="/applications" className={navItemClass} onClick={onCloseMobile}>
-                  <span className="inline-flex items-center gap-3">
-                    <File02 className="w-4 h-4 text-[#8BB2AF]" />
-                    Applications
-                  </span>
-                  {Boolean(badgeCounts.newApplications && badgeCounts.newApplications > 0) && (
-                    <Badge variant="brand" size="sm">
-                      {badgeCounts.newApplications}
-                    </Badge>
-                  )}
-                </NavLink>
-
-                <NavLink to="/cases" className={navItemClass} onClick={onCloseMobile}>
-                  <span className="inline-flex items-center gap-3">
-                    <Folder className="w-4 h-4 text-[#8BB2AF]" />
-                    Cases
-                  </span>
-                  <Badge variant="brand" size="sm">
-                    {badgeCounts.activeCases ?? 6}
-                  </Badge>
-                </NavLink>
+                {canAccess('applications') && (
+                  <NavLink to="/applications" className={navItemClass} onClick={onCloseMobile}>
+                    <span className="inline-flex items-center gap-3">
+                      <File02 className="w-4 h-4 text-[#8BB2AF]" />
+                      Applications
+                    </span>
+                    {Boolean(badgeCounts.newApplications && badgeCounts.newApplications > 0) && (
+                      <Badge variant="brand" size="sm">
+                        {badgeCounts.newApplications}
+                      </Badge>
+                    )}
+                  </NavLink>
+                )}
               </div>
             </div>
           )}
 
           {/* SCHEDULING GROUP */}
-          {!isEditor && (
+          {(canAccess('bookings') || canAccess('consultation-types')) && (
             <div className="space-y-1">
               <p className="px-3 text-[11px] font-semibold text-[#8BB2AF] uppercase tracking-wider">
                 Scheduling
               </p>
               <div className="space-y-0.5 pt-1">
-                <NavLink to="/bookings" className={navItemClass} onClick={onCloseMobile}>
-                  <span className="inline-flex items-center gap-3">
-                    <Calendar className="w-4 h-4 text-[#8BB2AF]" />
-                    Bookings
-                  </span>
-                </NavLink>
+                {canAccess('bookings') && (
+                  <NavLink to="/bookings" className={navItemClass} onClick={onCloseMobile}>
+                    <span className="inline-flex items-center gap-3">
+                      <Calendar className="w-4 h-4 text-[#8BB2AF]" />
+                      Bookings
+                    </span>
+                  </NavLink>
+                )}
 
-                <NavLink
-                  to="/consultation-types"
-                  className={navItemClass}
-                  onClick={onCloseMobile}
-                >
-                  <span className="inline-flex items-center gap-3">
-                    <Clock className="w-4 h-4 text-[#8BB2AF]" />
-                    Consultation Types
-                  </span>
-                </NavLink>
+                {canAccess('consultation-types') && (
+                  <NavLink
+                    to="/consultation-types"
+                    className={navItemClass}
+                    onClick={onCloseMobile}
+                  >
+                    <span className="inline-flex items-center gap-3">
+                      <Clock className="w-4 h-4 text-[#8BB2AF]" />
+                      Consultation Types
+                    </span>
+                  </NavLink>
+                )}
               </div>
             </div>
           )}
 
           {/* WEBSITE CONTENT GROUP */}
-          {!isCoordinator && (
+          {(canAccess('services') || canAccess('blog') || canAccess('faqs') || canAccess('reviews')) && (
             <div className="space-y-1">
               <p className="px-3 text-[11px] font-semibold text-[#8BB2AF] uppercase tracking-wider">
                 Website Content
               </p>
               <div className="space-y-0.5 pt-1">
-                <NavLink to="/services" className={navItemClass} onClick={onCloseMobile}>
-                  <span className="inline-flex items-center gap-3">
-                    <LayersThree01 className="w-4 h-4 text-[#8BB2AF]" />
-                    Services
-                  </span>
-                </NavLink>
+                {canAccess('services') && (
+                  <NavLink to="/services" className={navItemClass} onClick={onCloseMobile}>
+                    <span className="inline-flex items-center gap-3">
+                      <LayersThree01 className="w-4 h-4 text-[#8BB2AF]" />
+                      Services
+                    </span>
+                  </NavLink>
+                )}
 
-                <NavLink to="/blog" className={navItemClass} onClick={onCloseMobile}>
-                  <span className="inline-flex items-center gap-3">
-                    <BookOpen01 className="w-4 h-4 text-[#8BB2AF]" />
-                    Blog
-                  </span>
-                </NavLink>
+                {canAccess('blog') && (
+                  <NavLink to="/blog" className={navItemClass} onClick={onCloseMobile}>
+                    <span className="inline-flex items-center gap-3">
+                      <BookOpen01 className="w-4 h-4 text-[#8BB2AF]" />
+                      Blog
+                    </span>
+                  </NavLink>
+                )}
 
-                <NavLink to="/faqs" className={navItemClass} onClick={onCloseMobile}>
-                  <span className="inline-flex items-center gap-3">
-                    <HelpCircle className="w-4 h-4 text-[#8BB2AF]" />
-                    FAQs
-                  </span>
-                </NavLink>
+                {canAccess('faqs') && (
+                  <NavLink to="/faqs" className={navItemClass} onClick={onCloseMobile}>
+                    <span className="inline-flex items-center gap-3">
+                      <HelpCircle className="w-4 h-4 text-[#8BB2AF]" />
+                      FAQs
+                    </span>
+                  </NavLink>
+                )}
 
                 {/* Sidebar item: strictly Reviews */}
-                <NavLink to="/reviews" className={navItemClass} onClick={onCloseMobile}>
-                  <span className="inline-flex items-center gap-3">
-                    <Star01 className="w-4 h-4 text-[#8BB2AF]" />
-                    Reviews
-                  </span>
-                  {Boolean(badgeCounts.pendingReviews && badgeCounts.pendingReviews > 0) && (
-                    <Badge variant="warning" size="sm">
-                      {badgeCounts.pendingReviews}
-                    </Badge>
-                  )}
-                </NavLink>
+                {canAccess('reviews') && (
+                  <NavLink to="/reviews" className={navItemClass} onClick={onCloseMobile}>
+                    <span className="inline-flex items-center gap-3">
+                      <Star01 className="w-4 h-4 text-[#8BB2AF]" />
+                      Reviews
+                    </span>
+                    {Boolean(badgeCounts.pendingReviews && badgeCounts.pendingReviews > 0) && (
+                      <Badge variant="warning" size="sm">
+                        {badgeCounts.pendingReviews}
+                      </Badge>
+                    )}
+                  </NavLink>
+                )}
               </div>
             </div>
           )}
 
           {/* AUDIENCE GROUP */}
-          {!isEditor && (
+          {canAccess('subscribers') && (
             <div className="space-y-1">
               <p className="px-3 text-[11px] font-semibold text-[#8BB2AF] uppercase tracking-wider">
                 Audience

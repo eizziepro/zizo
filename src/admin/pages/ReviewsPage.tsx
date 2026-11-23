@@ -8,11 +8,14 @@ import { Avatar } from '../components/untitledui/Avatar';
 import { Badge } from '../components/untitledui/Badge';
 import { Button } from '../components/untitledui/Button';
 import { Drawer } from '../components/untitledui/Drawer';
+import { Modal } from '../components/untitledui/Modal';
+import { Input } from '../components/untitledui/Input';
+import { Select } from '../components/untitledui/Select';
 import { Textarea } from '../components/untitledui/Textarea';
 import { ConfirmModal } from '../components/common/ConfirmModal';
 import { useNotifications } from '../context/NotificationContext';
 import { useAuditLog } from '../hooks/useAuditLog';
-import { Star01 } from '@untitledui/icons';
+import { Star01, Plus, Edit01 } from '@untitledui/icons';
 import type { Review } from '../types';
 
 const INITIAL_REVIEWS: Review[] = [
@@ -75,6 +78,101 @@ export const ReviewsPage: React.FC = () => {
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
   const [reviewToDelete, setReviewToDelete] = useState<Review | null>(null);
   const [replyText, setReplyText] = useState('');
+
+  // Add Testimonial State
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [addName, setAddName] = useState('');
+  const [addRole, setAddRole] = useState<Review['role']>('Intended Parent');
+  const [addRating, setAddRating] = useState('5');
+  const [addTitle, setAddTitle] = useState('');
+  const [addBody, setAddBody] = useState('');
+  const [addCountry, setAddCountry] = useState('Nigeria');
+  const [addJourneyYear, setAddJourneyYear] = useState('2026');
+  const [addSource, setAddSource] = useState<Review['source']>('legacy');
+  const [addFeatured, setAddFeatured] = useState(true);
+  const [addStatus, setAddStatus] = useState<Review['status']>('approved');
+
+  // Edit Story State
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingReview, setEditingReview] = useState<Review | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editRole, setEditRole] = useState<Review['role']>('Intended Parent');
+  const [editRating, setEditRating] = useState('5');
+  const [editTitle, setEditTitle] = useState('');
+  const [editBody, setEditBody] = useState('');
+  const [editCountry, setEditCountry] = useState('');
+  const [editJourneyYear, setEditJourneyYear] = useState('2026');
+  const [editFeatured, setEditFeatured] = useState(false);
+
+  const handleOpenEditModal = (r: Review) => {
+    setEditingReview(r);
+    setEditName(r.display_name);
+    setEditRole(r.role);
+    setEditRating(String(r.rating));
+    setEditTitle(r.title);
+    setEditBody(r.body);
+    setEditCountry(r.country || '');
+    setEditJourneyYear(r.journey_year ? String(r.journey_year) : '2026');
+    setEditFeatured(r.featured);
+    setIsEditModalOpen(true);
+  };
+
+  const handleSaveEdit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingReview) return;
+
+    const updated: Review = {
+      ...editingReview,
+      display_name: editName.trim() || editingReview.display_name,
+      role: editRole,
+      rating: Number(editRating) || 5,
+      title: editTitle.trim() || editingReview.title,
+      body: editBody.trim() || editingReview.body,
+      country: editCountry.trim() || null,
+      journey_year: Number(editJourneyYear) || null,
+      featured: editFeatured,
+    };
+
+    setReviews((prev) => prev.map((r) => (r.id === editingReview.id ? updated : r)));
+    if (selectedReview?.id === editingReview.id) setSelectedReview(updated);
+    setIsEditModalOpen(false);
+    toast('Story Updated', 'Testimonial details updated successfully.', 'success');
+  };
+
+  const handleAddReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!addName.trim() || !addTitle.trim() || !addBody.trim()) return;
+
+    const newRev: Review = {
+      id: `rev-${Date.now()}`,
+      display_name: addName.trim(),
+      role: addRole,
+      rating: Number(addRating) || 5,
+      title: addTitle.trim(),
+      body: addBody.trim(),
+      country: addCountry.trim() || null,
+      journey_year: Number(addJourneyYear) || 2026,
+      status: addStatus,
+      featured: addFeatured,
+      verified: addSource === 'token',
+      source: addSource,
+      created_at: new Date().toISOString(),
+      approved_at: addStatus === 'approved' ? new Date().toISOString() : null,
+    };
+
+    setReviews((prev) => [newRev, ...prev]);
+    logAction({
+      action: 'ADD_TESTIMONIAL',
+      tableName: 'reviews',
+      recordId: newRev.id,
+      diff: { name: newRev.display_name, role: newRev.role },
+    });
+    toast('Testimonial Added', `Story for ${newRev.display_name} recorded.`, 'success');
+    setIsAddModalOpen(false);
+    setAddName('');
+    setAddTitle('');
+    setAddBody('');
+  };
 
   // Filter reviews
   const filteredReviews = reviews.filter((r) => {
@@ -239,6 +337,11 @@ export const ReviewsPage: React.FC = () => {
                   },
                 },
                 {
+                  id: 'edit',
+                  label: 'Edit story',
+                  onClick: () => handleOpenEditModal(r),
+                },
+                {
                   id: 'approve',
                   label: 'Approve story',
                   onClick: () => handleStatusChange(r.id, 'approved'),
@@ -273,6 +376,14 @@ export const ReviewsPage: React.FC = () => {
       <PageHeader
         title="Reviews &amp; Client Feedback"
         description="Moderate anonymous parent stories, surrogate testimonials, and verified donor reflections."
+        actions={
+          <Button
+            onClick={() => setIsAddModalOpen(true)}
+            iconLeading={<Plus className="w-4 h-4" />}
+          >
+            Add Testimonial
+          </Button>
+        }
       />
 
       {/* Tabs bar */}
@@ -391,6 +502,13 @@ export const ReviewsPage: React.FC = () => {
             <div className="pt-4 border-t border-[#E1E0DD] flex flex-wrap gap-2">
               <Button
                 size="sm"
+                variant="secondary"
+                onClick={() => handleOpenEditModal(selectedReview)}
+              >
+                Edit Story Details
+              </Button>
+              <Button
+                size="sm"
                 onClick={() => {
                   handleStatusChange(selectedReview.id, 'approved');
                   setSelectedReview(null);
@@ -412,6 +530,209 @@ export const ReviewsPage: React.FC = () => {
           </div>
         )}
       </Drawer>
+
+      {/* Add Testimonial Modal */}
+      <Modal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        maxWidth="2xl"
+        title="Add Client Testimonial"
+        description="Record a testimonial or reflection from an intended parent, surrogate, or egg donor."
+      >
+        <form onSubmit={handleAddReview} className="space-y-4 text-left">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <Input
+              label="Author Display Name"
+              required
+              value={addName}
+              onChange={(e) => setAddName(e.target.value)}
+              placeholder="e.g. Parent D. &amp; M."
+            />
+            <Select
+              label="Role"
+              value={addRole}
+              onChange={(e) => setAddRole(e.target.value as any)}
+              options={[
+                { value: 'Intended Parent', label: 'Intended Parent' },
+                { value: 'Surrogate', label: 'Surrogate Mother' },
+                { value: 'Egg Donor', label: 'Egg Donor' },
+              ]}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Select
+              label="Rating (1 - 5 Stars)"
+              value={addRating}
+              onChange={(e) => setAddRating(e.target.value)}
+              options={[
+                { value: '5', label: '★★★★★ (5 Stars)' },
+                { value: '4', label: '★★★★☆ (4 Stars)' },
+                { value: '3', label: '★★★☆☆ (3 Stars)' },
+              ]}
+            />
+            <Input
+              label="Country of Residence"
+              value={addCountry}
+              onChange={(e) => setAddCountry(e.target.value)}
+              placeholder="Nigeria"
+            />
+            <Input
+              label="Journey Year"
+              type="number"
+              value={addJourneyYear}
+              onChange={(e) => setAddJourneyYear(e.target.value)}
+              placeholder="2026"
+            />
+          </div>
+
+          <Input
+            label="Story Title"
+            required
+            value={addTitle}
+            onChange={(e) => setAddTitle(e.target.value)}
+            placeholder="e.g. Beyond grateful for our twins through Zizo"
+          />
+
+          <Textarea
+            label="Full Testimonial Story"
+            required
+            rows={4}
+            value={addBody}
+            onChange={(e) => setAddBody(e.target.value)}
+            placeholder="Share personal reflections and coordinator experience..."
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <Select
+              label="Source Channel"
+              value={addSource}
+              onChange={(e) => setAddSource(e.target.value as any)}
+              options={[
+                { value: 'legacy', label: 'Legacy / Manual entry' },
+                { value: 'token', label: 'Verified consultation token' },
+                { value: 'public', label: 'Public web form' },
+              ]}
+            />
+            <Select
+              label="Moderation Status"
+              value={addStatus}
+              onChange={(e) => setAddStatus(e.target.value as any)}
+              options={[
+                { value: 'approved', label: 'Approved (Publish immediately)' },
+                { value: 'pending', label: 'Pending Review' },
+              ]}
+            />
+          </div>
+
+          <label className="flex items-center gap-2 text-xs text-[#17191A] cursor-pointer pt-1">
+            <input
+              type="checkbox"
+              checked={addFeatured}
+              onChange={(e) => setAddFeatured(e.target.checked)}
+              className="w-4 h-4 accent-[#17645F]"
+            />
+            <span>Feature prominently in homepage testimonial highlights</span>
+          </label>
+
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#E1E0DD]">
+            <Button variant="secondary" type="button" onClick={() => setIsAddModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit">
+              Save Testimonial
+            </Button>
+          </div>
+        </form>
+      </Modal>
+
+      {/* Edit Story Modal */}
+      <Modal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        maxWidth="2xl"
+        title="Edit Testimonial Story"
+        description="Update story content, display name, or publishing preferences."
+      >
+        <form onSubmit={handleSaveEdit} className="space-y-4 text-left">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <Input
+              label="Author Display Name"
+              required
+              value={editName}
+              onChange={(e) => setEditName(e.target.value)}
+            />
+            <Select
+              label="Role"
+              value={editRole}
+              onChange={(e) => setEditRole(e.target.value as any)}
+              options={[
+                { value: 'Intended Parent', label: 'Intended Parent' },
+                { value: 'Surrogate', label: 'Surrogate Mother' },
+                { value: 'Egg Donor', label: 'Egg Donor' },
+              ]}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Select
+              label="Rating"
+              value={editRating}
+              onChange={(e) => setEditRating(e.target.value)}
+              options={[
+                { value: '5', label: '★★★★★ (5 Stars)' },
+                { value: '4', label: '★★★★☆ (4 Stars)' },
+                { value: '3', label: '★★★☆☆ (3 Stars)' },
+              ]}
+            />
+            <Input
+              label="Country"
+              value={editCountry}
+              onChange={(e) => setEditCountry(e.target.value)}
+            />
+            <Input
+              label="Journey Year"
+              type="number"
+              value={editJourneyYear}
+              onChange={(e) => setEditJourneyYear(e.target.value)}
+            />
+          </div>
+
+          <Input
+            label="Story Title"
+            required
+            value={editTitle}
+            onChange={(e) => setEditTitle(e.target.value)}
+          />
+
+          <Textarea
+            label="Testimonial Story"
+            required
+            rows={4}
+            value={editBody}
+            onChange={(e) => setEditBody(e.target.value)}
+          />
+
+          <label className="flex items-center gap-2 text-xs text-[#17191A] cursor-pointer pt-1">
+            <input
+              type="checkbox"
+              checked={editFeatured}
+              onChange={(e) => setEditFeatured(e.target.checked)}
+              className="w-4 h-4 accent-[#17645F]"
+            />
+            <span>Feature on Homepage Testimonials Showcase</span>
+          </label>
+
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#E1E0DD]">
+            <Button variant="secondary" type="button" onClick={() => setIsEditModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit">
+              Save Changes
+            </Button>
+          </div>
+        </form>
+      </Modal>
 
       <ConfirmModal
         isOpen={Boolean(reviewToDelete)}

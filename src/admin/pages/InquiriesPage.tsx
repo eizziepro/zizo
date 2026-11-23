@@ -8,13 +8,23 @@ import { RowActionsMenu } from '../components/common/RowActionsMenu';
 import { Avatar } from '../components/untitledui/Avatar';
 import { Button } from '../components/untitledui/Button';
 import { Drawer } from '../components/untitledui/Drawer';
+import { Modal } from '../components/untitledui/Modal';
+import { Input } from '../components/untitledui/Input';
 import { Select } from '../components/untitledui/Select';
 import { Textarea } from '../components/untitledui/Textarea';
+import { Badge } from '../components/untitledui/Badge';
 import { ConfirmModal } from '../components/common/ConfirmModal';
 import { useNotifications } from '../context/NotificationContext';
 import { usePermissions } from '../hooks/usePermissions';
 import { useAuditLog } from '../hooks/useAuditLog';
+import { Plus } from '@untitledui/icons';
 import type { Inquiry, InquiryStatus } from '../types';
+
+const STAFF_COORDINATORS = [
+  { id: '1', name: 'Chizaram Ata' },
+  { id: '2', name: 'Amara Okafor' },
+  { id: '3', name: 'Babatunde Adeyemi' },
+];
 
 const INITIAL_INQUIRIES: Inquiry[] = [
   {
@@ -76,6 +86,55 @@ export const InquiriesPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all' | 'new' | 'contacted' | 'in_progress' | 'closed' | 'spam'>('all');
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
   const [inquiryToDelete, setInquiryToDelete] = useState<Inquiry | null>(null);
+
+  // Log Manual Inquiry state
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [newPhone, setNewPhone] = useState('');
+  const [newType, setNewType] = useState('Cost estimate');
+  const [newCountry, setNewCountry] = useState('Nigeria');
+  const [newPreferredRegion, setNewPreferredRegion] = useState('Lagos');
+  const [newSource, setNewSource] = useState('Website form');
+  const [newAssignedCoordinator, setNewAssignedCoordinator] = useState('1');
+  const [newMessage, setNewMessage] = useState('');
+
+  const handleCreateInquiry = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newName.trim() || !newEmail.trim() || !newMessage.trim()) return;
+
+    const assignedStaff = STAFF_COORDINATORS.find((s) => s.id === newAssignedCoordinator);
+    const newInq: Inquiry = {
+      id: `inq-${Date.now()}`,
+      name: newName.trim(),
+      email: newEmail.trim(),
+      phone: newPhone.trim() || null,
+      type: newType,
+      country: newCountry,
+      preferred_region: newPreferredRegion,
+      source: newSource,
+      message: newMessage.trim(),
+      status: 'new',
+      assigned_to: newAssignedCoordinator,
+      assigned_staff: assignedStaff ? { full_name: assignedStaff.name } : null,
+      notes: 'Logged manually by coordinator.',
+      created_at: new Date().toISOString(),
+    };
+
+    setInquiries((prev) => [newInq, ...prev]);
+    logAction({
+      action: 'CREATE_INQUIRY',
+      tableName: 'inquiries',
+      recordId: newInq.id,
+      diff: { name: newInq.name, type: newInq.type },
+    });
+    toast('Inquiry Logged', `New inquiry for ${newInq.name} created.`, 'success');
+    setIsCreateModalOpen(false);
+    setNewName('');
+    setNewEmail('');
+    setNewPhone('');
+    setNewMessage('');
+  };
 
   // Filter inquiries by tab
   const filteredInquiries = inquiries.filter((inq) => {
@@ -252,6 +311,14 @@ export const InquiriesPage: React.FC = () => {
       <PageHeader
         title="Client Inquiries"
         description="Prospective intended parents and fertility inquiries submitted across public touchpoints."
+        actions={
+          <Button
+            onClick={() => setIsCreateModalOpen(true)}
+            iconLeading={<Plus className="w-4 h-4" />}
+          >
+            Log Inquiry
+          </Button>
+        }
       />
 
       {/* Status tabs */}
@@ -335,6 +402,48 @@ export const InquiriesPage: React.FC = () => {
                 <span className="text-xs text-[#5D5E5F]">Country</span>
                 <span className="text-xs text-[#17191A]">{selectedInquiry.country}</span>
               </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-[#5D5E5F]">Preferred Region</span>
+                <span className="text-xs font-medium text-[#17645F]">{selectedInquiry.preferred_region || 'National / General'}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-[#5D5E5F]">Inbound Channel / Source</span>
+                <Badge variant="gray" size="sm">{selectedInquiry.source || 'Website form'}</Badge>
+              </div>
+              <div className="flex items-center justify-between pt-2 border-t border-[#E1E0DD]">
+                <span className="text-xs text-[#5D5E5F]">Assigned Coordinator</span>
+                <select
+                  value={selectedInquiry.assigned_to || '1'}
+                  onChange={(e) => {
+                    const nextId = e.target.value;
+                    const nextStaff = STAFF_COORDINATORS.find((s) => s.id === nextId);
+                    setInquiries((prev) =>
+                      prev.map((i) =>
+                        i.id === selectedInquiry.id
+                          ? { ...i, assigned_to: nextId, assigned_staff: nextStaff ? { full_name: nextStaff.name } : null }
+                          : i
+                      )
+                    );
+                    setSelectedInquiry((prev) =>
+                      prev
+                        ? {
+                            ...prev,
+                            assigned_to: nextId,
+                            assigned_staff: nextStaff ? { full_name: nextStaff.name } : null,
+                          }
+                        : null
+                    );
+                    toast('Coordinator Assigned', `Inquiry assigned to ${nextStaff?.name}.`, 'success');
+                  }}
+                  className="rounded border border-[#E1E0DD] bg-white px-2 py-1 text-xs text-[#17191A] font-medium focus:ring-1 focus:ring-[#17645F] cursor-pointer"
+                >
+                  {STAFF_COORDINATORS.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -409,6 +518,129 @@ export const InquiriesPage: React.FC = () => {
           </div>
         )}
       </Drawer>
+
+      {/* Log Manual Inquiry Modal */}
+      <Modal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        maxWidth="2xl"
+        title="Log Inbound Client Inquiry"
+        description="Record an inquiry received over phone, WhatsApp, partner clinic referral, or offline consultation."
+      >
+        <form onSubmit={handleCreateInquiry} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <Input
+              label="Contact Full Name"
+              required
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              placeholder="e.g. Tunde &amp; Folake B."
+            />
+            <Input
+              label="Email Address"
+              type="email"
+              required
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+              placeholder="client@example.com"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <Input
+              label="Phone / WhatsApp Number"
+              type="tel"
+              value={newPhone}
+              onChange={(e) => setNewPhone(e.target.value)}
+              placeholder="+234..."
+            />
+            <Select
+              label="Inquiry Topic / Service"
+              value={newType}
+              onChange={(e) => setNewType(e.target.value)}
+              options={[
+                { value: 'Cost estimate', label: 'Cost estimate & Package pricing' },
+                { value: 'Gestational Surrogacy Inquiry', label: 'Gestational Surrogacy Inquiry' },
+                { value: 'Egg Donor Matching', label: 'Egg Donor Matching & Selection' },
+                { value: 'IVF Consultation and Coordination', label: 'IVF Consultation & Coordination' },
+                { value: 'International Intended Parent', label: 'International / Cross-Border Support' },
+                { value: 'General question', label: 'General question' },
+              ]}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Select
+              label="Country of Residence"
+              value={newCountry}
+              onChange={(e) => setNewCountry(e.target.value)}
+              options={[
+                { value: 'Nigeria', label: 'Nigeria' },
+                { value: 'United Kingdom', label: 'United Kingdom' },
+                { value: 'United States', label: 'United States' },
+                { value: 'Canada', label: 'Canada' },
+                { value: 'Ghana', label: 'Ghana' },
+                { value: 'Germany', label: 'Germany' },
+                { value: 'Ireland', label: 'Ireland' },
+                { value: 'Australia', label: 'Australia' },
+                { value: 'Other', label: 'Other Country' },
+              ]}
+            />
+            <Select
+              label="Preferred Treatment Region"
+              value={newPreferredRegion}
+              onChange={(e) => setNewPreferredRegion(e.target.value)}
+              options={[
+                { value: 'Lagos', label: 'Lagos, Nigeria' },
+                { value: 'Abuja', label: 'Abuja, Nigeria' },
+                { value: 'Port Harcourt', label: 'Port Harcourt, Nigeria' },
+                { value: 'International / Cross-Border', label: 'International / Cross-Border' },
+              ]}
+            />
+            <Select
+              label="Inbound Channel / Source"
+              value={newSource}
+              onChange={(e) => setNewSource(e.target.value)}
+              options={[
+                { value: 'Website form', label: 'Website form' },
+                { value: 'WhatsApp direct', label: 'WhatsApp direct' },
+                { value: 'Phone consultation', label: 'Phone call' },
+                { value: 'Fertility Clinic Referral', label: 'Fertility Clinic Referral' },
+                { value: 'Previous Client Referral', label: 'Client Referral' },
+                { value: 'Instagram / Social', label: 'Instagram / Social' },
+              ]}
+            />
+          </div>
+
+          <Select
+            label="Assigned Coordinator"
+            value={newAssignedCoordinator}
+            onChange={(e) => setNewAssignedCoordinator(e.target.value)}
+            options={STAFF_COORDINATORS.map((s) => ({
+              value: s.id,
+              label: s.name,
+            }))}
+          />
+
+          <Textarea
+            label="Client Inbound Message / Inquiry Details"
+            required
+            rows={3}
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Record client goals, timeline, and questions asked..."
+          />
+
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#E1E0DD]">
+            <Button variant="secondary" type="button" onClick={() => setIsCreateModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit">
+              Log Inquiry
+            </Button>
+          </div>
+        </form>
+      </Modal>
 
       <ConfirmModal
         isOpen={Boolean(inquiryToDelete)}

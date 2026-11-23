@@ -26,8 +26,11 @@ interface BlogPost {
   category: string;
   author: string;
   featured_image?: string | null;
+  image_alt?: string | null;
   status: 'draft' | 'scheduled' | 'published' | 'archived';
   publish_at?: string | null;
+  seo_title?: string | null;
+  seo_description?: string | null;
   updated_at: string;
 }
 
@@ -90,6 +93,10 @@ export const BlogPage: React.FC = () => {
   const [author, setAuthor] = useState('Chizaram Ata');
   const [status, setStatus] = useState<BlogPost['status']>('published');
   const [featuredImage, setFeaturedImage] = useState<string | null>(null);
+  const [imageAlt, setImageAlt] = useState('');
+  const [publishAt, setPublishAt] = useState('');
+  const [seoTitle, setSeoTitle] = useState('');
+  const [seoDescription, setSeoDescription] = useState('');
 
   // Delete modal
   const [postToDelete, setPostToDelete] = useState<BlogPost | null>(null);
@@ -109,6 +116,10 @@ export const BlogPage: React.FC = () => {
     setCategory('Clinical Care');
     setAuthor('Chizaram Ata');
     setFeaturedImage(null);
+    setImageAlt('');
+    setPublishAt('');
+    setSeoTitle('');
+    setSeoDescription('');
     setStatus('published');
     setEditorOpen(true);
   };
@@ -122,6 +133,10 @@ export const BlogPage: React.FC = () => {
     setCategory(p.category);
     setAuthor(p.author);
     setFeaturedImage(p.featured_image || null);
+    setImageAlt(p.image_alt || '');
+    setPublishAt(p.publish_at ? p.publish_at.slice(0, 16) : '');
+    setSeoTitle(p.seo_title || '');
+    setSeoDescription(p.seo_description || '');
     setStatus(p.status);
     setEditorOpen(true);
   };
@@ -137,8 +152,11 @@ export const BlogPage: React.FC = () => {
       category,
       author,
       featured_image: featuredImage,
+      image_alt: imageAlt.trim() || null,
       status,
-      publish_at: status === 'published' ? new Date().toISOString() : null,
+      publish_at: status === 'scheduled' ? (publishAt ? new Date(publishAt).toISOString() : new Date().toISOString()) : status === 'published' ? new Date().toISOString() : null,
+      seo_title: seoTitle.trim() || null,
+      seo_description: seoDescription.trim() || null,
       updated_at: new Date().toISOString().split('T')[0],
     };
 
@@ -343,6 +361,13 @@ export const BlogPage: React.FC = () => {
           />
 
           <Input
+            label="Cover Image Alt Text (Accessibility &amp; SEO)"
+            value={imageAlt}
+            onChange={(e) => setImageAlt(e.target.value)}
+            placeholder="Descriptive alt text for the featured cover..."
+          />
+
+          <Input
             label="Article Title"
             required
             value={title}
@@ -402,17 +427,55 @@ export const BlogPage: React.FC = () => {
             minHeight="240px"
           />
 
-          <Select
-            label="Status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value as any)}
-            options={[
-              { value: 'published', label: 'Published' },
-              { value: 'draft', label: 'Draft' },
-              { value: 'scheduled', label: 'Scheduled' },
-              { value: 'archived', label: 'Archived' },
-            ]}
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Select
+              label="Publication Status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value as any)}
+              options={[
+                { value: 'published', label: 'Published (Live)' },
+                { value: 'draft', label: 'Draft' },
+                { value: 'scheduled', label: 'Scheduled' },
+                { value: 'archived', label: 'Archived' },
+              ]}
+            />
+            {status === 'scheduled' ? (
+              <Input
+                label="Scheduled Publication Time (WAT)"
+                type="datetime-local"
+                required
+                value={publishAt}
+                onChange={(e) => setPublishAt(e.target.value)}
+              />
+            ) : (
+              <div className="flex items-center text-xs text-[#5D5E5F] pt-6">
+                <span>Article will be updated immediately upon saving.</span>
+              </div>
+            )}
+          </div>
+
+          {/* SEO Metadata Section */}
+          <div className="p-4 rounded-[8px] bg-[#FAF9F6] border border-[#E1E0DD] space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="text-xs font-semibold text-[#17645F] uppercase tracking-wider">
+                Search Engine Optimization (SEO)
+              </h4>
+              <span className="text-[11px] text-[#5D5E5F]">SERP Meta Tags</span>
+            </div>
+            <Input
+              label="SEO Meta Title (Recommended: 50 - 60 chars)"
+              value={seoTitle}
+              onChange={(e) => setSeoTitle(e.target.value)}
+              placeholder={title || 'Custom meta title...'}
+            />
+            <Textarea
+              label="SEO Meta Description (Recommended: 150 - 160 chars)"
+              rows={2}
+              value={seoDescription}
+              onChange={(e) => setSeoDescription(e.target.value)}
+              placeholder={excerpt || 'Brief search snippet describing this fertility resource...'}
+            />
+          </div>
         </form>
       </Drawer>
 
