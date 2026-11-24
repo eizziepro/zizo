@@ -675,45 +675,15 @@ ${renderHeader({ isHome: false })}
 
       <!-- Parent and surrogate reflections -->
       ${(() => {
-        const defaultReviews = [
-          {
-            display_name: 'Parent AJ',
-            role: 'Intended Parent',
-            country: 'United Kingdom',
-            rating: 5,
-            body: 'From our first conversation to bringing our child home, Zizo handled every detail with warmth, discretion, and professionalism. We are forever grateful.',
-            verified: 1,
-            image: '/assets/img/hero-family-1024w.webp',
-            alt: 'Intended parents holding hands with infant in soft natural light',
-          },
-          {
-            display_name: 'B.O., Surrogate Mother, Lagos',
-            role: 'Surrogate',
-            country: 'Nigeria',
-            rating: 5,
-            body: 'As a surrogate in Lagos, I felt genuinely valued and protected at every appointment. My case manager checked in thoughtfully and my privacy was respected throughout.',
-            verified: 1,
-            image: '/assets/img/become-a-surrogate-1024w.webp',
-            alt: 'Warm portrait of Nigerian gestational surrogate in natural daylight',
-          },
-          {
-            display_name: 'Parent SS & MV',
-            role: 'Intended Parent',
-            country: 'United States',
-            rating: 5,
-            body: 'Coordinating a cross-border journey felt overwhelming until we spoke with Chizaram and the Zizo team. Every medical and legal step was explained clearly and thoughtfully.',
-            verified: 1,
-            image: '/assets/img/service-matching-1024w.webp',
-            alt: 'Coordinator reviewing personalized donor and surrogate profiles',
-          },
-        ];
-
-        const cardsToRender = (reviews && reviews.length >= 3)
-          ? reviews.slice(0, 3).map((r, idx) => ({
-              ...defaultReviews[idx],
-              ...r,
-            }))
-          : defaultReviews;
+        if (!reviews || reviews.length === 0) {
+          return `<div class="p-8 rounded-2xl border border-[#E1E0DD] bg-[#FAF9F6] text-center space-y-3 reveal">
+            <h3 class="font-display text-base text-[#17191A]">Patient Reflections &amp; Clinical Feedback</h3>
+            <p class="text-xs text-[#5D5E5F] max-w-lg mx-auto font-light leading-relaxed">
+              We respect the sensitivity and privacy of all intended parents, surrogates, and egg donors. Client reviews are shared only with explicit consent and verified completion.
+            </p>
+            <a href="/resources/reviews/#write-a-review" class="inline-block text-xs font-semibold text-[#17645F] hover:underline mt-1">Share your experience &rarr;</a>
+          </div>`;
+        }
 
         return `<div class="space-y-6 reveal">
         <div class="flex items-center justify-between">
@@ -721,43 +691,35 @@ ${renderHeader({ isHome: false })}
           <a href="/resources/reviews/" class="text-[length:var(--fs-small)] text-[#17645F] font-semibold hover:underline underline-offset-4">Read all stories</a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          ${cardsToRender
+          ${reviews.slice(0, 3)
             .map((rev) => {
               const dName = escapeHtml(rev.display_name || 'Anonymous');
               const rName = escapeHtml(rev.role || 'Client');
               const loc = escapeHtml(rev.country ? `${rev.role} · ${rev.country}` : rev.role);
               const starVal = Number(rev.rating || 5).toFixed(1);
               const bText = escapeHtml(rev.body || '');
-              const imgSrc = escapeHtml(rev.image || '/assets/img/hero-family-1024w.webp');
-              const imgAlt = escapeHtml(rev.alt || 'Testimonial portrait');
+              const isVerified = Boolean(rev.verified);
 
-              return `<article class="testimonial-wall-card testimonial-wall-mobile-card h-[400px] w-full" tabindex="0" aria-label="Review by ${dName}">
-            <img class="testimonial-wall-image" src="${imgSrc}" alt="${imgAlt}" loading="lazy" decoding="async" />
-
-            <div class="absolute top-4 inset-x-4 z-10 flex items-center justify-between pointer-events-none">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] tracking-wider uppercase text-[#8BB2AF] font-medium">
-                <i data-lucide="quote" class="w-3 h-3 text-[#8BB2AF]"></i>
-                <span>${rName}</span>
-              </span>
-              <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] text-[#FAF9F6]/90 font-medium tabular-nums">
-                <i data-lucide="star" class="w-3 h-3 text-[#8BB2AF] fill-current"></i>
-                <span>${starVal}</span>
-              </span>
-            </div>
-
-            <div class="testimonial-wall-content">
-              <p class="testimonial-wall-quote">“${bText}”</p>
-              <div class="pt-2.5 border-t border-[#FAF9F6]/15 flex items-center justify-between gap-2">
+              return `<article class="rounded-2xl border border-[#E1E0DD] bg-white p-6 flex flex-col justify-between space-y-4 shadow-xs" tabindex="0" aria-label="Review by ${dName}">
                 <div>
-                  <div class="testimonial-wall-name">${dName}</div>
-                  <div class="testimonial-wall-role">${loc}${rev.verified ? ' · Verified' : ''}</div>
+                  <div class="flex items-center justify-between pb-3 border-b border-[#E1E0DD]">
+                    <span class="text-xs uppercase font-bold text-[#17645F]">${rName}</span>
+                    <span class="text-xs text-[#17191A] font-mono">${starVal} ★</span>
+                  </div>
+                  <p class="text-xs text-[#2E3031] leading-relaxed italic mt-3">“${bText}”</p>
                 </div>
-                <div class="w-7 h-7 rounded-full bg-[#8BB2AF]/20 border border-[#8BB2AF]/30 text-[#8BB2AF] flex items-center justify-center shrink-0" aria-hidden="true">
-                  <i data-lucide="check" class="w-3.5 h-3.5 text-[#8BB2AF]"></i>
+                <div class="pt-3 border-t border-[#E1E0DD] flex items-center justify-between gap-2">
+                  <div>
+                    <div class="text-xs font-semibold text-[#17191A]">${dName}</div>
+                    <div class="text-[11px] text-[#5D5E5F]">${loc}${isVerified ? ' · Verified' : ''}</div>
+                  </div>
+                  ${isVerified ? `
+                    <div class="w-6 h-6 rounded-full bg-[#8BB2AF]/20 text-[#17645F] flex items-center justify-center shrink-0" title="Verified journey completion">
+                      <i data-lucide="check" class="w-3.5 h-3.5 text-[#17645F]"></i>
+                    </div>
+                  ` : ''}
                 </div>
-              </div>
-            </div>
-          </article>`;
+              </article>`;
             })
             .join('')}
         </div>

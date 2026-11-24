@@ -54,8 +54,10 @@ export function renderHead({
   extraHead = '',
   siteUrl = '',
 }) {
-  const fullCanonical = siteUrl ? `${siteUrl}${canonicalPath}` : canonicalPath;
-  const fullOgImage = siteUrl && ogImage.startsWith('/') ? `${siteUrl}${ogImage}` : ogImage;
+  const baseOrigin = (siteUrl || process.env.APP_URL || 'https://zizo-steel.vercel.app').replace(/\/$/, '');
+  const cleanPath = canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`;
+  const fullCanonical = `${baseOrigin}${cleanPath}`;
+  const fullOgImage = ogImage.startsWith('http') ? ogImage : `${baseOrigin}${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`;
   const robotsContent = noindex ? 'noindex, nofollow' : 'index, follow';
 
   const ldScripts = (Array.isArray(jsonLd) ? jsonLd : [jsonLd])

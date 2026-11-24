@@ -48,7 +48,7 @@ const ROOT = process.cwd();
 const DIST = path.join(ROOT, 'dist');
 const PUBLIC_DIR = path.join(ROOT, 'public');
 const DB_PATH = path.join(ROOT, 'data', 'zizo.db');
-const SITE_URL = (process.env.APP_URL || '').replace(/\/$/, '');
+const SITE_URL = (process.env.APP_URL || 'https://zizo-steel.vercel.app').replace(/\/$/, '');
 
 const jsdomWindow = new JSDOM('').window;
 const DOMPurify = createDOMPurify(jsdomWindow);
@@ -423,7 +423,6 @@ export function buildStaticSite() {
       })
     );
     if (svc.legacySlug) {
-      staticPaths.push(`/services/${svc.legacySlug}/`);
       writeHtml(
         `services/${svc.legacySlug}/index.html`,
         renderServiceDetailPage({

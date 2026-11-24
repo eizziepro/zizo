@@ -277,9 +277,9 @@ export const IntegrationsTab: React.FC = () => {
       </div>
 
       {/* SECTION 1: PAYMENT GATEWAYS & OPERATIONS HUB */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column (8 cols): Gateways Forms */}
-        <div className="xl:col-span-8 space-y-6">
+        <div className="lg:col-span-7 xl:col-span-8 space-y-6">
           <div>
             <h2 className="text-base font-semibold text-[#17191A] flex items-center gap-2">
               <CreditCard01 className="w-5 h-5 text-[#17645F]" />
@@ -452,17 +452,17 @@ export const IntegrationsTab: React.FC = () => {
                 Webhook Notification URL (Paste into your Paystack Dashboard)
               </span>
             </div>
-            <div className="flex items-center rounded-[8px] border border-[#E1E0DD] bg-white shadow-xs overflow-hidden focus-within:border-[#17645F] focus-within:ring-2 focus-within:ring-[#17645F]/20">
+            <div className="flex items-stretch rounded-[8px] border border-[#E1E0DD] bg-white shadow-xs overflow-hidden focus-within:border-[#17645F] focus-within:ring-2 focus-within:ring-[#17645F]/20 h-12 min-h-[48px]">
               <input
                 type="text"
                 readOnly
                 value={paystackWebhookUrl || (typeof window !== 'undefined' ? `${window.location.origin}/api/webhooks/paystack` : 'http://localhost:3000/api/webhooks/paystack')}
-                className="flex-1 min-h-[46px] h-12 px-4 py-3 text-xs sm:text-sm font-mono text-[#17191A] bg-transparent select-all cursor-text focus:outline-none"
+                className="flex-1 px-4 py-3 text-xs sm:text-sm font-mono text-[#17191A] bg-transparent select-all cursor-text focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => handleCopy(paystackWebhookUrl || `${window.location.origin}/api/webhooks/paystack`, 'Paystack Webhook URL')}
-                className="px-4 py-3 text-xs font-semibold text-[#17645F] hover:bg-[#17645F]/10 transition-colors border-l border-[#E1E0DD] flex items-center gap-1.5 cursor-pointer shrink-0"
+                className="px-4 text-xs font-semibold text-[#17645F] hover:bg-[#17645F]/10 transition-colors border-l border-[#E1E0DD] flex items-center gap-1.5 cursor-pointer shrink-0 self-stretch"
               >
                 <Copy01 className="w-4 h-4" />
                 <span>Copy URL</span>
@@ -589,17 +589,17 @@ export const IntegrationsTab: React.FC = () => {
                 Webhook Notification URL (Paste into your Remita Dashboard)
               </span>
             </div>
-            <div className="flex items-center rounded-[8px] border border-[#E1E0DD] bg-white shadow-xs overflow-hidden focus-within:border-[#17645F] focus-within:ring-2 focus-within:ring-[#17645F]/20">
+            <div className="flex items-stretch rounded-[8px] border border-[#E1E0DD] bg-white shadow-xs overflow-hidden focus-within:border-[#17645F] focus-within:ring-2 focus-within:ring-[#17645F]/20 h-12 min-h-[48px]">
               <input
                 type="text"
                 readOnly
                 value={remitaWebhookUrl || (typeof window !== 'undefined' ? `${window.location.origin}/api/webhooks/remita` : 'http://localhost:3000/api/webhooks/remita')}
-                className="flex-1 min-h-[46px] h-12 px-4 py-3 text-xs sm:text-sm font-mono text-[#17191A] bg-transparent select-all cursor-text focus:outline-none"
+                className="flex-1 px-4 py-3 text-xs sm:text-sm font-mono text-[#17191A] bg-transparent select-all cursor-text focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => handleCopy(remitaWebhookUrl || `${window.location.origin}/api/webhooks/remita`, 'Remita Webhook URL')}
-                className="px-4 py-3 text-xs font-semibold text-[#17645F] hover:bg-[#17645F]/10 transition-colors border-l border-[#E1E0DD] flex items-center gap-1.5 cursor-pointer shrink-0"
+                className="px-4 text-xs font-semibold text-[#17645F] hover:bg-[#17645F]/10 transition-colors border-l border-[#E1E0DD] flex items-center gap-1.5 cursor-pointer shrink-0 self-stretch"
               >
                 <Copy01 className="w-4 h-4" />
                 <span>Copy URL</span>
@@ -633,8 +633,8 @@ export const IntegrationsTab: React.FC = () => {
         </div>
       </div>
 
-      {/* Right Column (4 cols): Operations, Security & Diagnostics Hub */}
-      <div className="xl:col-span-4 space-y-5 xl:sticky xl:top-20">
+      {/* Right Column (4-5 cols): Operations, Security & Diagnostics Hub */}
+      <div className="lg:col-span-5 xl:col-span-4 space-y-5 lg:sticky lg:top-20">
         {/* Card 1: Live Gateway Health */}
         <div className="rounded-[10px] border border-[#E1E0DD] bg-white p-5 shadow-xs space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-[#E1E0DD]">

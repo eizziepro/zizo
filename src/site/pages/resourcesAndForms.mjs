@@ -386,7 +386,7 @@ export function renderReviewFormHtml({ verifiedToken = '' }) {
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
         <label for="rev-display-name" class="block text-[length:var(--fs-small)] font-medium mb-1.5">Display label (anonymised)</label>
-        <input id="rev-display-name" name="display_name" type="text" required class="input-field" placeholder='e.g. "Parent AJ" or "M.O., Lagos"' />
+        <input id="rev-display-name" name="display_name" type="text" required class="input-field" placeholder='e.g. "P.A." or "Anonymous Parent, Lagos"' />
       </div>
       <div>
         <label for="rev-role" class="block text-[length:var(--fs-small)] font-medium mb-1.5">Your role</label>
@@ -455,114 +455,12 @@ export function renderReviewFormHtml({ verifiedToken = '' }) {
 }
 
 export function renderStoriesReviewsPage({ reviews = [], settings = {}, siteUrl = '' }) {
-  const defaultNineReviews = [
-    {
-      display_name: 'Parent AJ',
-      role: 'Intended Parent',
-      country: 'United Kingdom',
-      rating: 5,
-      body: 'From our first conversation to bringing our child home, Zizo handled every detail with warmth, discretion, and professionalism. We are forever grateful.',
-      verified: 1,
-      image: '/assets/img/hero-family-1024w.webp',
-      alt: 'Intended parents holding hands with infant in soft natural light',
-    },
-    {
-      display_name: 'B.O., Surrogate Mother, Lagos',
-      role: 'Surrogate',
-      country: 'Nigeria',
-      rating: 5,
-      body: 'As a surrogate in Lagos, I felt genuinely valued and protected at every appointment. My case manager checked in thoughtfully and my privacy was respected throughout.',
-      verified: 1,
-      image: '/assets/img/become-a-surrogate-1024w.webp',
-      alt: 'Warm portrait of Nigerian gestational surrogate in natural daylight',
-    },
-    {
-      display_name: 'Parent SS & MV',
-      role: 'Intended Parent',
-      country: 'United States',
-      rating: 5,
-      body: 'Coordinating a cross-border journey felt overwhelming until we spoke with Chizaram and the Zizo team. Every medical and legal step was explained clearly and thoughtfully.',
-      verified: 1,
-      image: '/assets/img/service-matching-1024w.webp',
-      alt: 'Coordinator reviewing personalized donor and surrogate profiles',
-    },
-    {
-      display_name: 'Tara K.',
-      role: 'Egg Donor',
-      country: 'Canada',
-      rating: 5,
-      body: 'Donating eggs through Zizo was an empowering experience. The team prioritized my wellbeing, provided thorough medical guidance, and kept everything strictly private.',
-      verified: 1,
-      image: '/assets/img/service-ovum-donation-1024w.webp',
-      alt: 'Prospective egg donor consultation in calm private suite',
-    },
-    {
-      display_name: 'Parent David & Emeka',
-      role: 'Intended Parent',
-      country: 'United Kingdom',
-      rating: 5,
-      body: 'The transparency in cost escrow and legal contracts gave us complete peace of mind. We always knew our surrogate was well taken care of and respected.',
-      verified: 1,
-      image: '/assets/img/service-surrogacy-1024w.webp',
-      alt: 'Expectant family resting comfortably in sunlit living room',
-    },
-    {
-      display_name: 'Folake A., Surrogate',
-      role: 'Surrogate',
-      country: 'Nigeria',
-      rating: 5,
-      body: 'My coordinator was always available to answer questions and accompany me to clinic appointments. The milestone allowances were paid on schedule every single month.',
-      verified: 1,
-      image: '/assets/img/how-it-works-1024w.webp',
-      alt: 'Parents hands gently cradling newborn hand in cream woven blanket',
-    },
-    {
-      display_name: 'Parent Elena & Marcus',
-      role: 'Intended Parent',
-      country: 'Germany',
-      rating: 5,
-      body: 'Consular paperwork and parentage court orders were handled seamlessly by Zizo\'s vetted legal counsel. Arriving home with our daughter was smooth and joyful.',
-      verified: 1,
-      image: '/assets/img/founder-about-chizaram-ata-1024w.webp',
-      alt: 'Warm consultation setting with tea and flowers on oak table',
-    },
-    {
-      display_name: 'Ngozi M.',
-      role: 'Egg Donor',
-      country: 'Nigeria',
-      rating: 5,
-      body: 'The independent counseling sessions before my cycle were so reassuring. Zizo made sure I never felt pressured and answered every health question openly.',
-      verified: 1,
-      image: '/assets/img/service-counseling-1024w.webp',
-      alt: 'Couple and counselor in compassionate fertility dialogue',
-    },
-    {
-      display_name: 'Parent Clara & Brian',
-      role: 'Intended Parent',
-      country: 'Canada',
-      rating: 5,
-      body: 'After years of difficult fertility attempts, working with Zizo felt like finding a sanctuary. Their warmth, clinical partnerships, and ethics are unmatched.',
-      verified: 1,
-      image: '/assets/img/blog-default-1024w.webp',
-      alt: 'Linen notebook, pen, ceramic cup, and olive stem on oak desk',
-    },
-  ];
-
-  // Merge supplied reviews with defaultNineReviews ensuring 9 cards always render
-  const cardsToRender = defaultNineReviews.map((def, idx) => {
-    if (reviews && reviews[idx]) {
-      return {
-        ...def,
-        ...reviews[idx],
-        image: def.image,
-        alt: def.alt,
-      };
-    }
-    return def;
-  });
-
+  const cardsToRender = reviews || [];
   const approvedCount = cardsToRender.length;
-  const avgRating = '5.0';
+  const avgRating =
+    approvedCount >= 5
+      ? (cardsToRender.reduce((sum, r) => sum + Number(r.rating || 5), 0) / approvedCount).toFixed(1)
+      : null;
 
   return `${renderHead({
     title: 'Reviews | Zizo Donor and Surrogacy',
@@ -601,45 +499,48 @@ ${renderHeader({ isHome: false })}
       </div>
 
       <div id="reviews-list-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        ${cardsToRender
-          .map((rev) => {
+        ${cardsToRender.length === 0 ? `
+          <div class="col-span-full py-16 px-6 text-center space-y-4 rounded-2xl border border-[#E1E0DD] bg-[#FAF9F6]">
+            <div class="w-12 h-12 rounded-full bg-[#17645F]/10 text-[#17645F] flex items-center justify-center mx-auto" aria-hidden="true">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+            <h3 class="display text-lg text-[#17191A]">Patient Confidentiality &amp; Authentic Reviews</h3>
+            <p class="text-xs text-[#5D5E5F] max-w-lg mx-auto font-light leading-relaxed">
+              We respect the private nature of reproductive health journeys. In accordance with healthcare transparency principles and Nigerian data privacy law (NDPA), reviews are published only following authenticated journey completion and verified permission.
+            </p>
+            <p class="text-xs text-[#17645F] font-semibold">
+              Have you worked with Zizo? We invite you to share your experience below.
+            </p>
+          </div>
+        ` : cardsToRender.map((rev) => {
             const dName = escapeHtml(rev.display_name || 'Anonymous');
             const rName = escapeHtml(rev.role || 'Client');
             const loc = escapeHtml(rev.country ? `${rev.role} · ${rev.country}` : rev.role);
             const starVal = Number(rev.rating || 5).toFixed(1);
             const bText = escapeHtml(rev.body || '');
-            const imgSrc = escapeHtml(rev.image || '/assets/img/hero-family-1024w.webp');
-            const imgAlt = escapeHtml(rev.alt || 'Testimonial portrait');
+            const isVerified = Boolean(rev.verified);
 
-            return `<article class="testimonial-wall-card testimonial-wall-mobile-card h-[400px] w-full" data-review-card data-role="${escapeHtml(rev.role)}" tabindex="0" aria-label="Review by ${dName}">
-          <img class="testimonial-wall-image" src="${imgSrc}" alt="${imgAlt}" loading="lazy" decoding="async" />
-
-          <div class="absolute top-4 inset-x-4 z-10 flex items-center justify-between pointer-events-none">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] tracking-wider uppercase text-[#8BB2AF] font-medium">
-              <i data-lucide="quote" class="w-3 h-3 text-[#8BB2AF]"></i>
-              <span>${rName}</span>
-            </span>
-            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-[#17191A]/70 backdrop-blur-md border border-[#FAF9F6]/15 text-[10px] text-[#FAF9F6]/90 font-medium tabular-nums">
-              <i data-lucide="star" class="w-3 h-3 text-[#8BB2AF] fill-current"></i>
-              <span>${starVal}</span>
-            </span>
-          </div>
-
+            return `<article class="testimonial-wall-card testimonial-wall-mobile-card h-[380px] w-full" data-review-card data-role="${escapeHtml(rev.role)}" tabindex="0" aria-label="Review by ${dName}">
           <div class="testimonial-wall-content">
-            <p class="testimonial-wall-quote">“${bText}”</p>
-            <div class="pt-2.5 border-t border-[#FAF9F6]/15 flex items-center justify-between gap-2">
+            <div class="flex items-center justify-between pb-3 border-b border-[#FAF9F6]/15">
+              <span class="text-xs uppercase font-bold text-[#8BB2AF]">${rName}</span>
+              <span class="text-xs text-[#FAF9F6] font-mono">${starVal} ★</span>
+            </div>
+            <p class="testimonial-wall-quote mt-4">“${bText}”</p>
+            <div class="pt-3 border-t border-[#FAF9F6]/15 flex items-center justify-between gap-2 mt-4">
               <div>
                 <div class="testimonial-wall-name">${dName}</div>
-                <div class="testimonial-wall-role">${loc}${rev.verified ? ' · Verified' : ''}</div>
+                <div class="testimonial-wall-role">${loc}${isVerified ? ' · Verified' : ''}</div>
               </div>
-              <div class="w-7 h-7 rounded-full bg-[#8BB2AF]/20 border border-[#8BB2AF]/30 text-[#8BB2AF] flex items-center justify-center shrink-0" aria-hidden="true">
-                <i data-lucide="check" class="w-3.5 h-3.5 text-[#8BB2AF]"></i>
-              </div>
+              ${isVerified ? `
+                <div class="w-6 h-6 rounded-full bg-[#8BB2AF]/20 text-[#8BB2AF] flex items-center justify-center shrink-0" title="Verified journey completion">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-[#8BB2AF]"></i>
+                </div>
+              ` : ''}
             </div>
           </div>
         </article>`;
-          })
-          .join('')}
+          }).join('')}
       </div>
 
       <!-- Pagination at bottom (9 items total) -->

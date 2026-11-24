@@ -527,14 +527,14 @@ function seedIfEmpty(db: Database.Database): void {
       'Always grateful for steady, compassionate care',
       'From our first conversation to bringing our child home, Zizo handled every detail with warmth, discretion, and professionalism. We are forever grateful.',
       'United Kingdom',
-      'approved',
-      1,
+      'pending', // Pending owner verification and moderation trail
+      0,
       0,
       'legacy',
       1,
       0, // Flagged "confirm permission to publish" in admin
       nowIso,
-      nowIso
+      null
     );
     insertReview.run(
       'rev-legacy-2',
@@ -544,14 +544,14 @@ function seedIfEmpty(db: Database.Database): void {
       'Seamless coordination across borders',
       'Coordinating a cross-border journey felt overwhelming until we spoke with Chizaram and the Zizo team. Every medical and legal step was explained clearly and thoughtfully.',
       'United States',
-      'approved',
-      1,
+      'pending', // Pending owner verification and moderation trail
+      0,
       0,
       'legacy',
       1,
       0,
       nowIso,
-      nowIso
+      null
     );
     insertReview.run(
       'rev-legacy-3',
@@ -561,14 +561,14 @@ function seedIfEmpty(db: Database.Database): void {
       'Respected, supported, and genuinely cared for',
       'As a surrogate in Lagos, I felt genuinely valued and protected at every appointment. My case manager checked in thoughtfully and my privacy was respected throughout.',
       'Nigeria',
-      'approved',
-      1,
+      'pending', // Pending owner verification and moderation trail
+      0,
       0,
       'legacy',
       1,
       0,
       nowIso,
-      nowIso
+      null
     );
   }
 

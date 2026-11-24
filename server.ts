@@ -66,24 +66,46 @@ app.use(
   })
 );
 
-// Security Headers
-app.use((_req, res, next) => {
+// Security Headers & CSRF Defense
+app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+
+  // Enforce HSTS on HTTPS requests
+  if (req.secure || req.headers['x-forwarded-proto'] === 'https') {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
+
   res.setHeader(
     'Content-Security-Policy',
     [
       "default-src 'self'",
       "script-src 'self' https://cdn.jsdelivr.net https://unpkg.com https://challenges.cloudflare.com https://js.paystack.co 'unsafe-inline'",
-      "style-src 'self' https://fonts.googleapis.com 'unsafe-inline'",
+      "style-src 'self' https://fonts.googleapis.com https://paystack.com 'unsafe-inline'",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: https:",
       "connect-src 'self' https://*.supabase.co https://challenges.cloudflare.com https://api.paystack.co https://checkout.paystack.com",
       "frame-src 'self' https://challenges.cloudflare.com https://checkout.paystack.com",
+      "frame-ancestors 'none'",
     ].join('; ')
   );
+
+  // CSRF / Fetch Metadata defense on state-changing requests
+  const method = req.method.toUpperCase();
+  if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+    // Exempt webhooks which authenticate via HMAC signature headers
+    if (req.path.startsWith('/api/webhooks/')) {
+      return next();
+    }
+    const secFetchSite = req.headers['sec-fetch-site'];
+    if (secFetchSite === 'cross-site') {
+      res.status(403).json({ error: 'Cross-site request blocked by security policy.' });
+      return;
+    }
+  }
+
   next();
 });
 
@@ -142,13 +164,60 @@ async function verifyTurnstile(token?: string, ip?: string): Promise<boolean> {
   }
 }
 
-async function queueEmail(toEmail: string, subject: string, bodyText: string, hasIcs = false, icsContent?: string): Promise<void> {
+async function queueEmail(
+  toEmail: string,
+  subject: string,
+  bodyText: string,
+  hasIcs = false,
+  icsContent?: string
+): Promise<{ ok: boolean; status: string; id: string }> {
   const db = getDb();
-  const status = process.env.RESEND_API_KEY ? 'dispatched' : 'logged_local';
+  const id = crypto.randomUUID();
+  const now = new Date().toISOString();
+  const resendKey = process.env.RESEND_API_KEY;
+  const isRealResend = Boolean(
+    resendKey && !resendKey.includes('placeholder') && resendKey.startsWith('re_')
+  );
+
+  let status = 'queued_local';
+
+  if (isRealResend) {
+    try {
+      const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@zizosurrogacy.com';
+      const payload: any = {
+        from: `Zizo Donor and Surrogacy <${fromEmail}>`,
+        to: [toEmail],
+        subject,
+        text: bodyText,
+      };
+      if (hasIcs && icsContent) {
+        payload.attachments = [
+          {
+            filename: 'invite.ics',
+            content: Buffer.from(icsContent).toString('base64'),
+          },
+        ];
+      }
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${resendKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      status = res.ok ? 'delivered' : 'failed';
+    } catch {
+      status = 'failed';
+    }
+  }
+
   db.prepare(
     `INSERT INTO email_outbox (id, to_email, subject, body_text, has_ics, status, created_at)
      VALUES (?, ?, ?, ?, ?, ?, ?)`
-  ).run(crypto.randomUUID(), toEmail, subject, bodyText, hasIcs ? 1 : 0, status, new Date().toISOString());
+  ).run(id, toEmail, subject, bodyText, hasIcs ? 1 : 0, status, now);
+
+  return { ok: status !== 'failed', status, id };
 }
 
 function rebuildPagesSafe(): void {
@@ -661,7 +730,16 @@ app.get('/api/ics', (req, res) => {
 
 app.post('/api/forms', async (req, res) => {
   const db = getDb();
+  const ip = req.ip || req.socket.remoteAddress || 'local';
+
+  // Rate Limiting (max 15 form submissions per hour per IP)
+  if (!checkRateLimit(`form:${ip}`, 15)) {
+    res.status(429).json({ error: 'Too many submissions from this IP. Please try again later.' });
+    return;
+  }
+
   const body = req.body || {};
+  // Honeypot spam defense
   if (body.website_url) {
     res.status(400).json({ error: 'Submission rejected.' });
     return;
@@ -673,25 +751,32 @@ app.post('/api/forms', async (req, res) => {
     return;
   }
 
+  const emailClean = String(body.email).trim().toLowerCase().slice(0, 120);
   const nowIso = new Date().toISOString();
+  const adminNotifyEmail = process.env.ADMIN_NOTIFICATION_EMAIL || 'info@zizosurrogacy.com';
 
   if (kind === 'newsletter') {
     const confirmToken = randomToken(16);
+    const subscriberId = crypto.randomUUID();
+    const nameClean = body.name ? String(body.name).trim().slice(0, 100) : null;
+
     db.prepare(
       `INSERT INTO subscribers (id, email, name, status, confirm_token_hash, consent_text, created_at)
        VALUES (?, ?, ?, 'pending', ?, 'Double opt-in footer signup', ?)
        ON CONFLICT(email) DO UPDATE SET name = excluded.name, status = 'pending', confirm_token_hash = excluded.confirm_token_hash`
     ).run(
-      crypto.randomUUID(),
-      String(body.email).trim().toLowerCase(),
-      body.name ? String(body.name).trim() : null,
+      subscriberId,
+      emailClean,
+      nameClean,
       sha256Hex(confirmToken),
       nowIso
     );
+
+    const baseUrl = process.env.APP_URL || 'https://zizo-steel.vercel.app';
     queueEmail(
-      String(body.email).trim(),
+      emailClean,
       'Confirm your Zizo updates subscription',
-      `Please confirm your subscription: ${process.env.APP_URL || 'http://localhost:3000'}/api/newsletter/confirm?token=${confirmToken}`
+      `Please confirm your subscription: ${baseUrl}/api/newsletter/confirm?token=${confirmToken}`
     );
     res.status(201).json({ ok: true, message: 'Thank you. Please confirm via the email sent to your inbox.' });
     return;
@@ -699,61 +784,105 @@ app.post('/api/forms', async (req, res) => {
 
   if (kind === 'application') {
     const appKind = body.kind === 'egg_donor' ? 'egg_donor' : 'surrogate';
-    if (!body.name || !isValidPhone(body.phone) || !body.age_range || !body.country || !body.city) {
+    const nameClean = String(body.name || '').trim().slice(0, 100);
+    const phoneClean = String(body.phone || '').trim().slice(0, 30);
+    const countryClean = String(body.country || '').trim().slice(0, 80);
+    const cityClean = String(body.city || '').trim().slice(0, 80);
+    const ageRangeClean = String(body.age_range || '').slice(0, 20);
+
+    if (!nameClean || !isValidPhone(phoneClean) || !ageRangeClean || !countryClean || !cityClean) {
       res.status(400).json({ error: 'Please complete all required fields.' });
       return;
     }
+
     const answers = {
       elig_age: body.elig_age === 'on',
       elig_birth: body.elig_birth === 'on',
       elig_health: body.elig_health === 'on',
       elig_availability: body.elig_availability === 'on',
-      heard_from: body.heard_from || '',
+      heard_from: String(body.heard_from || '').slice(0, 100),
     };
+
+    const appId = crypto.randomUUID();
     db.prepare(
       `INSERT INTO applications (id, kind, name, email, phone, age_range, country, city, answers, status, created_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?)`
     ).run(
-      crypto.randomUUID(),
+      appId,
       appKind,
-      String(body.name).trim(),
-      String(body.email).trim().toLowerCase(),
-      String(body.phone).trim(),
-      String(body.age_range),
-      String(body.country).trim(),
-      String(body.city).trim(),
+      nameClean,
+      emailClean,
+      phoneClean,
+      ageRangeClean,
+      countryClean,
+      cityClean,
       JSON.stringify(answers),
       nowIso
     );
-    queueEmail(String(body.email).trim(), 'Zizo Application Received', 'Thank you for submitting your initial screening form. A coordinator will contact you privately.');
+
+    // Deliver acknowledgement to applicant
+    queueEmail(
+      emailClean,
+      'Zizo Application Received',
+      'Thank you for submitting your initial screening inquiry. Our clinical coordination team will review your submission and reach out privately.'
+    );
+
+    // Deliver notification to staff workflow
+    queueEmail(
+      adminNotifyEmail,
+      `New ${appKind === 'egg_donor' ? 'Egg Donor' : 'Surrogate'} Screening Submission [${countryClean}]`,
+      `A new confidential screening form was submitted on Zizo:\n\nApplicant: ${nameClean}\nEmail: ${emailClean}\nCountry: ${countryClean}, ${cityClean}\nAge Range: ${ageRangeClean}\nTime: ${nowIso}`
+    );
+
     res.status(201).json({ ok: true });
     return;
   }
 
   if (kind === 'contact' || kind === 'cost_estimate') {
-    if (!body.name || !body.message) {
+    const nameClean = String(body.name || '').trim().slice(0, 100);
+    const rawMsg = String(body.message || '').trim().slice(0, 3000);
+    const phoneClean = body.phone ? String(body.phone).trim().slice(0, 30) : null;
+    const countryClean = body.country ? String(body.country).trim().slice(0, 80) : null;
+
+    if (!nameClean || !rawMsg) {
       res.status(400).json({ error: 'Please enter your name and message.' });
       return;
     }
-    const inquiryType = kind === 'cost_estimate' ? 'cost_estimate' : String(body.type || 'general');
-    const msg = body.preferred_region
-      ? `[Region: ${body.preferred_region}] ${String(body.message).trim()}`
-      : String(body.message).trim();
 
+    const inquiryType = kind === 'cost_estimate' ? 'cost_estimate' : String(body.type || 'general').slice(0, 50);
+    const msg = body.preferred_region
+      ? `[Region: ${String(body.preferred_region).slice(0, 50)}] ${rawMsg}`
+      : rawMsg;
+
+    const inqId = crypto.randomUUID();
     db.prepare(
       `INSERT INTO inquiries (id, type, name, email, phone, country, message, status, created_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, 'new', ?)`
     ).run(
-      crypto.randomUUID(),
+      inqId,
       inquiryType,
-      String(body.name).trim(),
-      String(body.email).trim().toLowerCase(),
-      body.phone ? String(body.phone).trim() : null,
-      body.country ? String(body.country).trim() : null,
+      nameClean,
+      emailClean,
+      phoneClean,
+      countryClean,
       msg,
       nowIso
     );
-    queueEmail(String(body.email).trim(), 'We received your message — Zizo', 'Thank you for contacting Zizo Donor and Surrogacy.');
+
+    // Deliver confirmation to sender
+    queueEmail(
+      emailClean,
+      'We received your message — Zizo',
+      'Thank you for contacting Zizo Donor and Surrogacy. Our care coordinators will reply within one business day.'
+    );
+
+    // Deliver notification to staff
+    queueEmail(
+      adminNotifyEmail,
+      `New Inquiry: ${inquiryType} from ${nameClean}`,
+      `A new message was submitted via Zizo website:\n\nFrom: ${nameClean} (${emailClean})\nCountry: ${countryClean || 'Not specified'}\nType: ${inquiryType}\n\nMessage:\n${msg}`
+    );
+
     res.status(201).json({ ok: true });
     return;
   }
@@ -782,6 +911,14 @@ app.get('/api/newsletter/confirm', (req, res) => {
 
 app.post('/api/admin/auth/login', (req, res) => {
   const db = getDb();
+  const ip = req.ip || req.socket.remoteAddress || 'local';
+
+  // Brute-force protection: max 10 failed login attempts per hour per IP
+  if (!checkRateLimit(`login:${ip}`, 10)) {
+    res.status(429).json({ error: 'Too many login attempts. Access temporarily locked. Please try again later.' });
+    return;
+  }
+
   const { email, password } = req.body || {};
   const staff = db
     .prepare('SELECT * FROM staff WHERE email = ? AND active = 1')
@@ -805,9 +942,10 @@ app.post('/api/admin/auth/login', (req, res) => {
 
   logAudit(staff.email, 'login', 'staff', staff.id, { role: staff.role });
 
+  const secureFlag = req.secure || req.headers['x-forwarded-proto'] === 'https' ? '; Secure' : '';
   res.setHeader(
     'Set-Cookie',
-    `zizo_staff_session=${encodeURIComponent(sessionToken)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=1800`
+    `zizo_staff_session=${encodeURIComponent(sessionToken)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=1800${secureFlag}`
   );
 
   res.json({
@@ -881,8 +1019,9 @@ app.get('/api/admin/auth/me', requireStaff(), (req: AuthedRequest, res) => {
   res.json({ staff: req.staff });
 });
 
-app.post('/api/admin/auth/logout', (_req, res) => {
-  res.setHeader('Set-Cookie', 'zizo_staff_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0');
+app.post('/api/admin/auth/logout', (req, res) => {
+  const secureFlag = req.secure || req.headers['x-forwarded-proto'] === 'https' ? '; Secure' : '';
+  res.setHeader('Set-Cookie', `zizo_staff_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secureFlag}`);
   res.json({ ok: true });
 });
 
