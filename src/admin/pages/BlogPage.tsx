@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { PageHeader } from '../components/untitledui/PageHeader';
 import { DataTable } from '../components/common/DataTable';
@@ -34,55 +34,50 @@ interface BlogPost {
   updated_at: string;
 }
 
-const INITIAL_POSTS: BlogPost[] = [
-  {
-    id: 'post-1',
-    title: 'Navigating Cross-Border Surrogacy Contracts in West Africa',
-    slug: 'navigating-cross-border-surrogacy-contracts',
-    excerpt: 'Key legal covenants, parentage declarations, and international travel logistics for intended parents.',
-    body_md: '<h2>Cross-Border Surrogacy Frameworks</h2><p>Legal planning is foundational when coordinating surrogacy between Nigeria, the UK, Europe, and the US...</p>',
-    category: 'Legal & Ethics',
-    author: 'Chizaram Ata',
-    featured_image: '/assets/img/blog-default-1024w.webp',
-    status: 'published',
-    publish_at: '2026-02-01T10:00:00Z',
-    updated_at: '2026-02-15',
-  },
-  {
-    id: 'post-2',
-    title: 'Understanding Ovum Donor Screening Protocols',
-    slug: 'understanding-ovum-donor-screening-protocols',
-    excerpt: 'Why thorough phenotypic and genetic evaluation protects maternal and infant outcomes.',
-    body_md: '<h2>Clinical Donor Screening</h2><p>Before any cycle begins, comprehensive blood panels, AMH tests, and genetic karyotyping are executed...</p>',
-    category: 'Clinical Care',
-    author: 'Amara Okafor',
-    featured_image: '/assets/img/service-ovum-donation-1024w.webp',
-    status: 'published',
-    publish_at: '2026-02-10T12:00:00Z',
-    updated_at: '2026-02-16',
-  },
-  {
-    id: 'post-3',
-    title: 'Preparing for Your First Gestational Transfer',
-    slug: 'preparing-for-your-first-gestational-transfer',
-    excerpt: 'Step-by-step guidance for surrogates and parents approaching embryo transfer day.',
-    body_md: '<h2>Transfer Preparation Steps</h2><p>Endometrial preparation, hormonal synchronization, and emotional groundedness...</p>',
-    category: 'Surrogacy Journey',
-    author: 'Tunde Bakare',
-    featured_image: '/assets/img/service-surrogacy-1024w.webp',
-    status: 'draft',
-    updated_at: '2026-02-17',
-  },
-];
-
 export const BlogPage: React.FC = () => {
   const { toast } = useNotifications();
   const { logAction } = useAuditLog();
 
-  const [posts, setPosts] = useState<BlogPost[]>(INITIAL_POSTS);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'all' | 'published' | 'scheduled' | 'drafts' | 'archived'>('all');
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
+
+  const fetchPosts = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/posts');
+      if (res.ok) {
+        const data = await res.json();
+        const mapped: BlogPost[] = (data.posts || []).map((p: any) => ({
+          id: p.id,
+          title: p.title,
+          slug: p.slug,
+          excerpt: p.excerpt || '',
+          body_md: p.body_md || '',
+          category: p.category_name || 'Clinical Care',
+          author: p.author_name || 'Chizaram Ata',
+          featured_image: p.featured_image_url,
+          image_alt: p.featured_image_alt,
+          status: p.status,
+          publish_at: p.publish_at,
+          seo_title: p.seo_title,
+          seo_description: p.meta_description,
+          updated_at: (p.updated_at || '').split('T')[0] || new Date().toISOString().split('T')[0],
+        }));
+        setPosts(mapped);
+      }
+    } catch (err) {
+      console.error('Failed to load posts:', err);
+      toast('Load Failed', 'Could not load blog posts from database.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [toast]);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
 
   // Editor states
   const [title, setTitle] = useState('');
@@ -141,53 +136,74 @@ export const BlogPage: React.FC = () => {
     setEditorOpen(true);
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    const itemData: BlogPost = {
-      id: editingPost ? editingPost.id : 'post-' + Date.now(),
+    const payload = {
       title,
       slug: slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       excerpt,
       body_md: bodyMd,
-      category,
-      author,
-      featured_image: featuredImage,
-      image_alt: imageAlt.trim() || null,
+      featured_image_url: featuredImage,
+      featured_image_alt: imageAlt.trim() || null,
       status,
       publish_at: status === 'scheduled' ? (publishAt ? new Date(publishAt).toISOString() : new Date().toISOString()) : status === 'published' ? new Date().toISOString() : null,
       seo_title: seoTitle.trim() || null,
-      seo_description: seoDescription.trim() || null,
-      updated_at: new Date().toISOString().split('T')[0],
+      meta_description: seoDescription.trim() || null,
     };
 
-    if (editingPost) {
-      setPosts((prev) => prev.map((p) => (p.id === editingPost.id ? itemData : p)));
-      toast('Post Updated', `Saved changes to "${title}". Deploy hook triggered.`, 'success');
-    } else {
-      setPosts((prev) => [...prev, itemData]);
-      toast('Post Created', `Created "${title}". Deploy hook triggered.`, 'success');
+    try {
+      if (editingPost) {
+        const res = await fetch(`/api/admin/posts/${editingPost.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('Failed to update post');
+        toast('Post Updated', `Saved changes to "${title}".`, 'success');
+      } else {
+        const res = await fetch('/api/admin/posts', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('Failed to create post');
+        toast('Post Created', `Created "${title}".`, 'success');
+      }
+
+      logAction({
+        action: editingPost ? 'EDIT_POST' : 'CREATE_POST',
+        tableName: 'posts',
+        recordId: editingPost?.id || 'new',
+        diff: payload,
+      });
+
+      setEditorOpen(false);
+      fetchPosts();
+    } catch {
+      toast('Save Failed', 'Could not save post to database.', 'error');
     }
-
-    logAction({
-      action: editingPost ? 'EDIT_POST' : 'CREATE_POST',
-      tableName: 'posts',
-      recordId: itemData.id,
-      diff: itemData,
-    });
-
-    setEditorOpen(false);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!postToDelete) return;
-    setPosts((prev) => prev.filter((p) => p.id !== postToDelete.id));
-    logAction({
-      action: 'DELETE_POST',
-      tableName: 'posts',
-      recordId: postToDelete.id,
-    });
-    toast('Post Deleted', `Deleted "${postToDelete.title}".`, 'info');
-    setPostToDelete(null);
+    try {
+      const res = await fetch(`/api/admin/posts/${postToDelete.id}`, {
+        method: 'DELETE',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      });
+      if (!res.ok) throw new Error('Failed to delete post');
+      toast('Post Deleted', `Deleted "${postToDelete.title}".`, 'info');
+      logAction({
+        action: 'DELETE_POST',
+        tableName: 'posts',
+        recordId: postToDelete.id,
+      });
+      fetchPosts();
+    } catch {
+      toast('Delete Failed', 'Could not delete post.', 'error');
+    } finally {
+      setPostToDelete(null);
+    }
   };
 
   const columns = React.useMemo<ColumnDef<BlogPost>[]>(

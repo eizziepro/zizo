@@ -905,6 +905,40 @@ app.get('/api/newsletter/confirm', (req, res) => {
   res.redirect('/thank-you/');
 });
 
+app.get('/api/services', (_req, res) => {
+  const db = getDb();
+  const services = db
+    .prepare("SELECT * FROM services WHERE status = 'published' ORDER BY sort_order ASC, created_at ASC")
+    .all()
+    .map((s: any) => ({
+      ...s,
+      featured: Boolean(s.featured),
+      show_price: Boolean(s.show_price),
+      seo: typeof s.seo === 'string' ? JSON.parse(s.seo || '{}') : s.seo || {},
+    }));
+  res.setHeader('Cache-Control', 'public, max-age=60');
+  res.json({ services });
+});
+
+app.get('/api/services/:slug', (req, res) => {
+  const db = getDb();
+  const service = db
+    .prepare("SELECT * FROM services WHERE slug = ? AND status = 'published'")
+    .get(req.params.slug) as any;
+  if (!service) {
+    res.status(404).json({ error: 'Service not found' });
+    return;
+  }
+  res.json({
+    service: {
+      ...service,
+      featured: Boolean(service.featured),
+      show_price: Boolean(service.show_price),
+      seo: typeof service.seo === 'string' ? JSON.parse(service.seo || '{}') : service.seo || {},
+    },
+  });
+});
+
 // ==========================================
 // ADMIN AUTH & 2FA
 // ==========================================
@@ -1193,11 +1227,88 @@ app.delete('/api/admin/availability/exceptions/:id', requireStaff(['owner', 'coo
   res.json({ ok: true });
 });
 
-app.patch('/api/admin/consultation-types/:id', requireStaff(['owner', 'coordinator']), (req, res) => {
-  const { name, duration_min, buffer_min, intro } = req.body || {};
-  getDb()
-    .prepare('UPDATE consultation_types SET name = ?, duration_min = ?, buffer_min = ?, intro = ? WHERE id = ?')
-    .run(String(name), Number(duration_min), Number(buffer_min), String(intro), req.params.id);
+app.get('/api/admin/consultation-types', requireStaff(['owner', 'coordinator']), (_req, res) => {
+  const db = getDb();
+  const types = db.prepare('SELECT * FROM consultation_types ORDER BY sort ASC, name ASC').all().map((t: any) => ({
+    ...t,
+    channels: typeof t.channels === 'string' ? JSON.parse(t.channels || '[]') : t.channels || [],
+    active: Boolean(t.active),
+  }));
+  res.json({ types });
+});
+
+app.post('/api/admin/consultation-types', requireStaff(['owner', 'coordinator']), (req: AuthedRequest, res) => {
+  const db = getDb();
+  const b = req.body || {};
+  const id = b.id || 'ct-' + crypto.randomUUID().slice(0, 8);
+  const slug = slugify(b.slug || b.name) || id;
+  const maxSort = (db.prepare('SELECT COALESCE(MAX(sort), 0) as m FROM consultation_types').get() as any).m;
+  db.prepare(
+    `INSERT INTO consultation_types (id, name, slug, duration_min, buffer_min, channels, price_minor, currency, intro, active, sort)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    id,
+    String(b.name || 'Consultation'),
+    slug,
+    Number(b.duration_min || 30),
+    Number(b.buffer_min || 10),
+    JSON.stringify(b.channels || ['Google Meet', 'Phone call']),
+    Number(b.price_minor || 0),
+    String(b.currency || 'NGN'),
+    String(b.intro || ''),
+    b.active === false ? 0 : 1,
+    Number(b.sort || maxSort + 1)
+  );
+  logAudit(req.staff!.email, 'create_consultation_type', 'consultation_types', id, { name: b.name, slug });
+  rebuildPagesSafe();
+  res.status(201).json({ ok: true, id, slug });
+});
+
+app.patch('/api/admin/consultation-types/:id', requireStaff(['owner', 'coordinator']), (req: AuthedRequest, res) => {
+  const db = getDb();
+  const id = req.params.id;
+  const existing = db.prepare('SELECT * FROM consultation_types WHERE id = ?').get(id) as any;
+  if (!existing) {
+    res.status(404).json({ error: 'Consultation type not found' });
+    return;
+  }
+  const b = req.body || {};
+  db.prepare(
+    `UPDATE consultation_types SET
+      name = COALESCE(?, name),
+      slug = COALESCE(?, slug),
+      duration_min = COALESCE(?, duration_min),
+      buffer_min = COALESCE(?, buffer_min),
+      channels = COALESCE(?, channels),
+      price_minor = COALESCE(?, price_minor),
+      currency = COALESCE(?, currency),
+      intro = COALESCE(?, intro),
+      active = COALESCE(?, active),
+      sort = COALESCE(?, sort)
+     WHERE id = ?`
+  ).run(
+    b.name !== undefined ? String(b.name) : null,
+    b.slug !== undefined ? slugify(b.slug) : null,
+    b.duration_min !== undefined ? Number(b.duration_min) : null,
+    b.buffer_min !== undefined ? Number(b.buffer_min) : null,
+    b.channels !== undefined ? JSON.stringify(b.channels) : null,
+    b.price_minor !== undefined ? Number(b.price_minor) : null,
+    b.currency !== undefined ? String(b.currency) : null,
+    b.intro !== undefined ? String(b.intro) : null,
+    b.active !== undefined ? (b.active ? 1 : 0) : null,
+    b.sort !== undefined ? Number(b.sort) : null,
+    id
+  );
+  logAudit(req.staff!.email, 'update_consultation_type', 'consultation_types', id, b);
+  rebuildPagesSafe();
+  res.json({ ok: true });
+});
+
+app.delete('/api/admin/consultation-types/:id', requireStaff(['owner', 'coordinator']), (req: AuthedRequest, res) => {
+  const db = getDb();
+  const id = req.params.id;
+  db.prepare('DELETE FROM consultation_types WHERE id = ?').run(id);
+  logAudit(req.staff!.email, 'delete_consultation_type', 'consultation_types', id, {});
   rebuildPagesSafe();
   res.json({ ok: true });
 });
@@ -1270,6 +1381,133 @@ app.patch('/api/admin/reviews/:id', requireStaff(['owner', 'editor', 'coordinato
   }
 
   logAudit(req.staff!.email, `review_${action}`, 'reviews', id, {});
+  rebuildPagesSafe();
+  res.json({ ok: true });
+});
+
+// ==========================================
+// ADMIN SERVICES CRUD
+// ==========================================
+
+app.get('/api/admin/services', requireStaff(['owner', 'editor', 'coordinator']), (_req, res) => {
+  const db = getDb();
+  const services = db
+    .prepare('SELECT * FROM services ORDER BY sort_order ASC, created_at DESC')
+    .all()
+    .map((s: any) => ({
+      ...s,
+      featured: Boolean(s.featured),
+      show_price: Boolean(s.show_price),
+      seo: typeof s.seo === 'string' ? JSON.parse(s.seo || '{}') : s.seo || {},
+      faqs_count: 0,
+    }));
+  res.json({ services });
+});
+
+app.post('/api/admin/services', requireStaff(['owner', 'editor']), (req: AuthedRequest, res) => {
+  const db = getDb();
+  const b = req.body || {};
+  const id = b.id || 'srv-' + crypto.randomUUID().slice(0, 8);
+  const baseSlug = slugify(b.slug || b.title) || id.slice(0, 8);
+  let uniqueSlug = baseSlug;
+  let suffix = 2;
+  while (db.prepare('SELECT id FROM services WHERE slug = ?').get(uniqueSlug)) {
+    uniqueSlug = `${baseSlug}-${suffix++}`;
+  }
+  const nowIso = new Date().toISOString();
+  db.prepare(
+    `INSERT INTO services (
+      id, slug, title, short_description, body_md, price_amount, price_currency,
+      price_label, price_note, show_price, image_path, image_alt, status, featured,
+      sort_order, seo, linked_consultation_type_id, created_at, updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    id,
+    uniqueSlug,
+    String(b.title || 'Untitled Service'),
+    String(b.short_description || ''),
+    String(b.body_md || ''),
+    Number(b.price_amount || 0),
+    String(b.price_currency || 'NGN'),
+    String(b.price_label || 'From'),
+    b.price_note ? String(b.price_note) : null,
+    b.show_price === false ? 0 : 1,
+    b.image_path ? String(b.image_path) : null,
+    b.image_alt ? String(b.image_alt) : null,
+    String(b.status || 'published'),
+    b.featured ? 1 : 0,
+    Number(b.sort_order || 0),
+    JSON.stringify(b.seo || {}),
+    b.linked_consultation_type_id || null,
+    nowIso,
+    nowIso
+  );
+  logAudit(req.staff!.email, 'create_service', 'services', id, { title: b.title, slug: uniqueSlug });
+  rebuildPagesSafe();
+  res.status(201).json({ ok: true, id, slug: uniqueSlug });
+});
+
+app.patch('/api/admin/services/:id', requireStaff(['owner', 'editor']), (req: AuthedRequest, res) => {
+  const db = getDb();
+  const id = String(req.params.id);
+  const existing = db.prepare('SELECT * FROM services WHERE id = ?').get(id) as any;
+  if (!existing) {
+    res.status(404).json({ error: 'Service not found' });
+    return;
+  }
+  const b = req.body || {};
+  const nowIso = new Date().toISOString();
+  const slug = b.slug ? slugify(b.slug) : existing.slug;
+  db.prepare(
+    `UPDATE services SET
+      title = COALESCE(?, title),
+      slug = COALESCE(?, slug),
+      short_description = COALESCE(?, short_description),
+      body_md = COALESCE(?, body_md),
+      price_amount = COALESCE(?, price_amount),
+      price_currency = COALESCE(?, price_currency),
+      price_label = COALESCE(?, price_label),
+      price_note = COALESCE(?, price_note),
+      show_price = COALESCE(?, show_price),
+      image_path = COALESCE(?, image_path),
+      image_alt = COALESCE(?, image_alt),
+      status = COALESCE(?, status),
+      featured = COALESCE(?, featured),
+      sort_order = COALESCE(?, sort_order),
+      seo = COALESCE(?, seo),
+      linked_consultation_type_id = COALESCE(?, linked_consultation_type_id),
+      updated_at = ?
+     WHERE id = ?`
+  ).run(
+    b.title !== undefined ? String(b.title) : null,
+    b.slug !== undefined ? slug : null,
+    b.short_description !== undefined ? String(b.short_description) : null,
+    b.body_md !== undefined ? String(b.body_md) : null,
+    b.price_amount !== undefined ? Number(b.price_amount) : null,
+    b.price_currency !== undefined ? String(b.price_currency) : null,
+    b.price_label !== undefined ? String(b.price_label) : null,
+    b.price_note !== undefined ? String(b.price_note) : null,
+    b.show_price !== undefined ? (b.show_price ? 1 : 0) : null,
+    b.image_path !== undefined ? String(b.image_path) : null,
+    b.image_alt !== undefined ? String(b.image_alt) : null,
+    b.status !== undefined ? String(b.status) : null,
+    b.featured !== undefined ? (b.featured ? 1 : 0) : null,
+    b.sort_order !== undefined ? Number(b.sort_order) : null,
+    b.seo !== undefined ? JSON.stringify(b.seo) : null,
+    b.linked_consultation_type_id !== undefined ? b.linked_consultation_type_id : null,
+    nowIso,
+    id
+  );
+  logAudit(req.staff!.email, 'update_service', 'services', id, b);
+  rebuildPagesSafe();
+  res.json({ ok: true });
+});
+
+app.delete('/api/admin/services/:id', requireStaff(['owner', 'editor']), (req: AuthedRequest, res) => {
+  const db = getDb();
+  const id = String(req.params.id);
+  db.prepare('DELETE FROM services WHERE id = ?').run(id);
+  logAudit(req.staff!.email, 'delete_service', 'services', id, {});
   rebuildPagesSafe();
   res.json({ ok: true });
 });
@@ -1410,6 +1648,36 @@ app.post('/api/admin/posts/:id/duplicate', requireStaff(['owner', 'editor']), (r
   res.status(201).json({ ok: true, id });
 });
 
+app.delete('/api/admin/posts/:id', requireStaff(['owner', 'editor']), (req: AuthedRequest, res) => {
+  const db = getDb();
+  const id = String(req.params.id);
+  db.prepare('DELETE FROM posts WHERE id = ?').run(id);
+  logAudit(req.staff!.email, 'delete_post', 'posts', id, {});
+  rebuildPagesSafe();
+  res.json({ ok: true });
+});
+
+app.post('/api/admin/categories', requireStaff(['owner', 'editor']), (req: AuthedRequest, res) => {
+  const db = getDb();
+  const { name, slug } = req.body || {};
+  if (!name) {
+    res.status(400).json({ error: 'Name is required' });
+    return;
+  }
+  const id = 'cat-' + crypto.randomUUID().slice(0, 8);
+  const catSlug = slugify(slug || name) || id;
+  db.prepare('INSERT INTO categories (id, slug, name) VALUES (?, ?, ?)').run(id, catSlug, String(name));
+  logAudit(req.staff!.email, 'create_category', 'categories', id, { name, slug: catSlug });
+  res.status(201).json({ ok: true, id, slug: catSlug });
+});
+
+app.delete('/api/admin/categories/:id', requireStaff(['owner', 'editor']), (req: AuthedRequest, res) => {
+  const db = getDb();
+  db.prepare('DELETE FROM categories WHERE id = ?').run(req.params.id);
+  logAudit(req.staff!.email, 'delete_category', 'categories', req.params.id, {});
+  res.json({ ok: true });
+});
+
 app.get('/api/admin/faqs', requireStaff(['owner', 'editor']), (_req, res) => {
   res.json({ faqs: getDb().prepare('SELECT * FROM faqs ORDER BY sort ASC').all() });
 });
@@ -1421,19 +1689,44 @@ app.post('/api/admin/faqs', requireStaff(['owner', 'editor']), (req: AuthedReque
   const id = crypto.randomUUID();
   db.prepare(
     'INSERT INTO faqs (id, audience, question, answer, sort, show_on_home, published) VALUES (?, ?, ?, ?, ?, ?, 1)'
-  ).run(id, String(audience), String(question), String(answer), maxSort + 1, show_on_home ? 1 : 0);
+  ).run(id, String(audience || 'Intended Parents'), String(question || ''), String(answer || ''), maxSort + 1, show_on_home ? 1 : 0);
   logAudit(req.staff!.email, 'create', 'faqs', id, { question });
   rebuildPagesSafe();
-  res.status(201).json({ ok: true });
+  res.status(201).json({ ok: true, id });
 });
 
-app.patch('/api/admin/faqs/:id', requireStaff(['owner', 'editor']), (req, res) => {
+app.patch('/api/admin/faqs/:id', requireStaff(['owner', 'editor']), (req: AuthedRequest, res) => {
   const db = getDb();
   const cur = db.prepare('SELECT * FROM faqs WHERE id = ?').get(req.params.id) as any;
-  if (cur && req.body?.toggleHome) {
-    db.prepare('UPDATE faqs SET show_on_home = ? WHERE id = ?').run(cur.show_on_home ? 0 : 1, req.params.id);
-    rebuildPagesSafe();
+  if (!cur) {
+    res.status(404).json({ error: 'FAQ not found' });
+    return;
   }
+  const b = req.body || {};
+  if (b.toggleHome) {
+    db.prepare('UPDATE faqs SET show_on_home = ? WHERE id = ?').run(cur.show_on_home ? 0 : 1, req.params.id);
+  } else {
+    db.prepare(
+      `UPDATE faqs SET
+        question = COALESCE(?, question),
+        answer = COALESCE(?, answer),
+        audience = COALESCE(?, audience),
+        show_on_home = COALESCE(?, show_on_home),
+        published = COALESCE(?, published),
+        sort = COALESCE(?, sort)
+       WHERE id = ?`
+    ).run(
+      b.question !== undefined ? String(b.question) : null,
+      b.answer !== undefined ? String(b.answer) : null,
+      b.audience !== undefined ? String(b.audience) : null,
+      b.show_on_home !== undefined ? (b.show_on_home ? 1 : 0) : null,
+      b.published !== undefined ? (b.published ? 1 : 0) : null,
+      b.sort !== undefined ? Number(b.sort) : null,
+      req.params.id
+    );
+  }
+  logAudit(req.staff!.email, 'update_faq', 'faqs', req.params.id, b);
+  rebuildPagesSafe();
   res.json({ ok: true });
 });
 

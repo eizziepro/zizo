@@ -112,7 +112,7 @@ export function renderHead({
   </a>`;
 }
 
-export function renderHeader({ isHome = false }) {
+export function renderHeader({ isHome = false, services = [] }) {
   const initialClass = isHome ? 'header-transparent' : 'header-scrolled';
   return `<header id="site-header" data-home="${isHome ? 'true' : 'false'}" class="site-header ${initialClass} fixed top-0 left-0 right-0 z-50">
   <div class="zizo-container">
@@ -144,10 +144,8 @@ export function renderHeader({ isHome = false }) {
           </button>
           <div class="nav-dropdown-panel absolute left-0 top-full pt-2 w-64 z-50">
             <ul class="bg-[#FAF9F6] text-[#17191A] border border-[#E1E0DD] rounded-[var(--radius)] p-2 shadow-sm">
-              <li><a href="/services/donor-surrogate-enquiry/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Donor &amp; Surrogate Enquiry</a></li>
-              <li><a href="/services/ivf-consultation-coordination/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">IVF Consultation &amp; Coordination</a></li>
-              <li><a href="/services/surrogacy-coordination/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Surrogacy Coordination</a></li>
-              <li><a href="/services/donor-profiling-screening/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">Donor Profiling &amp; Screening</a></li>
+              <li><a href="/services/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)] font-medium">All Services</a></li>
+              ${services.length > 0 ? services.map((svc) => `<li><a href="/services/${escapeHtml(svc.slug)}/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)]">${escapeHtml(svc.title)}</a></li>`).join('') : `<li><a href="/book/" class="block px-3 py-2.5 rounded hover:bg-[#E1E0DD]/50 text-[length:var(--fs-small)] text-[#17645F] font-medium">Book Consultation</a></li>`}
             </ul>
           </div>
         </div>
@@ -216,10 +214,7 @@ export function renderHeader({ isHome = false }) {
         </button>
         <div class="hidden pb-3 pl-3 space-y-2 text-[length:var(--fs-small)]">
           <a href="/services/" class="block py-1.5 text-[#5D5E5F]">All Services</a>
-          <a href="/services/donor-surrogate-enquiry/" class="block py-1.5">Donor &amp; Surrogate Enquiry</a>
-          <a href="/services/ivf-consultation-coordination/" class="block py-1.5">IVF Consultation &amp; Coordination</a>
-          <a href="/services/surrogacy-coordination/" class="block py-1.5">Surrogacy Coordination</a>
-          <a href="/services/donor-profiling-screening/" class="block py-1.5">Donor Profiling &amp; Screening</a>
+          ${services.length > 0 ? services.map((svc) => `<a href="/services/${escapeHtml(svc.slug)}/" class="block py-1.5">${escapeHtml(svc.title)}</a>`).join('') : `<a href="/book/" class="block py-1.5 text-[#17645F] font-medium">Book Consultation</a>`}
         </div>
       </div>
 
@@ -319,7 +314,7 @@ export function renderClosingCta({ settings = {}, whatsappHref = '' }) {
 </section>`;
 }
 
-export function renderFooter({ settings = {}, hideStickyBar = false, extraScripts = '' }) {
+export function renderFooter({ settings = {}, services = [], hideStickyBar = false, extraScripts = '' }) {
   const address = String(settings.contact_address || 'Bode Thomas St, Surulere, Lagos');
   const email = String(settings.contact_email || 'info@zizosurrogacy.com');
   const phone = String(settings.contact_phone || '09024944961');
@@ -385,10 +380,8 @@ export function renderFooter({ settings = {}, hideStickyBar = false, extraScript
       <div class="lg:col-span-3 space-y-3">
         <h3 class="text-[length:var(--fs-small)] font-semibold uppercase tracking-[0.1em] text-[#FAF9F6] font-sans">Services</h3>
         <ul class="space-y-2.5 text-[length:var(--fs-small)]">
-          <li><a href="/services/donor-surrogate-enquiry/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Donor &amp; Surrogate Enquiry</a></li>
-          <li><a href="/services/ivf-consultation-coordination/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">IVF Consultation &amp; Coordination</a></li>
-          <li><a href="/services/surrogacy-coordination/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Surrogacy Coordination</a></li>
-          <li><a href="/services/donor-profiling-screening/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Donor Profiling &amp; Screening</a></li>
+          <li><a href="/services/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">All Services</a></li>
+          ${services.length > 0 ? services.map((svc) => `<li><a href="/services/${escapeHtml(svc.slug)}/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">${escapeHtml(svc.title)}</a></li>`).join('') : `<li><a href="/book/" class="text-[#FAF9F6]/80 hover:text-[#FAF9F6] hover:underline underline-offset-4">Book Consultation</a></li>`}
         </ul>
       </div>
 

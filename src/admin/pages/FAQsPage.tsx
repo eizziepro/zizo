@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { PageHeader } from '../components/untitledui/PageHeader';
 import { DataTable } from '../components/common/DataTable';
@@ -16,57 +16,6 @@ import { useNotifications } from '../context/NotificationContext';
 import { useAuditLog } from '../hooks/useAuditLog';
 import { Plus, HelpCircle, LayersThree01 } from '@untitledui/icons';
 import type { FAQ } from '../types';
-
-const INITIAL_FAQS: FAQ[] = [
-  {
-    id: 'faq-1',
-    question: 'How is surrogate compensation structured in Nigeria?',
-    answer_md: 'Compensation is handled via escrowed monthly living allowances, healthcare coverage, and postpartum recovery support following clear legal contracts.',
-    audience: 'Intended Parents',
-    status: 'published',
-    assignments: [
-      { id: 'as-1', page_type: 'page', page_ref: 'packages', page_title: 'Zizo Packages', sort_order: 1 },
-      { id: 'as-2', page_type: 'service', page_ref: 'surrogacy-coordination', page_title: 'Surrogacy Coordination', sort_order: 1 },
-    ],
-    created_at: '2026-01-10T10:00:00Z',
-    updated_at: '2026-02-18',
-  },
-  {
-    id: 'faq-2',
-    question: 'What medical testing is mandatory before matching with an egg donor?',
-    answer_md: 'Donors undergo extensive ovarian reserve screening (AMH, AFC), infectious disease serology, karyotyping, and comprehensive psychological evaluation.',
-    audience: 'Donors',
-    status: 'published',
-    assignments: [
-      { id: 'as-3', page_type: 'service', page_ref: 'donor-profiling-and-screening', page_title: 'Donor Profiling & Screening', sort_order: 1 },
-      { id: 'as-4', page_type: 'page', page_ref: 'become-an-egg-donor', page_title: 'Become an Egg Donor', sort_order: 1 },
-    ],
-    created_at: '2026-01-12T10:00:00Z',
-    updated_at: '2026-02-18',
-  },
-  {
-    id: 'faq-3',
-    question: 'Can international intended parents take their baby home immediately?',
-    answer_md: 'Post-birth travel documentation involves obtaining local birth certificates and consular citizenship or passport processing for the destination country.',
-    audience: 'Intended Parents',
-    status: 'published',
-    assignments: [
-      { id: 'as-5', page_type: 'page', page_ref: 'international', page_title: 'International Programs', sort_order: 1 },
-    ],
-    created_at: '2026-01-15T10:00:00Z',
-    updated_at: '2026-02-18',
-  },
-  {
-    id: 'faq-4',
-    question: 'What happens if a surrogate cycle does not result in pregnancy?',
-    answer_md: 'Depending on the program package selected, subsequent embryo transfers are coordinated in sequence according to the original agreement terms.',
-    audience: 'General',
-    status: 'draft',
-    assignments: [],
-    created_at: '2026-02-01T10:00:00Z',
-    updated_at: '2026-02-18',
-  },
-];
 
 const AVAILABLE_PAGES = [
   { type: 'service', ref: 'donor-and-surrogate-enquiry', label: 'Service: Donor and Surrogate Enquiry' },
@@ -88,7 +37,8 @@ export const FAQsPage: React.FC = () => {
   const { toast } = useNotifications();
   const { logAction } = useAuditLog();
 
-  const [faqs, setFaqs] = useState<FAQ[]>(INITIAL_FAQS);
+  const [faqs, setFaqs] = useState<FAQ[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'all' | 'services' | 'pages' | 'unassigned'>('all');
   const [selectedPageFilter, setSelectedPageFilter] = useState<string>('all');
 
@@ -105,6 +55,35 @@ export const FAQsPage: React.FC = () => {
   // Detach modal
   const [detachFaq, setDetachFaq] = useState<FAQ | null>(null);
   const [faqToDelete, setFaqToDelete] = useState<FAQ | null>(null);
+
+  const fetchFaqs = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/faqs');
+      if (res.ok) {
+        const data = await res.json();
+        const mapped: FAQ[] = (data.faqs || []).map((f: any) => ({
+          id: f.id,
+          question: f.question,
+          answer_md: f.answer,
+          audience: f.audience,
+          status: f.published ? 'published' : 'draft',
+          assignments: [],
+          created_at: f.created_at || new Date().toISOString(),
+          updated_at: f.updated_at || new Date().toISOString().split('T')[0],
+        }));
+        setFaqs(mapped);
+      }
+    } catch (err) {
+      console.error('Failed to load FAQs:', err);
+      toast('Load Failed', 'Could not load FAQs from database.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [toast]);
+
+  useEffect(() => {
+    fetchFaqs();
+  }, [fetchFaqs]);
 
   // Filter FAQs
   const filteredFaqs = faqs.filter((faq) => {
@@ -143,47 +122,48 @@ export const FAQsPage: React.FC = () => {
     setDrawerOpen(true);
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const assignments = assignedPages.map((ref) => {
-      const match = AVAILABLE_PAGES.find((p) => p.ref === ref);
-      return {
-        id: 'as-' + Date.now() + Math.random(),
-        page_type: (match?.type || 'page') as 'service' | 'page',
-        page_ref: ref,
-        page_title: match?.label || ref,
-        sort_order: 1,
-      };
-    });
-
-    const itemData: FAQ = {
-      id: editingFaq ? editingFaq.id : 'faq-' + Date.now(),
+    const payload = {
       question,
-      answer_md: answerMd,
+      answer: answerMd,
       audience,
-      status: faqStatus,
-      assignments,
-      created_at: editingFaq ? editingFaq.created_at : new Date().toISOString(),
-      updated_at: new Date().toISOString().split('T')[0],
+      show_on_home: 1,
+      published: faqStatus === 'published' ? 1 : 0,
     };
 
-    if (editingFaq) {
-      setFaqs((prev) => prev.map((f) => (f.id === editingFaq.id ? itemData : f)));
-      toast('FAQ Updated', 'Saved FAQ details and page assignments. Deploy hook debounced.', 'success');
-    } else {
-      setFaqs((prev) => [...prev, itemData]);
-      toast('FAQ Created', 'New FAQ added to registry.', 'success');
+    try {
+      if (editingFaq) {
+        const res = await fetch(`/api/admin/faqs/${editingFaq.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('Failed to update FAQ');
+        toast('FAQ Updated', 'Saved FAQ details to database.', 'success');
+      } else {
+        const res = await fetch('/api/admin/faqs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('Failed to create FAQ');
+        toast('FAQ Created', 'New FAQ added to registry.', 'success');
+      }
+
+      logAction({
+        action: editingFaq ? 'EDIT_FAQ' : 'CREATE_FAQ',
+        tableName: 'faqs',
+        recordId: editingFaq?.id || 'new',
+        diff: payload,
+      });
+
+      setDrawerOpen(false);
+      fetchFaqs();
+    } catch {
+      toast('Save Failed', 'Could not save FAQ to database.', 'error');
     }
-
-    logAction({
-      action: editingFaq ? 'EDIT_FAQ' : 'CREATE_FAQ',
-      tableName: 'faqs',
-      recordId: itemData.id,
-      diff: itemData,
-    });
-
-    setDrawerOpen(false);
   };
 
   const handleDetachFromPage = (faqId: string, pageRef: string) => {
@@ -200,16 +180,26 @@ export const FAQsPage: React.FC = () => {
     setDetachFaq(null);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!faqToDelete) return;
-    setFaqs((prev) => prev.filter((f) => f.id !== faqToDelete.id));
-    logAction({
-      action: 'DELETE_FAQ',
-      tableName: 'faqs',
-      recordId: faqToDelete.id,
-    });
-    toast('Deleted', `FAQ permanently deleted across all assigned pages.`, 'info');
-    setFaqToDelete(null);
+    try {
+      const res = await fetch(`/api/admin/faqs/${faqToDelete.id}`, {
+        method: 'DELETE',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      });
+      if (!res.ok) throw new Error('Failed to delete FAQ');
+      toast('Deleted', `FAQ permanently deleted.`, 'info');
+      logAction({
+        action: 'DELETE_FAQ',
+        tableName: 'faqs',
+        recordId: faqToDelete.id,
+      });
+      fetchFaqs();
+    } catch {
+      toast('Delete Failed', 'Could not delete FAQ.', 'error');
+    } finally {
+      setFaqToDelete(null);
+    }
   };
 
   const columns = React.useMemo<ColumnDef<FAQ>[]>(

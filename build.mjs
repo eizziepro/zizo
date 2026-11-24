@@ -9,7 +9,6 @@ import { marked } from 'marked';
 
 import { renderHomePage } from './src/site/pages/home.mjs';
 import {
-  SERVICE_DEFINITIONS,
   renderAboutPage,
   renderServiceDetailPage,
   renderServicesHub,
@@ -122,202 +121,17 @@ function copyDir(src, dest) {
   }
 }
 
-const FALLBACK_POSTS = [
-  {
-    id: 'fallback-1',
-    slug: 'how-surrogacy-works-from-consultation-to-birth',
-    title: 'How surrogacy works from consultation to birth',
-    excerpt: 'A calm overview of the five coordination phases intended parents move through with Zizo, from private consultation to welcoming your child.',
-    body_md: `> *Note: This article provides general informational guidance only and does not constitute medical or legal advice.*\n\n## 1. Private initial consultation\n\nEvery journey begins with an unhurried, confidential conversation. During your consultation, our coordination team listens to your family-building history, preferred regions, and questions so you can decide on next steps with clarity.\n\n## 2. Screening and personalized matching\n\nOnce clinical prerequisites are reviewed with your chosen fertility clinic, matching focuses on compatibility, shared expectations, medical history review, and cultural preferences. Identifying personal details remain protected throughout.\n\n## 3. Medical and independent legal coordination\n\nBefore any clinical cycle begins, intended parents and gestational carriers work with independent legal counsel in the applicable jurisdictions to ensure clarity on rights, responsibilities, and parental documentation.\n\n## 4. Pregnancy care and case-manager support\n\nThroughout pregnancy, dedicated case managers maintain steady communication between clinics, intended parents, and the gestational carrier, alongside access to counseling support.\n\n## 5. Birth and homecoming planning\n\nAs the due date approaches, hospital coordination and post-birth administrative steps are prepared in advance so families can focus on welcoming their newborn.`,
-    featured_image_url: '/assets/img/blog-default-1920w.webp',
-    featured_image_alt: 'Linen notebook and stoneware vase on a warm oak desk in soft morning light',
-    category_slug: 'surrogacy-guides',
-    category_name: 'Surrogacy Guides',
-    author_name: 'Chizaram Ata',
-    reading_minutes: 3,
-    publish_at: '2026-11-01T09:00:00.000Z',
-    created_at: '2026-11-01T09:00:00.000Z',
-    updated_at: '2026-11-01T09:00:00.000Z',
-  },
-  {
-    id: 'fallback-2',
-    slug: 'what-to-expect-as-a-first-time-surrogate',
-    title: 'What to expect as a first-time surrogate',
-    excerpt: 'Understanding eligibility, medical and psychological evaluations, privacy protections, and day-to-day support when considering gestational surrogacy.',
-    body_md: `> *Note: This article provides general informational guidance only and does not constitute medical advice.*\n\n## Respect, privacy, and informed consent\n\nBecoming a surrogate is a deeply thoughtful commitment. At Zizo, prospective gestational carriers begin with a confidential information call where every question about expectations, medical steps, and support is answered openly.\n\n## Thorough screening before matching\n\nBefore any match is proposed, clinics and independent mental health professionals conduct thorough medical, psychological, and background evaluations to prioritise your physical and emotional wellbeing.\n\n### Dedicated case-manager support\n\nEvery surrogate is paired with a dedicated case manager who checks in regularly, coordinates appointments, and ensures milestone compensation schedules remain transparent and prompt.`,
-    featured_image_url: '/assets/img/become-a-surrogate-1920w.webp',
-    featured_image_alt: 'Warm portrait of a Nigerian woman seated near a sunlit window in cream linen',
-    category_slug: 'surrogate-care',
-    category_name: 'Surrogate Care',
-    author_name: 'Chizaram Ata',
-    reading_minutes: 2,
-    publish_at: '2026-10-25T09:00:00.000Z',
-    created_at: '2026-10-25T09:00:00.000Z',
-    updated_at: '2026-10-25T09:00:00.000Z',
-  },
-  {
-    id: 'fallback-3',
-    slug: 'understanding-egg-donation-screening',
-    title: 'Understanding egg donation screening',
-    excerpt: 'An introduction to how prospective egg donors are screened, profiled anonymously, and supported at every clinical stage.',
-    body_md: `> *Note: This article provides general informational guidance only and does not constitute medical advice.*\n\n## Why careful screening matters\n\nThoughtful egg donor screening protects both the donor's health and the clarity of the intended parents' clinical path. Clinical evaluations review general health, family medical history, and emotional readiness.\n\n## Anonymous profiling and matching\n\nZizo maintains strict anonymity standards. Intended parents review curated, non-identifying donor profiles focused on health history, background, and compatibility preferences.\n\n### Counseling at every step\n\nIndependent counseling is available to donors before, during, and after their cycle so every decision feels informed and supported.`,
-    featured_image_url: '/assets/img/service-ovum-donation-1920w.webp',
-    featured_image_alt: 'Two women speaking calmly in a sunlit private consultation room',
-    category_slug: 'egg-donation',
-    category_name: 'Egg Donation',
-    author_name: 'Chizaram Ata',
-    reading_minutes: 2,
-    publish_at: '2026-10-18T09:00:00.000Z',
-    created_at: '2026-10-18T09:00:00.000Z',
-    updated_at: '2026-10-18T09:00:00.000Z',
-  },
-  {
-    id: 'fallback-4',
-    slug: 'navigating-cross-border-surrogacy-legal-parentage',
-    title: 'Navigating cross-border surrogacy and legal parentage',
-    excerpt: 'A clear guide to consular documentation, DNA parentage verification, and international travel planning for diaspora families.',
-    body_md: `## Harmonising legal jurisdictions\n\nCross-border surrogacy brings joy to international and diaspora families, but requires careful alignment between Nigerian legal processes and the intended parents' country of residence.\n\n## Parentage orders and certified DNA testing\n\nFollowing birth, accredited legal representatives initiate parentage declarations before the high court. Certified DNA relationship testing is performed under chain-of-custody protocols required by embassies.\n\n## Consular filings and homecoming\n\nWhether applying for a Consular Report of Birth Abroad (CRBA), a British emergency travel document, or an international passport, preparing paperwork in advance ensures a calm and lawful journey home.`,
-    featured_image_url: '/assets/img/service-surrogacy-1920w.webp',
-    featured_image_alt: 'Intended parents holding their newborn during a peaceful cross-border journey',
-    category_slug: 'surrogacy-guides',
-    category_name: 'Surrogacy Guides',
-    author_name: 'Chizaram Ata',
-    reading_minutes: 4,
-    publish_at: '2026-10-10T09:00:00.000Z',
-    created_at: '2026-10-10T09:00:00.000Z',
-    updated_at: '2026-10-10T09:00:00.000Z',
-  },
-  {
-    id: 'fallback-5',
-    slug: 'emotional-wellbeing-and-counseling-in-third-party-reproduction',
-    title: 'Emotional wellbeing and counseling in third-party reproduction',
-    excerpt: 'Why structured psychological evaluations and ongoing emotional support safeguard surrogates, donors, and intended parents equally.',
-    body_md: `## Nurturing the human heart of fertility\n\nThird-party reproduction is far more than clinical scheduling and legal documents. It involves heartfelt aspirations, trust, and vulnerability.\n\n## Pre-match counseling sessions\n\nBefore matching, all parties meet with licensed reproductive psychologists. These unhurried discussions explore expectations, boundary setting, and mutual communication preferences.\n\n## Continuous case-manager companionship\n\nThroughout the journey, dedicated support remains accessible 24/7 so every participant feels heard, respected, and physically and emotionally secure.`,
-    featured_image_url: '/assets/img/service-counseling-1920w.webp',
-    featured_image_alt: 'Counselor speaking warmly with intended parents in private consultation suite',
-    category_slug: 'surrogate-care',
-    category_name: 'Surrogate Care',
-    author_name: 'Chizaram Ata',
-    reading_minutes: 3,
-    publish_at: '2026-10-04T09:00:00.000Z',
-    created_at: '2026-10-04T09:00:00.000Z',
-    updated_at: '2026-10-04T09:00:00.000Z',
-  },
-  {
-    id: 'fallback-6',
-    slug: 'choosing-an-accredited-fertility-clinic-partnership',
-    title: 'Choosing an accredited fertility clinic partnership',
-    excerpt: 'What to look for in clinical laboratory accreditation, embryology standards, and transparent success rate reporting.',
-    body_md: `## Clinical excellence and laboratory integrity\n\nYour chosen fertility clinic plays the most pivotal role in embryo culture, pre-implantation genetic testing, and successful embryo transfers.\n\n## Key benchmarks for partner clinics\n\nWe partner exclusively with clinics maintaining state-of-the-art air filtration, ISO/CAP-compliant embryology labs, and verified blastocyst vitrification protocols.\n\n## Transparent reporting and zero hidden surcharges\n\nDirect medical billing ensures complete clarity: laboratory cycles, medications, and embryology fees are billed at actual clinic cost without agency markups.`,
-    featured_image_url: '/assets/img/service-matching-1920w.webp',
-    featured_image_alt: 'Modern clinical laboratory and consultation office in warm natural light',
-    category_slug: 'egg-donation',
-    category_name: 'Egg Donation',
-    author_name: 'Chizaram Ata',
-    reading_minutes: 3,
-    publish_at: '2026-09-28T09:00:00.000Z',
-    created_at: '2026-09-28T09:00:00.000Z',
-    updated_at: '2026-09-28T09:00:00.000Z',
-  },
-];
-
-const DEFAULT_CONSULTATION_TYPES = [
-  {
-    id: 'ct-ip',
-    name: 'Intended Parent Consultation',
-    slug: 'intended-parent-consultation',
-    duration_min: 30,
-    buffer_min: 15,
-    channels: ['Google Meet', 'Phone call', 'WhatsApp call'],
-    intro: 'A private, unhurried conversation about your family-building goals, cross-border coordination options, and initial next steps.',
-  },
-  {
-    id: 'ct-surr',
-    name: 'Surrogate Information Call',
-    slug: 'surrogate-information-call',
-    duration_min: 20,
-    buffer_min: 10,
-    channels: ['WhatsApp call', 'Phone call', 'Google Meet'],
-    intro: 'Speak confidentially with a coordinator about surrogate eligibility, screening, compensation transparency, and personal support.',
-  },
-  {
-    id: 'ct-donor',
-    name: 'Egg Donor Information Call',
-    slug: 'egg-donor-information-call',
-    duration_min: 20,
-    buffer_min: 10,
-    channels: ['WhatsApp call', 'Phone call', 'Google Meet'],
-    intro: 'Learn how anonymous ovum donation screening works, what appointments involve, and how donor wellbeing is protected.',
-  },
-  {
-    id: 'ct-plan',
-    name: 'Cost and Program Planning',
-    slug: 'cost-and-program-planning',
-    duration_min: 45,
-    buffer_min: 15,
-    channels: ['Google Meet', 'Phone call'],
-    intro: 'Review programme pathways across Nigeria, Europe, Asia, Canada, and the United States along with coordination structure and planning.',
-  },
-];
-
-const DEFAULT_FAQS = [
-  {
-    id: 'faq-1',
-    audience: 'Intended Parents',
-    question: 'Who can start a surrogacy or donor journey with Zizo?',
-    answer: 'We support individuals, couples, and single intended parents looking for structured, confidential fertility coordination in Nigeria and across partner programmes in Europe, Asia, Canada, and the United States.',
-    show_on_home: 1,
-  },
-  {
-    id: 'faq-2',
-    audience: 'Intended Parents',
-    question: 'How does cross-border coordination work?',
-    answer: 'Your dedicated Zizo coordinator sequences your initial consultation, clinic evaluations, anonymized donor or surrogate matching, independent legal guidance, pregnancy updates, and homecoming planning in line with your preferred region.',
-    show_on_home: 1,
-  },
-  {
-    id: 'faq-3',
-    audience: 'Intended Parents',
-    question: 'Are egg donor and surrogate profiles kept anonymous?',
-    answer: 'Yes. Zizo maintains strict anonymity standards. Non-identifying health, education, and compatibility profiles are shared securely, and personal identifying details are protected throughout.',
-    show_on_home: 1,
-  },
-  {
-    id: 'faq-4',
-    audience: 'Surrogates',
-    question: 'What support do gestational surrogates receive at Zizo?',
-    answer: 'Every surrogate receives respectful case-manager coordination, medical and psychological screening, independent legal counsel, confidential care, and transparent milestone compensation.',
-    show_on_home: 1,
-  },
-  {
-    id: 'faq-5',
-    audience: 'Donors',
-    question: 'What does egg donor screening involve?',
-    answer: 'Prospective egg donors complete family medical history checks, fertility hormone assessments, infectious disease screening, and independent psychological counseling at vetted partner clinics before matching.',
-    show_on_home: 1,
-  },
-  {
-    id: 'faq-6',
-    audience: 'Legal and Costs',
-    question: 'When should I arrange independent legal advice?',
-    answer: 'Independent reproductive legal counsel in the applicable jurisdiction(s) is arranged prior to confirming matches or beginning clinical cycles, so every party has clarity on rights and parentage steps.',
-    show_on_home: 1,
-  },
-];
-
 function loadBuildData() {
   if (!fs.existsSync(DB_PATH)) {
     return {
       settings: {},
-      consultationTypes: DEFAULT_CONSULTATION_TYPES,
-      faqs: DEFAULT_FAQS,
+      services: [],
+      consultationTypes: [],
+      faqs: [],
       reviews: [],
-      categories: [
-        { id: 'cat-surrogacy', slug: 'surrogacy-guides', name: 'Surrogacy Guides' },
-        { id: 'cat-surrogate-care', slug: 'surrogate-care', name: 'Surrogate Care' },
-        { id: 'cat-egg-donation', slug: 'egg-donation', name: 'Egg Donation' },
-      ],
-      posts: FALLBACK_POSTS,
+      categories: [],
+      posts: [],
+      hasPublishedDbPosts: false,
     };
   }
 
@@ -326,6 +140,21 @@ function loadBuildData() {
   const settings = {};
   for (const r of settingsRows) {
     try { settings[r.key] = JSON.parse(r.value); } catch { settings[r.key] = r.value; }
+  }
+
+  let services = [];
+  try {
+    services = db
+      .prepare("SELECT * FROM services WHERE status = 'published' ORDER BY sort_order ASC, created_at ASC")
+      .all()
+      .map((s) => ({
+        ...s,
+        featured: Boolean(s.featured),
+        show_price: Boolean(s.show_price),
+        seo: typeof s.seo === 'string' ? JSON.parse(s.seo || '{}') : s.seo || {},
+      }));
+  } catch {
+    services = [];
   }
 
   const consultationTypes = db
@@ -357,18 +186,19 @@ function loadBuildData() {
 
   return {
     settings,
+    services,
     consultationTypes,
     faqs,
     reviews,
     categories,
-    posts: publishedPosts.length > 0 ? publishedPosts : FALLBACK_POSTS,
+    posts: publishedPosts,
     hasPublishedDbPosts: publishedPosts.length > 0,
   };
 }
 
 export function buildStaticSite() {
   const data = loadBuildData();
-  const { settings, consultationTypes, faqs, reviews, categories, posts } = data;
+  const { settings, services, consultationTypes, faqs, reviews, categories, posts } = data;
   const homeFaqs = faqs.filter((f) => f.show_on_home);
 
   // Copy static assets first
@@ -404,37 +234,25 @@ export function buildStaticSite() {
   ];
 
   // Home
-  writeHtml('index.html', renderHomePage({ settings, homeFaqs, reviews, posts, siteUrl: SITE_URL }));
+  writeHtml('index.html', renderHomePage({ settings, homeFaqs, reviews, posts, services, siteUrl: SITE_URL }));
 
   // About & Services
   writeHtml('about/index.html', renderAboutPage({ settings, siteUrl: SITE_URL }));
-  writeHtml('services/index.html', renderServicesHub({ settings, siteUrl: SITE_URL }));
-  for (const svc of SERVICE_DEFINITIONS) {
+  writeHtml('services/index.html', renderServicesHub({ settings, services, siteUrl: SITE_URL }));
+  for (const svc of services) {
     staticPaths.push(`/services/${svc.slug}/`);
     writeHtml(
       `services/${svc.slug}/index.html`,
       renderServiceDetailPage({
         service: svc,
         settings,
+        services,
         faqs: faqs.slice(0, 4),
         posts: posts.slice(0, 3),
         reviews: reviews.slice(0, 3),
         siteUrl: SITE_URL,
       })
     );
-    if (svc.legacySlug) {
-      writeHtml(
-        `services/${svc.legacySlug}/index.html`,
-        renderServiceDetailPage({
-          service: svc,
-          settings,
-          faqs: faqs.slice(0, 4),
-          posts: posts.slice(0, 3),
-          reviews: reviews.slice(0, 3),
-          siteUrl: SITE_URL,
-        })
-      );
-    }
   }
 
   // Intended Parents

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { PageHeader } from '../components/untitledui/PageHeader';
 import { DataTable } from '../components/common/DataTable';
@@ -18,86 +18,35 @@ import { useAuditLog } from '../hooks/useAuditLog';
 import { Plus, HelpCircle, Eye, LayersThree01 } from '@untitledui/icons';
 import type { ServiceItem } from '../types';
 
-const INITIAL_SERVICES: ServiceItem[] = [
-  {
-    id: 'srv-1',
-    slug: 'donor-and-surrogate-enquiry',
-    title: 'Donor and Surrogate Enquiry',
-    short_description: 'Initial matching discovery, process guidance, and eligibility consultation.',
-    body_md: '## Donor and Surrogate Enquiry\n\nComprehensive exploration of gestational carrier profiles, ovum donor selection, and initial legal steps in Nigeria and internationally.',
-    price_amount: 10000,
-    price_currency: 'NGN',
-    price_label: 'Fixed Fee',
-    show_price: true,
-    status: 'published',
-    featured: true,
-    sort_order: 1,
-    faqs_count: 4,
-    created_at: '2026-01-20T10:00:00Z',
-    updated_at: '2026-02-18',
-  },
-  {
-    id: 'srv-2',
-    slug: 'ivf-consultation-and-coordination',
-    title: 'IVF Consultation and Clinic Coordination',
-    short_description: 'Accredited fertility clinic scheduling, medical protocol alignment, and escort.',
-    body_md: '## IVF Consultation and Coordination\n\nDirect synchronization between intended parents and verified fertility centers in Lagos, Abuja, and partner international jurisdictions.',
-    price_amount: 60000,
-    price_currency: 'NGN',
-    price_label: 'Coordination Fee',
-    show_price: true,
-    status: 'published',
-    featured: true,
-    sort_order: 2,
-    faqs_count: 5,
-    created_at: '2026-01-22T10:00:00Z',
-    updated_at: '2026-02-18',
-  },
-  {
-    id: 'srv-3',
-    slug: 'surrogacy-coordination',
-    title: 'Surrogacy Coordination',
-    short_description: 'End-to-end gestational carrier care, contract facilitation, and birth logistics.',
-    body_md: '## Surrogacy Coordination Program\n\nFull administrative, accommodation, maternal wellness, and legal parentage coordination from contract signing through post-birth documentation.',
-    price_amount: 50000,
-    price_currency: 'NGN',
-    price_label: 'Program Retainer',
-    show_price: true,
-    status: 'published',
-    featured: true,
-    sort_order: 3,
-    faqs_count: 6,
-    created_at: '2026-01-25T10:00:00Z',
-    updated_at: '2026-02-18',
-  },
-  {
-    id: 'srv-4',
-    slug: 'donor-profiling-and-screening',
-    title: 'Donor Profiling and Screening',
-    short_description: 'Anonymized donor catalog access, phenotype matching, and health audit.',
-    body_md: '## Donor Profiling & Screening\n\nThorough phenotypic, genetic, viral, and psychological evaluation of egg and sperm donors complying with clinical reproductive guidelines.',
-    price_amount: 0,
-    price_currency: 'NGN',
-    price_label: 'Complimentary',
-    show_price: true,
-    status: 'published',
-    featured: true,
-    sort_order: 4,
-    faqs_count: 3,
-    created_at: '2026-01-28T10:00:00Z',
-    updated_at: '2026-02-18',
-  },
-];
-
 export const ServicesPage: React.FC = () => {
   const { toast } = useNotifications();
   const { logAction } = useAuditLog();
 
-  const [services, setServices] = useState<ServiceItem[]>(INITIAL_SERVICES);
+  const [services, setServices] = useState<ServiceItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingService, setEditingService] = useState<ServiceItem | null>(null);
   const [viewingService, setViewingService] = useState<ServiceItem | null>(null);
   const [editorTab, setEditorTab] = useState<'overview' | 'content' | 'pricing' | 'seo' | 'faqs'>('overview');
+
+  const fetchServices = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/services');
+      if (res.ok) {
+        const data = await res.json();
+        setServices(data.services || []);
+      }
+    } catch (err) {
+      console.error('Failed to load services:', err);
+      toast('Load Failed', 'Could not load services from database.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [toast]);
+
+  useEffect(() => {
+    fetchServices();
+  }, [fetchServices]);
 
   // Form states
   const [title, setTitle] = useState('');
@@ -161,25 +110,32 @@ export const ServicesPage: React.FC = () => {
     setEditorOpen(true);
   };
 
-  const handleToggleFeatured = (id: string, current: boolean) => {
-    setServices((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, featured: !current } : s))
-    );
-    toast('Featured Updated', 'Service display priority updated.', 'info');
+  const handleToggleFeatured = async (id: string, current: boolean) => {
+    try {
+      const res = await fetch(`/api/admin/services/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ featured: !current }),
+      });
+      if (!res.ok) throw new Error('Failed to update featured');
+      toast('Featured Updated', 'Service display priority updated.', 'info');
+      fetchServices();
+    } catch {
+      toast('Update Failed', 'Could not update featured status.', 'error');
+    }
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    const itemData: ServiceItem = {
-      id: editingService ? editingService.id : 'srv-' + Date.now(),
+    const itemData = {
       title,
-      slug: slug || title.toLowerCase().replace(/\s+/g, '-'),
+      slug: slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       short_description: shortDesc,
       body_md: bodyMd,
       image_path: imagePath,
       image_alt: imageAlt.trim() || null,
       linked_consultation_type_id: linkedConsultationType || null,
-      price_amount: Number(priceAmount),
+      price_amount: Number(priceAmount) || 0,
       price_currency: priceCurrency,
       price_label: priceLabel,
       show_price: showPrice,
@@ -190,39 +146,61 @@ export const ServicesPage: React.FC = () => {
         meta_title: metaTitle,
         meta_description: metaDesc,
       },
-      faqs_count: editingService ? editingService.faqs_count : 0,
-      created_at: editingService ? editingService.created_at : new Date().toISOString(),
-      updated_at: new Date().toISOString().split('T')[0],
     };
 
-    if (editingService) {
-      setServices((prev) => prev.map((s) => (s.id === editingService.id ? itemData : s)));
-      toast('Service Updated', `Saved changes to ${title}. Deploy hook triggered.`, 'success');
-    } else {
-      setServices((prev) => [...prev, itemData]);
-      toast('Service Created', `Created ${title}. Deploy hook triggered.`, 'success');
+    try {
+      if (editingService) {
+        const res = await fetch(`/api/admin/services/${editingService.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify(itemData),
+        });
+        if (!res.ok) throw new Error('Failed to update service');
+        toast('Service Updated', `Saved changes to ${title}.`, 'success');
+      } else {
+        const res = await fetch('/api/admin/services', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify(itemData),
+        });
+        if (!res.ok) throw new Error('Failed to create service');
+        toast('Service Created', `Created ${title}.`, 'success');
+      }
+
+      logAction({
+        action: editingService ? 'EDIT_SERVICE' : 'CREATE_SERVICE',
+        tableName: 'services',
+        recordId: editingService?.id || 'new',
+        diff: itemData,
+      });
+
+      setEditorOpen(false);
+      fetchServices();
+    } catch {
+      toast('Save Failed', 'Could not save service to database.', 'error');
     }
-
-    logAction({
-      action: editingService ? 'EDIT_SERVICE' : 'CREATE_SERVICE',
-      tableName: 'services',
-      recordId: itemData.id,
-      diff: itemData,
-    });
-
-    setEditorOpen(false);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!serviceToDelete) return;
-    setServices((prev) => prev.filter((s) => s.id !== serviceToDelete.id));
-    logAction({
-      action: 'DELETE_SERVICE',
-      tableName: 'services',
-      recordId: serviceToDelete.id,
-    });
-    toast('Service Deleted', `Removed ${serviceToDelete.title}.`, 'info');
-    setServiceToDelete(null);
+    try {
+      const res = await fetch(`/api/admin/services/${serviceToDelete.id}`, {
+        method: 'DELETE',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      });
+      if (!res.ok) throw new Error('Failed to delete service');
+      toast('Service Deleted', `Removed ${serviceToDelete.title}.`, 'info');
+      logAction({
+        action: 'DELETE_SERVICE',
+        tableName: 'services',
+        recordId: serviceToDelete.id,
+      });
+      fetchServices();
+    } catch {
+      toast('Delete Failed', 'Could not delete service.', 'error');
+    } finally {
+      setServiceToDelete(null);
+    }
   };
 
   const columns = React.useMemo<ColumnDef<ServiceItem>[]>(

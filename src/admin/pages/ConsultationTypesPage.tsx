@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { PageHeader } from '../components/untitledui/PageHeader';
 import { Button } from '../components/untitledui/Button';
 import { Badge } from '../components/untitledui/Badge';
@@ -14,74 +14,12 @@ import { useAuditLog } from '../hooks/useAuditLog';
 import { Plus } from '@untitledui/icons';
 import type { ConsultationType } from '../types';
 
-const INITIAL_TYPES: ConsultationType[] = [
-  {
-    id: 'ct-1',
-    name: 'Intended Parent Consultation',
-    slug: 'intended-parent-consultation',
-    duration_min: 30,
-    buffer_min: 10,
-    channels: ['Google Meet', 'Phone call', 'WhatsApp call'],
-    price_minor: 0,
-    currency: 'NGN',
-    intro: 'Private exploration of surrogacy or ovum donation options and legal contracts.',
-    active: true,
-    sort: 1,
-    bookings_count: 24,
-    updated_at: '2026-02-10',
-  },
-  {
-    id: 'ct-2',
-    name: 'Surrogate Information Call',
-    slug: 'surrogate-information-call',
-    duration_min: 20,
-    buffer_min: 10,
-    channels: ['Google Meet', 'Phone call', 'WhatsApp call'],
-    price_minor: 0,
-    currency: 'NGN',
-    intro: 'Confidential conversation about eligibility, screening, medical steps, and care.',
-    active: true,
-    sort: 2,
-    bookings_count: 18,
-    updated_at: '2026-02-12',
-  },
-  {
-    id: 'ct-3',
-    name: 'Egg Donor Information Call',
-    slug: 'egg-donor-information-call',
-    duration_min: 20,
-    buffer_min: 10,
-    channels: ['Google Meet', 'Phone call', 'WhatsApp call'],
-    price_minor: 0,
-    currency: 'NGN',
-    intro: 'Private guidance on ovum donation, anonymity, testing, and care support.',
-    active: true,
-    sort: 3,
-    bookings_count: 9,
-    updated_at: '2026-02-14',
-  },
-  {
-    id: 'ct-4',
-    name: 'Cost and Program Planning',
-    slug: 'cost-and-program-planning',
-    duration_min: 45,
-    buffer_min: 15,
-    channels: ['Google Meet', 'Phone call'],
-    price_minor: 0,
-    currency: 'NGN',
-    intro: 'Structured cost planning session tailored to international clinics.',
-    active: true,
-    sort: 4,
-    bookings_count: 14,
-    updated_at: '2026-02-16',
-  },
-];
-
 export const ConsultationTypesPage: React.FC = () => {
   const { toast } = useNotifications();
   const { logAction } = useAuditLog();
 
-  const [types, setTypes] = useState<ConsultationType[]>(INITIAL_TYPES);
+  const [types, setTypes] = useState<ConsultationType[]>([]);
+  const [loading, setLoading] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingType, setEditingType] = useState<ConsultationType | null>(null);
   const [expandedChannels, setExpandedChannels] = useState<Record<string, boolean>>({});
@@ -99,6 +37,40 @@ export const ConsultationTypesPage: React.FC = () => {
 
   // Delete modal state
   const [typeToDelete, setTypeToDelete] = useState<ConsultationType | null>(null);
+
+  const fetchTypes = useCallback(async () => {
+    try {
+      const res = await fetch('/api/admin/consultation-types');
+      if (res.ok) {
+        const data = await res.json();
+        const mapped: ConsultationType[] = (data.types || []).map((t: any) => ({
+          id: t.id,
+          name: t.name,
+          slug: t.slug,
+          duration_min: t.duration_min,
+          buffer_min: t.buffer_min,
+          channels: t.channels || ['Google Meet', 'Phone call'],
+          price_minor: t.price_minor || 0,
+          currency: t.currency || 'NGN',
+          intro: t.intro || '',
+          active: Boolean(t.active),
+          sort: t.sort || 0,
+          bookings_count: 0,
+          updated_at: new Date().toISOString().split('T')[0],
+        }));
+        setTypes(mapped);
+      }
+    } catch (err) {
+      console.error('Failed to load consultation types:', err);
+      toast('Load Failed', 'Could not load consultation types from database.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  }, [toast]);
+
+  useEffect(() => {
+    fetchTypes();
+  }, [fetchTypes]);
 
   const openCreateDrawer = () => {
     setEditingType(null);
@@ -128,19 +100,26 @@ export const ConsultationTypesPage: React.FC = () => {
     setDrawerOpen(true);
   };
 
-  const handleToggleActive = (id: string, current: boolean) => {
-    setTypes((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, active: !current } : t))
-    );
-    toast('Consultation Updated', `Consultation status changed.`, 'info');
+  const handleToggleActive = async (id: string, current: boolean) => {
+    try {
+      const res = await fetch(`/api/admin/consultation-types/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ active: !current }),
+      });
+      if (!res.ok) throw new Error('Failed to update status');
+      toast('Consultation Updated', `Consultation status changed.`, 'info');
+      fetchTypes();
+    } catch {
+      toast('Update Failed', 'Could not change active status.', 'error');
+    }
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    const itemData: ConsultationType = {
-      id: editingType ? editingType.id : 'ct-' + Date.now(),
+    const payload = {
       name,
-      slug: slug || name.toLowerCase().replace(/\s+/g, '-'),
+      slug: slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       duration_min: Number(duration),
       buffer_min: Number(buffer),
       channels,
@@ -148,44 +127,61 @@ export const ConsultationTypesPage: React.FC = () => {
       currency,
       intro,
       active,
-      sort: editingType ? editingType.sort : types.length + 1,
-      bookings_count: editingType ? editingType.bookings_count : 0,
-      updated_at: new Date().toISOString().split('T')[0],
     };
 
-    if (editingType) {
-      setTypes((prev) => prev.map((t) => (t.id === editingType.id ? itemData : t)));
-      toast('Consultation Type Saved', `Updated ${name}.`, 'success');
-    } else {
-      setTypes((prev) => [...prev, itemData]);
-      toast('Consultation Type Created', `Added ${name}.`, 'success');
+    try {
+      if (editingType) {
+        const res = await fetch(`/api/admin/consultation-types/${editingType.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('Failed to update consultation type');
+        toast('Consultation Type Saved', `Updated ${name}.`, 'success');
+      } else {
+        const res = await fetch('/api/admin/consultation-types', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('Failed to create consultation type');
+        toast('Consultation Type Created', `Added ${name}.`, 'success');
+      }
+
+      logAction({
+        action: editingType ? 'EDIT_CONSULTATION_TYPE' : 'CREATE_CONSULTATION_TYPE',
+        tableName: 'consultation_types',
+        recordId: editingType?.id || 'new',
+        diff: payload,
+      });
+
+      setDrawerOpen(false);
+      fetchTypes();
+    } catch {
+      toast('Save Failed', 'Could not save consultation type to database.', 'error');
     }
-
-    logAction({
-      action: editingType ? 'EDIT_CONSULTATION_TYPE' : 'CREATE_CONSULTATION_TYPE',
-      tableName: 'consultation_types',
-      recordId: itemData.id,
-      diff: itemData,
-    });
-
-    setDrawerOpen(false);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!typeToDelete) return;
-    if (typeToDelete.bookings_count && typeToDelete.bookings_count > 0) {
-      toast(
-        'Deletion Blocked',
-        `Cannot delete "${typeToDelete.name}" because active or past bookings reference it. Deactivate instead.`,
-        'error'
-      );
+    try {
+      const res = await fetch(`/api/admin/consultation-types/${typeToDelete.id}`, {
+        method: 'DELETE',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+      });
+      if (!res.ok) throw new Error('Failed to delete consultation type');
+      toast('Deleted', `Deleted ${typeToDelete.name}.`, 'info');
+      logAction({
+        action: 'DELETE_CONSULTATION_TYPE',
+        tableName: 'consultation_types',
+        recordId: typeToDelete.id,
+      });
+      fetchTypes();
+    } catch {
+      toast('Delete Failed', 'Could not delete consultation type.', 'error');
+    } finally {
       setTypeToDelete(null);
-      return;
     }
-
-    setTypes((prev) => prev.filter((t) => t.id !== typeToDelete.id));
-    toast('Deleted', `Deleted ${typeToDelete.name}.`, 'info');
-    setTypeToDelete(null);
   };
 
   return (

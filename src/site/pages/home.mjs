@@ -46,7 +46,7 @@ function isConfirmedStat(val) {
   return s.length > 0 && !s.startsWith('{{');
 }
 
-export function renderHomePage({ settings = {}, homeFaqs = [], reviews = [], posts = [], siteUrl = '' }) {
+export function renderHomePage({ settings = {}, homeFaqs = [], reviews = [], posts = [], services = [], siteUrl = '' }) {
   const stats = [
     { value: settings.stats_experience || '12+ years', label: 'Reproductive and women’s health experience' },
     { value: settings.stats_families_helped, label: 'Families supported across borders' },
@@ -108,7 +108,7 @@ export function renderHomePage({ settings = {}, homeFaqs = [], reviews = [], pos
     siteUrl,
   });
 
-  const header = renderHeader({ isHome: true });
+  const header = renderHeader({ isHome: true, services });
 
   const sectors = [
     { label: 'Nigeria', href: '/intended-parents/international/#nigeria' },
@@ -148,7 +148,7 @@ export function renderHomePage({ settings = {}, homeFaqs = [], reviews = [], pos
       num: '05',
       title: 'Emotional Management',
       desc: 'Confidential counseling support accompanies intended parents, egg donors, and gestational carriers before, during, and after each stage.',
-      href: '/services/ivf-consultation-coordination/',
+      href: '/services/',
     },
   ];
 
@@ -316,14 +316,13 @@ ${header}
         <a href="/services/" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline underline-offset-4">Explore all services</a>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        <!-- Card 1: Donor Profiling & Screening (Row 1 Left - 7 of 12) -->
-        <a href="/services/donor-profiling-screening/" class="lg:col-span-7 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
+      ${services && services.length > 0 ? `
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+        ${services.map((svc) => `
+        <a href="/services/${escapeHtml(svc.slug)}/" class="group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-8 flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
           <div class="flex items-start justify-between gap-4">
             <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
-              <svg class="w-5 h-5 text-[#17191A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 2C8.5 2 5.5 8 5.5 14a6.5 6.5 0 0 0 13 0C18.5 8 15.5 2 12 2z"/>
-              </svg>
+              <i data-lucide="shield-check" class="w-5 h-5 text-[#17645F]"></i>
             </span>
             <div class="flex items-center gap-2">
               <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
@@ -331,80 +330,34 @@ ${header}
               </span>
             </div>
           </div>
-          <div class="space-y-1.5 pt-8">
-            <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">Donor Profiling &amp; Screening</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed"><span class="block">Confidence egg donor matching</span><span>with comprehensive clinical screening.</span></p>
+          <div class="space-y-2 pt-6">
+            <h3 class="display text-xl sm:text-2xl text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors">${escapeHtml(svc.title)}</h3>
+            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed">${escapeHtml(svc.short_description || svc.summary || '')}</p>
+            ${svc.show_price ? `
+            <div class="pt-3 border-t border-[#E1E0DD] flex items-center justify-between text-xs text-[#5D5E5F]">
+              <span>Consultation fee: <strong class="text-[#17645F] font-semibold">${svc.price_amount > 0 ? `${escapeHtml(svc.price_currency || 'NGN')} ${Number(svc.price_amount).toLocaleString()}` : 'Free'}</strong></span>
+            </div>` : ''}
           </div>
         </a>
-
-        <!-- Card 2: Surrogacy Coordination (Row 1 Right - 5 of 12) -->
-        <a href="/services/surrogacy-coordination/" class="lg:col-span-5 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
-          <div class="flex items-start justify-between gap-4">
-            <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
-              <svg class="w-5 h-5 text-[#17191A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-              </svg>
-            </span>
-            <div class="flex items-center gap-2">
-              <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
-                <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
-              </span>
-            </div>
-          </div>
-          <div class="space-y-1.5 pt-8">
-            <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">Surrogacy Coordination</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed"><span class="block">Complete gestational surrogacy coordination</span><span>from matching to delivery.</span></p>
-          </div>
-        </a>
-
-        <!-- Card 3: Donor & Surrogate Enquiry (Row 2 Left - 5 of 12) -->
-        <a href="/services/donor-surrogate-enquiry/" class="lg:col-span-5 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
-          <div class="flex items-start justify-between gap-4">
-            <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
-              <svg class="w-5 h-5 text-[#17191A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-            </span>
-            <div class="flex items-center gap-2">
-              <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
-                <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
-              </span>
-            </div>
-          </div>
-          <div class="space-y-1.5 pt-8">
-            <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">Donor &amp; Surrogate Enquiry</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed"><span class="block">Private introductory consultation</span><span>exploring your family building options.</span></p>
-          </div>
-        </a>
-
-        <!-- Card 4: IVF Consultation & Coordination (Row 2 Right - 7 of 12) -->
-        <a href="/services/ivf-consultation-coordination/" class="lg:col-span-7 group block rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-7 sm:p-9 min-h-[290px] flex flex-col justify-between shadow-sm hover:border-[#8BB2AF] hover:shadow-md transition-all duration-300 reveal">
-          <div class="flex items-start justify-between gap-4">
-            <span class="w-10 h-10 rounded-full bg-white border border-[#E1E0DD] text-[#17191A] shadow-sm flex items-center justify-center transition-transform duration-700 group-hover:scale-[1.03]">
-              <svg class="w-5 h-5 text-[#17191A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="m18 2 4 4"/>
-                <path d="m17 7 3-3"/>
-                <path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/>
-                <path d="m9 11 4 4"/>
-                <path d="m5 19-3 3"/>
-                <path d="m14 4 6 6"/>
-              </svg>
-            </span>
-            <div class="flex items-center gap-2">
-              <span class="w-9 h-9 rounded-full bg-white border border-[#E1E0DD] text-[#17645F] inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm" aria-hidden="true">
-                <i data-lucide="arrow-up-right" class="w-4 h-4 text-[#17645F]"></i>
-              </span>
-            </div>
-          </div>
-          <div class="space-y-1.5 pt-8">
-            <h3 class="display text-xl sm:text-2xl lg:text-[1.65rem] text-[#17191A] font-normal leading-tight group-hover:text-[#17645F] transition-colors whitespace-nowrap overflow-hidden text-ellipsis">IVF Consultation &amp; Coordination</h3>
-            <p class="text-[length:var(--fs-body)] text-[#5D5E5F] font-normal leading-relaxed"><span class="block">Comprehensive clinical IVF coordination</span><span>with accredited partner clinics.</span></p>
-          </div>
-        </a>
+        `).join('')}
       </div>
+      ` : `
+      <div class="rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-8 sm:p-12 text-center max-w-3xl mx-auto space-y-6 reveal">
+        <div class="w-14 h-14 rounded-full bg-[#17645F]/10 text-[#17645F] flex items-center justify-center mx-auto">
+          <i data-lucide="shield-check" class="w-7 h-7 text-[#17645F]"></i>
+        </div>
+        <div class="space-y-3">
+          <h3 class="display text-2xl sm:text-3xl text-[#17191A]">Private Consultation &amp; Tailored Care Pathways</h3>
+          <p class="text-[length:var(--fs-body)] text-[#5D5E5F] max-w-xl mx-auto leading-relaxed">
+            Every family journey is unique. Rather than rigid one-size packages, we coordinate confidential gestational surrogacy, egg donor screening, and clinic partnerships tailored to your clinical requirements, legal considerations, and personal values.
+          </p>
+        </div>
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <a href="/book/" class="btn-primary">Book Private Consultation</a>
+          <a href="/contact/" class="btn-secondary">Speak with a Coordinator</a>
+        </div>
+      </div>
+      `}
     </div>
   </section>
 
@@ -783,6 +736,7 @@ ${header}
         <a href="/resources/blog/" class="text-[length:var(--fs-small)] font-semibold text-[#17645F] hover:underline underline-offset-4">Read all articles</a>
       </div>
 
+      ${posts && posts.length > 0 ? `
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         ${posts
           .slice(0, 3)
@@ -808,59 +762,51 @@ ${header}
         </article>`
           )
           .join('')}
+      </div>` : `
+      <div class="rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-8 sm:p-10 text-center max-w-2xl mx-auto space-y-4 reveal">
+        <div class="w-12 h-12 rounded-full bg-[#17645F]/10 text-[#17645F] flex items-center justify-center mx-auto">
+          <i data-lucide="book-open" class="w-6 h-6 text-[#17645F]"></i>
+        </div>
+        <div class="space-y-2">
+          <h3 class="display text-xl sm:text-2xl text-[#17191A]">Clinical Journal &amp; Guides in Preparation</h3>
+          <p class="text-[length:var(--fs-small)] text-[#5D5E5F] leading-relaxed">
+            Our reproductive and legal coordination team is drafting in-depth educational guides covering screening standards, parental order legalities, and cross-border timelines.
+          </p>
+        </div>
+        <div class="pt-2">
+          <a href="/book/" class="btn-primary">Schedule a Consultation</a>
+        </div>
       </div>
+      `}
     </div>
   </section>
 
   <!-- SECTION 9: FAQ (ZELLA SALON INSPIRED INTERACTIVE ACCORDION & FILTER) -->
   ${(() => {
-    const displayFaqs =
-      homeFaqs && homeFaqs.length > 0
-        ? homeFaqs.slice(0, 8)
-        : [
-            {
-              id: 'faq-1',
-              audience: 'Intended Parents',
-              question: 'How does Zizo coordinate surrogacy and donor care across borders?',
-              answer:
-                'Zizo serves as your dedicated coordination partner from Lagos, connecting intended parents with vetted fertility clinics, independent reproductive legal counsel, and thoroughly screened surrogates or egg donors across Nigeria, Europe, Asia, Canada, and the United States.',
-            },
-            {
-              id: 'faq-2',
-              audience: 'Intended Parents',
-              question: 'How are surrogates and egg donors screened?',
-              answer:
-                'Every prospective surrogate and egg donor completes comprehensive medical, psychological, and background evaluations conducted through qualified clinical and counseling professionals before joining our matching programme.',
-            },
-            {
-              id: 'faq-3',
-              audience: 'Intended Parents',
-              question: 'How is privacy and anonymity protected during matching?',
-              answer:
-                'Confidentiality is foundational at Zizo. Profiles shared during personalized matching omit identifying personal details, and all consultations, records, and communications follow strict data-protection protocols.',
-            },
-            {
-              id: 'faq-4',
-              audience: 'Surrogates',
-              question: 'What support does a surrogate receive during pregnancy?',
-              answer:
-                'Surrogates receive dedicated case-manager coordination, access to independent emotional counseling, transparent milestone compensation schedules, and close collaboration with obstetric care teams throughout pregnancy and postpartum recovery.',
-            },
-            {
-              id: 'faq-5',
-              audience: 'Donors',
-              question: 'Who can apply to become an egg donor with Zizo?',
-              answer:
-                'Women in good general and reproductive health who meet clinical age and screening criteria may submit an initial inquiry. Our team conducts a private information call before any medical screening begins.',
-            },
-            {
-              id: 'faq-6',
-              audience: 'Legal and Costs',
-              question: 'When should we speak with independent legal counsel?',
-              answer:
-                'Independent legal advice is essential before signing any matching or clinical agreement. Zizo coordinates introductions to experienced reproductive law practitioners in your relevant jurisdictions. Information on this website is general information and not legal or medical advice.',
-            },
-          ];
+    const displayFaqs = homeFaqs && homeFaqs.length > 0 ? homeFaqs.slice(0, 8) : [];
+    if (displayFaqs.length === 0) {
+      return `
+  <section id="faq" aria-labelledby="faq-section-heading" class="zizo-section bg-[#FAF9F6] border-t border-[#E1E0DD] py-20 text-[#202020]">
+    <div class="zizo-container max-w-3xl">
+      <div class="rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-8 sm:p-12 text-center space-y-6 shadow-xs reveal">
+        <div class="w-14 h-14 rounded-full bg-[#17645F]/10 text-[#17645F] flex items-center justify-center mx-auto">
+          <i data-lucide="help-circle" class="w-7 h-7 text-[#17645F]"></i>
+        </div>
+        <div class="space-y-3">
+          <p class="text-xs font-semibold uppercase tracking-[0.2em] text-[#17645F]">Questions &amp; Answers</p>
+          <h2 id="faq-section-heading" class="display text-2xl sm:text-4xl text-[#17191A]">Frequently Asked Questions</h2>
+          <p class="text-sm sm:text-base text-[#5D5E5F] leading-relaxed max-w-xl mx-auto">
+            Our care team is compiling verified clinical and intake answers. If you have questions regarding donor screening, surrogate health criteria, legal protections, or timeline estimates, we invite you to speak directly with a coordinator.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <a href="/book/" class="btn-primary">Book Consultation</a>
+          <a href="/contact/" class="btn-secondary">Contact Coordination Team</a>
+        </div>
+      </div>
+    </div>
+  </section>`;
+    }
 
     const faqCategories = ['All', ...Array.from(new Set(displayFaqs.map((f) => f.audience || 'General')))];
 
@@ -972,6 +918,6 @@ ${header}
   <!-- SECTION 10: CONTACT CTA -->
   ${renderClosingCta({ whatsappHref })}
 </main>
-${renderFooter({ settings })}
+${renderFooter({ settings, services })}
 `;
 }

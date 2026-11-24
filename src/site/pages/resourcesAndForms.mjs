@@ -46,6 +46,7 @@ ${renderHeader({ isHome: false })}
 
   <section class="zizo-section bg-[#FAF9F6]">
     <div class="zizo-container space-y-[var(--space-md)]">
+      ${posts && posts.length > 0 ? `
       <!-- Search & Category Filter Bar -->
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-[#E1E0DD]">
         <div class="flex flex-wrap items-center gap-2" role="navigation" aria-label="Blog categories">
@@ -85,7 +86,7 @@ ${renderHeader({ isHome: false })}
           : ''
       }
 
-            <div id="blog-posts-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div id="blog-posts-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
         ${posts
           .map(
             (post) => `<article class="border border-[#E1E0DD] rounded-[var(--radius)] overflow-hidden bg-[#FAF9F6] flex flex-col justify-between reveal" data-post-card data-title="${escapeHtml(post.title.toLowerCase())}" data-excerpt="${escapeHtml(post.excerpt.toLowerCase())}">
@@ -109,22 +110,24 @@ ${renderHeader({ isHome: false })}
           .join('')}
       </div>
 
-      <nav aria-label="Blog pagination" class="pt-8 flex items-center justify-center gap-2">
-        <button type="button" class="w-10 h-10 rounded-full border border-[#E1E0DD] text-[#17191A] flex items-center justify-center hover:bg-[#E1E0DD]/40 disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Previous page" disabled>
-          <i data-lucide="chevron-left" class="w-4 h-4"></i>
-        </button>
-        <button type="button" aria-current="page" class="w-10 h-10 rounded-full bg-[#17645F] text-[#FAF9F6] font-semibold text-sm flex items-center justify-center">
-          1
-        </button>
-        <button type="button" class="w-10 h-10 rounded-full border border-[#E1E0DD] text-[#17191A] font-semibold text-sm flex items-center justify-center hover:bg-[#E1E0DD]/40">
-          2
-        </button>
-        <button type="button" class="w-10 h-10 rounded-full border border-[#E1E0DD] text-[#17191A] flex items-center justify-center hover:bg-[#E1E0DD]/40" aria-label="Next page">
-          <i data-lucide="chevron-right" class="w-4 h-4"></i>
-        </button>
-      </nav>
-
       <p id="blog-empty-msg" class="hidden text-center py-10 text-[#5D5E5F]">No articles match your search.</p>
+      ` : `
+      <div class="rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-8 sm:p-12 text-center max-w-2xl mx-auto space-y-6 reveal">
+        <div class="w-14 h-14 rounded-full bg-[#17645F]/10 text-[#17645F] flex items-center justify-center mx-auto">
+          <i data-lucide="book-open" class="w-7 h-7 text-[#17645F]"></i>
+        </div>
+        <div class="space-y-3">
+          <h2 class="display text-2xl sm:text-3xl text-[#17191A]">Clinical Journal &amp; Guides in Preparation</h2>
+          <p class="text-[length:var(--fs-body)] text-[#5D5E5F] leading-relaxed">
+            Our medical specialists and legal coordination team are preparing detailed guides covering third-party reproduction in Nigeria, surrogate maternal health safeguards, and international parentage recognition.
+          </p>
+        </div>
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <a href="/book/" class="btn-primary">Book Consultation</a>
+          <a href="/contact/" class="btn-secondary">Contact Our Team</a>
+        </div>
+      </div>
+      `}
     </div>
   </section>
 
@@ -343,6 +346,7 @@ ${renderHeader({ isHome: false })}
 
   <section class="zizo-section bg-[#FAF9F6]">
     <div class="zizo-container space-y-[var(--space-md)]">
+      ${faqs && faqs.length > 0 ? `
       <div class="max-w-md">
         <label for="faq-search-input" class="block text-[length:var(--fs-small)] font-medium mb-1.5">Search questions</label>
         <input id="faq-search-input" type="search" placeholder="Type a keyword (e.g. screening, privacy, Lagos)..." class="input-field" />
@@ -372,7 +376,23 @@ ${renderHeader({ isHome: false })}
         </div>`;
           })
           .join('')}
+      </div>` : `
+      <div class="rounded-2xl border border-[#E1E0DD] bg-[#F4F4F2] p-8 sm:p-12 text-center max-w-2xl mx-auto space-y-6 reveal">
+        <div class="w-14 h-14 rounded-full bg-[#17645F]/10 text-[#17645F] flex items-center justify-center mx-auto">
+          <i data-lucide="help-circle" class="w-7 h-7 text-[#17645F]"></i>
+        </div>
+        <div class="space-y-3">
+          <h2 class="display text-2xl sm:text-3xl text-[#17191A]">Comprehensive FAQ Guide In Preparation</h2>
+          <p class="text-[length:var(--fs-body)] text-[#5D5E5F] leading-relaxed">
+            Our medical coordinators and legal practitioners are compiling verified answers to address common queries regarding candidate screening, parental orders, and clinical cycle management.
+          </p>
+        </div>
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <a href="/book/" class="btn-primary">Book Consultation</a>
+          <a href="/contact/" class="btn-secondary">Speak with a Coordinator</a>
+        </div>
       </div>
+      `}
     </div>
   </section>
 
