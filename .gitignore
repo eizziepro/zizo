@@ -21,3 +21,6 @@ private-docs/
 
 # Scratch & test outputs
 scratch/
+
+clean_env.js
+
