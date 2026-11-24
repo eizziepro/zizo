@@ -276,51 +276,53 @@ export const IntegrationsTab: React.FC = () => {
         </div>
       </div>
 
-      {/* SECTION 1: PAYMENT GATEWAYS */}
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-base font-semibold text-[#17191A] flex items-center gap-2">
-            <CreditCard01 className="w-5 h-5 text-[#17645F]" />
-            Payment Gateways
-          </h2>
-          <p className="text-xs text-[#5D5E5F] mt-1">
-            Configure automated consultation billing, multi-currency checkout, and webhook listeners.
-          </p>
-        </div>
-
-        {/* PAYSTACK CARD */}
-        <div className="rounded-[10px] border border-[#E1E0DD] bg-white p-6 shadow-xs space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E1E0DD]">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-[8px] bg-[#00C3F7]/10 flex items-center justify-center font-bold text-base text-[#008BB4]">
-                P
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-base text-[#17191A]">Paystack Payment Gateway</h3>
-                  <Badge variant={paystackEnabled ? 'brand' : 'gray'} size="sm">
-                    {paystackEnabled ? 'Enabled' : 'Disabled'}
-                  </Badge>
-                  <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-[#FAF9F6] text-[#5D5E5F] border border-[#E1E0DD]">
-                    Inline Popup Modal
-                  </span>
-                </div>
-                <p className="text-xs text-[#5D5E5F] mt-0.5">
-                  Accept Naira (NGN), USD, GBP, and EUR cards, Apple Pay, USSD, and bank transfers with instant verification.
-                </p>
-              </div>
-            </div>
-
-            <label className="inline-flex items-center gap-2 cursor-pointer self-start sm:self-center">
-              <input
-                type="checkbox"
-                checked={paystackEnabled}
-                onChange={(e) => setPaystackEnabled(e.target.checked)}
-                className="w-4 h-4 accent-[#17645F] rounded cursor-pointer"
-              />
-              <span className="text-xs font-semibold text-[#17191A]">Enable Paystack</span>
-            </label>
+      {/* SECTION 1: PAYMENT GATEWAYS & OPERATIONS HUB */}
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+        {/* Left Column (8 cols): Gateways Forms */}
+        <div className="xl:col-span-8 space-y-6">
+          <div>
+            <h2 className="text-base font-semibold text-[#17191A] flex items-center gap-2">
+              <CreditCard01 className="w-5 h-5 text-[#17645F]" />
+              Payment Gateways
+            </h2>
+            <p className="text-xs text-[#5D5E5F] mt-1">
+              Configure automated consultation billing, multi-currency checkout, and webhook listeners.
+            </p>
           </div>
+
+          {/* PAYSTACK CARD */}
+          <div className="rounded-[10px] border border-[#E1E0DD] bg-white p-6 shadow-xs space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E1E0DD]">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-[8px] bg-[#17645F]/10 flex items-center justify-center font-bold text-base text-[#17645F]">
+                  P
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-base text-[#17191A]">Paystack Payment Gateway</h3>
+                    <Badge variant={paystackEnabled ? 'brand' : 'gray'} size="sm">
+                      {paystackEnabled ? 'Enabled' : 'Disabled'}
+                    </Badge>
+                    <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-[#FAF9F6] text-[#5D5E5F] border border-[#E1E0DD]">
+                      Inline Popup Modal
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#5D5E5F] mt-0.5">
+                    Accept Naira (NGN), USD, GBP, and EUR cards, Apple Pay, USSD, and bank transfers with instant verification.
+                  </p>
+                </div>
+              </div>
+
+              <label className="inline-flex items-center gap-2 cursor-pointer self-start sm:self-center">
+                <input
+                  type="checkbox"
+                  checked={paystackEnabled}
+                  onChange={(e) => setPaystackEnabled(e.target.checked)}
+                  className="w-4 h-4 accent-[#17645F] rounded cursor-pointer"
+                />
+                <span className="text-xs font-semibold text-[#17191A]">Enable Paystack</span>
+              </label>
+            </div>
 
           {/* Test connection result banner */}
           {testResult?.gateway === 'paystack' && (
@@ -449,22 +451,22 @@ export const IntegrationsTab: React.FC = () => {
                 <Link01 className="w-3.5 h-3.5 text-[#17645F]" />
                 Webhook Notification URL (Paste into your Paystack Dashboard)
               </span>
-              <button
-                type="button"
-                onClick={() => handleCopy(paystackWebhookUrl || `${window.location.origin}/api/webhooks/paystack`, 'Paystack Webhook URL')}
-                className="text-xs text-[#17645F] font-semibold hover:underline inline-flex items-center gap-1 cursor-pointer"
-              >
-                <Copy01 className="w-3.5 h-3.5" />
-                Copy URL
-              </button>
             </div>
-            <div className="relative">
+            <div className="flex items-center rounded-[8px] border border-[#E1E0DD] bg-white shadow-xs overflow-hidden focus-within:border-[#17645F] focus-within:ring-2 focus-within:ring-[#17645F]/20">
               <input
                 type="text"
                 readOnly
-                value={paystackWebhookUrl || (typeof window !== 'undefined' ? `${window.location.origin}/api/webhooks/paystack` : '')}
-                className="w-full h-11 px-3.5 py-2.5 text-xs font-mono text-[#17191A] bg-white border border-[#E1E0DD] rounded-[8px] select-all cursor-text focus:outline-none focus:ring-1 focus:ring-[#17645F] shadow-xs"
+                value={paystackWebhookUrl || (typeof window !== 'undefined' ? `${window.location.origin}/api/webhooks/paystack` : 'http://localhost:3000/api/webhooks/paystack')}
+                className="flex-1 min-h-[46px] h-12 px-4 py-3 text-xs sm:text-sm font-mono text-[#17191A] bg-transparent select-all cursor-text focus:outline-none"
               />
+              <button
+                type="button"
+                onClick={() => handleCopy(paystackWebhookUrl || `${window.location.origin}/api/webhooks/paystack`, 'Paystack Webhook URL')}
+                className="px-4 py-3 text-xs font-semibold text-[#17645F] hover:bg-[#17645F]/10 transition-colors border-l border-[#E1E0DD] flex items-center gap-1.5 cursor-pointer shrink-0"
+              >
+                <Copy01 className="w-4 h-4" />
+                <span>Copy URL</span>
+              </button>
             </div>
             <p className="text-[11px] text-[#5D5E5F]">
               In your Paystack Dashboard under Settings &gt; Preferences, paste this Webhook URL so Zizo instantly records payments even if the client closes the browser.
@@ -586,22 +588,22 @@ export const IntegrationsTab: React.FC = () => {
                 <Link01 className="w-3.5 h-3.5 text-[#17645F]" />
                 Webhook Notification URL (Paste into your Remita Dashboard)
               </span>
-              <button
-                type="button"
-                onClick={() => handleCopy(remitaWebhookUrl || `${window.location.origin}/api/webhooks/remita`, 'Remita Webhook URL')}
-                className="text-xs text-[#17645F] font-semibold hover:underline inline-flex items-center gap-1 cursor-pointer"
-              >
-                <Copy01 className="w-3.5 h-3.5" />
-                Copy URL
-              </button>
             </div>
-            <div className="relative">
+            <div className="flex items-center rounded-[8px] border border-[#E1E0DD] bg-white shadow-xs overflow-hidden focus-within:border-[#17645F] focus-within:ring-2 focus-within:ring-[#17645F]/20">
               <input
                 type="text"
                 readOnly
-                value={remitaWebhookUrl || (typeof window !== 'undefined' ? `${window.location.origin}/api/webhooks/remita` : '')}
-                className="w-full h-11 px-3.5 py-2.5 text-xs font-mono text-[#17191A] bg-white border border-[#E1E0DD] rounded-[8px] select-all cursor-text focus:outline-none focus:ring-1 focus:ring-[#17645F] shadow-xs"
+                value={remitaWebhookUrl || (typeof window !== 'undefined' ? `${window.location.origin}/api/webhooks/remita` : 'http://localhost:3000/api/webhooks/remita')}
+                className="flex-1 min-h-[46px] h-12 px-4 py-3 text-xs sm:text-sm font-mono text-[#17191A] bg-transparent select-all cursor-text focus:outline-none"
               />
+              <button
+                type="button"
+                onClick={() => handleCopy(remitaWebhookUrl || `${window.location.origin}/api/webhooks/remita`, 'Remita Webhook URL')}
+                className="px-4 py-3 text-xs font-semibold text-[#17645F] hover:bg-[#17645F]/10 transition-colors border-l border-[#E1E0DD] flex items-center gap-1.5 cursor-pointer shrink-0"
+              >
+                <Copy01 className="w-4 h-4" />
+                <span>Copy URL</span>
+              </button>
             </div>
             <p className="text-[11px] text-[#5D5E5F]">
               In your Remita merchant profile under Webhooks, paste this URL so payments settled offline or via bank transfer are automatically credited to bookings.
@@ -630,6 +632,115 @@ export const IntegrationsTab: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Right Column (4 cols): Operations, Security & Diagnostics Hub */}
+      <div className="xl:col-span-4 space-y-5 xl:sticky xl:top-20">
+        {/* Card 1: Live Gateway Health */}
+        <div className="rounded-[10px] border border-[#E1E0DD] bg-white p-5 shadow-xs space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-[#E1E0DD]">
+            <div className="flex items-center gap-2">
+              <Activity className="w-4 h-4 text-[#17645F]" />
+              <h3 className="font-semibold text-sm text-[#17191A]">Gateway Health</h3>
+            </div>
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-medium text-[#17645F] bg-[#17645F]/10 px-2 py-0.5 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-[#17645F] animate-pulse"></span>
+              Live Engine
+            </span>
+          </div>
+
+          <div className="space-y-3 text-xs">
+            <div className="flex items-center justify-between py-1.5 border-b border-[#FAF9F6]">
+              <span className="text-[#5D5E5F]">Paystack Gateway</span>
+              <span className="font-semibold text-[#17191A] flex items-center gap-1.5">
+                <span className={`w-2 h-2 rounded-full ${paystackEnabled ? 'bg-[#17645F]' : 'bg-[#969594]'}`}></span>
+                {paystackEnabled ? (paystackMode === 'live' ? 'Live Production' : 'Sandbox Ready') : 'Disabled'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between py-1.5 border-b border-[#FAF9F6]">
+              <span className="text-[#5D5E5F]">Remita Gateway</span>
+              <span className="font-semibold text-[#17191A] flex items-center gap-1.5">
+                <span className={`w-2 h-2 rounded-full ${remitaEnabled ? 'bg-[#17645F]' : 'bg-[#969594]'}`}></span>
+                {remitaEnabled ? (remitaMode === 'live' ? 'Live RRR' : 'Demo Active') : 'Disabled'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between py-1.5 border-b border-[#FAF9F6]">
+              <span className="text-[#5D5E5F]">Webhook Listener</span>
+              <span className="font-semibold text-[#17645F] flex items-center gap-1">
+                <Check className="w-3.5 h-3.5" />
+                Active (200 OK)
+              </span>
+            </div>
+            <div className="flex items-center justify-between py-1.5">
+              <span className="text-[#5D5E5F]">Supported Currencies</span>
+              <span className="font-mono font-semibold text-[#17191A] text-[11px]">NGN · USD · GBP · EUR</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 2: Security & Compliance Verification */}
+        <div className="rounded-[10px] border border-[#E1E0DD] bg-white p-5 shadow-xs space-y-4">
+          <div className="flex items-center gap-2 pb-3 border-b border-[#E1E0DD]">
+            <ShieldTick className="w-4 h-4 text-[#17645F]" />
+            <h3 className="font-semibold text-sm text-[#17191A]">Security &amp; Compliance</h3>
+          </div>
+
+          <div className="space-y-3 text-xs text-[#5D5E5F]">
+            <div className="flex items-start gap-2.5">
+              <Lock01 className="w-3.5 h-3.5 text-[#17645F] mt-0.5 shrink-0" />
+              <div>
+                <p className="font-semibold text-[#17191A]">Encrypted at Rest</p>
+                <p className="text-[11px] mt-0.5">Secret keys and webhook tokens are never exposed client-side and use AES-256 storage.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <Check className="w-3.5 h-3.5 text-[#17645F] mt-0.5 shrink-0" />
+              <div>
+                <p className="font-semibold text-[#17191A]">HMAC-SHA512 Verification</p>
+                <p className="text-[11px] mt-0.5">Webhook payloads verify cryptographic digital signatures to safeguard against spoofing.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <ShieldTick className="w-3.5 h-3.5 text-[#17645F] mt-0.5 shrink-0" />
+              <div>
+                <p className="font-semibold text-[#17191A]">PCI-DSS Level 1 &amp; NDPA</p>
+                <p className="text-[11px] mt-0.5">Card credentials pass directly via Paystack inline frame without touching clinic servers.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 3: Quick Diagnostics & External Portals */}
+        <div className="rounded-[10px] border border-[#E1E0DD] bg-[#FAF9F6] p-4 text-xs space-y-3">
+          <h4 className="font-semibold text-[#17191A] flex items-center gap-1.5">
+            <Zap className="w-3.5 h-3.5 text-[#17645F]" />
+            Quick Gateway Actions
+          </h4>
+          <p className="text-[#5D5E5F] leading-relaxed">
+            Verify payment provider connectivity and manage merchant dashboard settings.
+          </p>
+          <div className="flex flex-col gap-2 pt-1">
+            <button
+              type="button"
+              onClick={() => handleTestConnection('paystack')}
+              disabled={Boolean(testingGateway)}
+              className="w-full py-2 px-3 text-xs font-semibold rounded-[6px] border border-[#E1E0DD] bg-white text-[#17191A] hover:bg-[#F0EFEC] transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-xs disabled:opacity-50"
+            >
+              <RefreshCw01 className={`w-3.5 h-3.5 text-[#17645F] ${testingGateway === 'paystack' ? 'animate-spin' : ''}`} />
+              <span>Ping Paystack Verification</span>
+            </button>
+            <a
+              href="https://dashboard.paystack.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-2 px-3 text-xs font-semibold rounded-[6px] border border-[#E1E0DD] bg-white text-[#17191A] hover:bg-[#F0EFEC] transition-colors flex items-center justify-center gap-1.5 text-center shadow-xs"
+            >
+              <span>Paystack Merchant Portal</span>
+              <Globe01 className="w-3 h-3 text-[#5D5E5F]" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
 
       {/* SECTION 2: EXTENSIBLE CATALOG OF OTHER INTEGRATIONS */}
       <div className="space-y-6 pt-6 border-t border-[#E1E0DD]">

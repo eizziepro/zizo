@@ -367,10 +367,10 @@ if (app) {
             <span class="text-xs font-semibold uppercase tracking-[0.08em] text-[#5D5E5F]">Consultation Fee</span>
             <p class="text-xs text-[#5D5E5F] mt-0.5">${isPaid ? 'Processed securely via Paystack (Cards, Apple Pay, Bank Transfer)' : 'Introductory clinical session'}</p>
           </div>
-          <div class="flex items-center sm:items-start pt-0.5">
+          <div class="text-left pt-0.5">
             ${
               isPaid
-                ? `<span class="text-base font-bold text-[#17645F] tabular-nums">${priceFormatted}</span>`
+                ? `<span class="text-base font-bold text-[#17645F] tabular-nums inline-block">${priceFormatted}</span>`
                 : '<span class="inline-block text-xs font-semibold px-2.5 py-1 rounded bg-[#8BB2AF]/20 text-[#17645F]">Complimentary</span>'
             }
           </div>
