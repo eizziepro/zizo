@@ -1,0 +1,150 @@
+/* ==========================================================================
+   Zizo Surrogacy — Corrected Brand Design Tokens (docs/Design.md)
+   Authoritative Charcoal Black, Warm White, and Deep Teal Brand System.
+   ========================================================================== */
+
+:root {
+  /* ========================================================================
+     1. Core Brand Colours (docs/Design.md Section 11)
+     ======================================================================== */
+  --charcoal-black: #17191A;
+  --warm-white:     #FAF9F6;
+  --deep-teal:      #17645F;
+
+  /* ========================================================================
+     2. Charcoal Black Scale (Primary: Headings, Nav, Footers, Primary Text)
+     ======================================================================== */
+  /* Tints */
+  --charcoal-black-tint-50:  #2E3031;
+  --charcoal-black-tint-100: #454748;
+  --charcoal-black-tint-150: #5D5E5F;
+  --charcoal-black-tint-200: #747576;
+  --charcoal-black-tint-250: #8B8C8C;
+
+  /* Shades */
+  --charcoal-black-shade-50:  #151617;
+  --charcoal-black-shade-100: #121415;
+  --charcoal-black-shade-150: #101212;
+  --charcoal-black-shade-200: #0E0F10;
+  --charcoal-black-shade-250: #0C0C0D;
+
+  /* ========================================================================
+     3. Warm White Scale (Secondary: Page Background, Content Surfaces)
+     ======================================================================== */
+  /* Tints */
+  --warm-white-tint-50:  #FAFAF7;
+  --warm-white-tint-100: #FBFAF8;
+  --warm-white-tint-150: #FCFBF9;
+  --warm-white-tint-200: #FCFBFA;
+  --warm-white-tint-250: #FCFCFA;
+
+  /* Shades */
+  --warm-white-shade-50:  #E1E0DD;
+  --warm-white-shade-100: #C8C7C5;
+  --warm-white-shade-150: #AFAEAC;
+  --warm-white-shade-200: #969594;
+  --warm-white-shade-250: #7D7C7B;
+
+  /* ========================================================================
+     4. Deep Teal Scale (Accent: Primary CTAs, Links, Interactive Highlights)
+     ======================================================================== */
+  /* Tints */
+  --deep-teal-tint-50:  #2E746F;
+  --deep-teal-tint-100: #45837F;
+  --deep-teal-tint-150: #5D928F;
+  --deep-teal-tint-200: #74A29F;
+  --deep-teal-tint-250: #8BB2AF;
+
+  /* Shades */
+  --deep-teal-shade-50:  #155A56;
+  --deep-teal-shade-100: #12504C;
+  --deep-teal-shade-150: #104642;
+  --deep-teal-shade-200: #0E3C39;
+  --deep-teal-shade-250: #0C3230;
+
+  /* ========================================================================
+     5. Semantic Roles & Surface Tokens
+     ======================================================================== */
+  --color-primary:         var(--charcoal-black);
+  --color-secondary:       var(--warm-white);
+  --color-accent:          var(--deep-teal);
+
+  --surface-page:          var(--warm-white);
+  --surface-content:       var(--warm-white-tint-50);
+  --surface-muted:         var(--warm-white-shade-50);
+  --surface-soft:          var(--warm-white-tint-50);
+  --surface-warm:          rgba(23, 100, 95, 0.06);     /* Subtle teal tint for cards */
+  --surface-warm-accent:   rgba(23, 100, 95, 0.12);
+  --surface-inverse:       var(--charcoal-black);       /* Charcoal hero & footer */
+  --surface-inverse-card:  var(--charcoal-black-shade-50);
+
+  /* Semantic Text Colors */
+  --text-primary:          var(--charcoal-black);       /* 14.1:1 on Warm White */
+  --text-secondary:        var(--charcoal-black-tint-100); /* 10.4:1 on Warm White */
+  --text-muted:            var(--charcoal-black-tint-150); /* 6.2:1 on Warm White */
+  --text-inverse:          var(--warm-white);           /* 14.1:1 on Charcoal Black */
+  --text-inverse-muted:    var(--warm-white-shade-50);  /* 11.2:1 on Charcoal Black */
+
+  /* Borders & Dividers */
+  --border-default:        var(--warm-white-shade-50);  /* #E1E0DD */
+  --border-subtle:         rgba(23, 25, 26, 0.10);      /* Clean hairline border */
+  --border-inverse:        rgba(250, 249, 246, 0.15);   /* Hairline border on dark */
+  --border-accent:         rgba(23, 100, 95, 0.45);
+
+  /* Action Roles */
+  --link-default:          var(--deep-teal);
+  --action-primary:        var(--deep-teal);            /* #17645F (6.59:1 on Warm White) */
+  --action-primary-hover:  var(--deep-teal-shade-50);   /* #155A56 (7.59:1 on Warm White) */
+  --action-text:           var(--warm-white);           /* Crisp white on teal */
+  --action-secondary-border: var(--charcoal-black);
+  --accent-soft:           var(--deep-teal-tint-50);
+  --action-whatsapp:       #128c7e;
+  --action-whatsapp-hover: #075e54;
+
+  /* ========================================================================
+     6. Typography Specifications (docs/Design.md Section 12)
+     ======================================================================== */
+  --font-display: 'Dela Gothic One', 'Arial Black', sans-serif;
+  --font-body:    'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-label:   'JetBrains Mono', monospace;
+
+  /* 8px Modular Spacing Unit */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-10: 80px;
+
+  /* Radii (8px standard, pill for controls only) */
+  --radius-sm: 4px;
+  --radius-md: 8px;                                     /* Standard 8px card radius */
+  --radius-lg: 16px;
+  --radius-full: 9999px;                                /* Pills only */
+
+  /* Shadows */
+  --shadow-subtle: 0 1px 3px rgba(23, 25, 26, 0.04), 0 1px 2px rgba(23, 25, 26, 0.02);
+  --shadow-card:   0 4px 6px -1px rgba(23, 25, 26, 0.05), 0 2px 4px -1px rgba(23, 25, 26, 0.03);
+  --shadow-lift:   0 10px 15px -3px rgba(23, 25, 26, 0.07), 0 4px 6px -2px rgba(23, 25, 26, 0.03);
+
+  /* Backward Compatibility Aliases for Smooth Migration */
+  --black-base:       var(--charcoal-black);
+  --black-shade-50:   var(--charcoal-black);
+  --black-shade-100:  var(--charcoal-black-shade-50);
+  --black-shade-150:  var(--charcoal-black-shade-100);
+  --white-base:       var(--warm-white);
+  --white-shade-50:   var(--warm-white-shade-50);
+  --white-shade-100:  var(--warm-white-shade-100);
+  --white-shade-150:  var(--warm-white-shade-150);
+  --white-shade-200:  var(--warm-white-shade-200);
+  --skin-shade-150:   var(--deep-teal);
+  --skin-shade-200:   var(--deep-teal-shade-50);
+  --skin-shade-250:   var(--deep-teal-shade-100);
+  --skin-tint-50:     var(--deep-teal-tint-200);
+  --skin-tint-100:    var(--deep-teal-tint-150);
+  --skin-tint-150:    var(--deep-teal-tint-100);
+  --skin-tint-200:    var(--deep-teal-tint-50);
+  --skin-tint-250:    var(--surface-warm);
+}
